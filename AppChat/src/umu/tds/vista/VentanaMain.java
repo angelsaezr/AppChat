@@ -1,43 +1,70 @@
 package umu.tds.vista;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VentanaMain extends JFrame {
+    private JPanel contentPane;
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
 
-	private JPanel contentPane;
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VentanaMain frame = new VentanaMain();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaMain frame = new VentanaMain();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    public VentanaMain() {
+        setTitle("AppChat");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 600, 400);
+        setLocationRelativeTo(null);
+        
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuFile = new JMenu("File");
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        menuFile.add(exitItem);
+        menuBar.add(menuFile);
+        setJMenuBar(menuBar);
 
-	/**
-	 * Create the frame.
-	 */
-	public VentanaMain() {
-		setTitle("AppChat");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 519, 368);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
-	}
+        contentPane = new JPanel();
+        contentPane.setLayout(null);
+        setContentPane(contentPane);
+        
+        JLabel lblUsername = new JLabel("Username:");
+        lblUsername.setBounds(200, 100, 80, 25);
+        contentPane.add(lblUsername);
+        
+        txtUsername = new JTextField();
+        txtUsername.setBounds(290, 100, 150, 25);
+        contentPane.add(txtUsername);
+        txtUsername.setColumns(10);
+        
+        JLabel lblPassword = new JLabel("Password:");
+        lblPassword.setBounds(200, 140, 80, 25);
+        contentPane.add(lblPassword);
+        
+        txtPassword = new JPasswordField();
+        txtPassword.setBounds(290, 140, 150, 25);
+        contentPane.add(txtPassword);
+        
+        JButton btnLogin = new JButton("Login");
+        btnLogin.setBounds(200, 180, 110, 30);
+        contentPane.add(btnLogin);
+        
+        JButton btnSignUp = new JButton("Sign Up");
+        btnSignUp.setBounds(330, 180, 110, 30);
+        contentPane.add(btnSignUp);
+    }
 }
