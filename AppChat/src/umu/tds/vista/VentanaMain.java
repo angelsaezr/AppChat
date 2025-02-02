@@ -1,10 +1,10 @@
 package umu.tds.vista;
 
 import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
 
 public class VentanaMain extends JFrame {
     private JPanel contentPane;
@@ -64,6 +64,12 @@ public class VentanaMain extends JFrame {
         contentPane.add(btnLogin);
         
         JButton btnSignUp = new JButton("Sign Up");
+        btnSignUp.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new VentanaSignUp();
+                dispose();
+            }
+        });
         btnSignUp.setBounds(330, 180, 110, 30);
         contentPane.add(btnSignUp);
     }
