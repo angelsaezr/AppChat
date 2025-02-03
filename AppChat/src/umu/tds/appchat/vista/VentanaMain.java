@@ -60,16 +60,16 @@ public class VentanaMain extends JFrame {
         contentPane.add(txtPassword);
         
         JButton btnLogin = new JButton("Login");
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                new VentanaLogin();
+                dispose();
+            }
+        });
         btnLogin.setBounds(200, 180, 110, 30);
         contentPane.add(btnLogin);
         
         JButton btnSignUp = new JButton("Sign Up");
-        btnSignUp.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //new VentanaSignUp();
-                dispose();
-            }
-        });
         btnSignUp.setBounds(330, 180, 110, 30);
         contentPane.add(btnSignUp);
     }
