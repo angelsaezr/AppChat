@@ -1,5 +1,25 @@
-/*package umu.tds.appchat.controlador;
+package umu.tds.appchat.controlador;
 
+import java.awt.EventQueue;
+
+import umu.tds.appchat.vista.VentanaLogin;
+
+public class CargarAppChat {
+	public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VentanaLogin frame = new VentanaLogin();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+}
+
+/*
 import java.time.LocalDate;
 
 import umu.tds.appchat.dominio.ContactoIndividual;
