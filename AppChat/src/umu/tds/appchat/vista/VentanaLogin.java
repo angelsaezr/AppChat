@@ -1,4 +1,4 @@
-package umu.tds.vista;
+package umu.tds.appchat.vista;
 
 public class VentanaLogin {
 

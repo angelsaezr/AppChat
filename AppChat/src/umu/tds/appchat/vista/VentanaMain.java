@@ -1,4 +1,4 @@
-package umu.tds.vista;
+package umu.tds.appchat.vista;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -66,7 +66,7 @@ public class VentanaMain extends JFrame {
         JButton btnSignUp = new JButton("Sign Up");
         btnSignUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new VentanaSignUp();
+                //new VentanaSignUp();
                 dispose();
             }
         });
