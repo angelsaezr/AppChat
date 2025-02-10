@@ -17,7 +17,7 @@ public class VentanaMain extends JFrame {
     public VentanaMain() {
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(900, 650);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
@@ -28,25 +28,38 @@ public class VentanaMain extends JFrame {
         // Configuración del panel principal
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
-        contentPane.setBackground(new Color(240, 248, 255)); // Fondo claro similar a VentanaLogin
+        contentPane.setBackground(new Color(255, 255, 255)); // Colores originales
         setContentPane(contentPane);
 
-        // Barra superior
+        // Barra superior con diseño moderno y centrado vertical
         JPanel barraSuperior = new JPanel(new BorderLayout());
         barraSuperior.setBackground(new Color(240, 248, 255));
-        
-        JPanel panelIzquierda = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelIzquierda.setBackground(new Color(240, 248, 255));
-        campoBusqueda = new JTextField(20);
-        JButton botonBuscar = new JButton("Buscar");
-        JButton botonContactos = new JButton("Contactos");
-        JButton botonPremium = new JButton("Premium");
+        barraSuperior.setPreferredSize(new Dimension(getWidth(), 60));
 
+        JPanel panelIzquierda = new JPanel(null); // Usar diseño nulo para centrar manualmente
+        panelIzquierda.setBackground(new Color(240, 248, 255));
+        
+        campoBusqueda = new JTextField(20);
+        campoBusqueda.setBounds(10, 15, 200, 30); // Posición fija
+        JButton botonBuscar = new JButton("🔍");
+        botonBuscar.setBackground(new Color(0, 128, 128));
+        botonBuscar.setForeground(Color.WHITE);
+        botonBuscar.setBounds(220, 15, 50, 30); // Posición fija
+        JButton botonContactos = new JButton("👥  Contactos");
+        botonContactos.setBackground(new Color(0, 128, 128));
+        botonContactos.setForeground(Color.WHITE);
+        botonContactos.setBounds(280, 15, 120, 30); // Posición fija
+        JButton botonPremium = new JButton("⭐  Premium");
+        botonPremium.setBackground(new Color(0, 128, 128));
+        botonPremium.setForeground(Color.WHITE);
+        botonPremium.setBounds(410, 15, 120, 30); // Posición fija
+
+        panelIzquierda.setPreferredSize(new Dimension(550, 60));
         panelIzquierda.add(campoBusqueda);
         panelIzquierda.add(botonBuscar);
         panelIzquierda.add(botonContactos);
         panelIzquierda.add(botonPremium);
-        
+
         // Cargar imagen de perfil redondeada con tamaño fijo
         JLabel imagenPerfil = new JLabel();
         try {
@@ -57,39 +70,42 @@ public class VentanaMain extends JFrame {
             e.printStackTrace();
         }
 
-        JPanel panelDerecha = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel panelDerecha = new JPanel(new GridBagLayout()); // Centrado vertical
         panelDerecha.setBackground(new Color(240, 248, 255));
         panelDerecha.add(imagenPerfil);
 
         barraSuperior.add(panelIzquierda, BorderLayout.WEST);
         barraSuperior.add(panelDerecha, BorderLayout.EAST);
-        
+
         contentPane.add(barraSuperior, BorderLayout.NORTH);
 
-        // Panel izquierdo - Lista de contactos
+        // Panel izquierdo - Lista de contactos con borde sutil
         panelContactos = new JPanel(new BorderLayout());
-        panelContactos.setBackground(new Color(240, 248, 255));
+        panelContactos.setBackground(new Color(245, 245, 245));
+        panelContactos.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
         listaContactos = new JList<>(new DefaultListModel<>());
         panelContactos.add(new JScrollPane(listaContactos), BorderLayout.CENTER);
-        panelContactos.setPreferredSize(new Dimension(250, getHeight()));
+        panelContactos.setPreferredSize(new Dimension(270, getHeight()));
         contentPane.add(panelContactos, BorderLayout.WEST);
 
-        // Panel derecho - Chat
+        // Panel derecho - Chat con diseño minimalista
         panelChat = new JPanel(new BorderLayout());
         panelChat.setBackground(Color.WHITE);
         JTextArea chatArea = new JTextArea();
         chatArea.setEditable(false);
         chatArea.setLineWrap(true);
         chatArea.setWrapStyleWord(true);
+        chatArea.setFont(new Font("Arial", Font.PLAIN, 16));
         JScrollPane scrollChat = new JScrollPane(chatArea);
 
         // Campo de entrada de texto
         areaTexto = new JTextArea(2, 30);
         areaTexto.setLineWrap(true);
         areaTexto.setWrapStyleWord(true);
+        areaTexto.setFont(new Font("Arial", Font.PLAIN, 14));
         JScrollPane scrollTexto = new JScrollPane(areaTexto);
 
-        JButton botonEnviar = new JButton("Enviar");
+        JButton botonEnviar = new JButton("📨  Enviar");
         botonEnviar.setBackground(new Color(0, 128, 128));
         botonEnviar.setForeground(Color.WHITE);
         botonEnviar.setFocusPainted(false);
