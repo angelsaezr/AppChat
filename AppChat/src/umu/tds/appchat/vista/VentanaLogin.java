@@ -18,7 +18,7 @@ public class VentanaLogin extends JFrame {
         setBounds(100, 100, 400, 500);
         setLocationRelativeTo(null);
         
-     // Cambiar el icono de la ventana
+        // Cambiar el icono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src/resources/logo_icono.png");
         setIconImage(icon);
 
@@ -26,7 +26,7 @@ public class VentanaLogin extends JFrame {
         contentPane = new JPanel();
         contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
         contentPane.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        contentPane.setBackground(new Color(240, 248, 255)); // Fondo claro similar al logo
+        contentPane.setBackground(new Color(240, 248, 255));
         setContentPane(contentPane);
 
         // Agregar el logo en la parte superior
@@ -77,7 +77,14 @@ public class VentanaLogin extends JFrame {
         loginButton.setBackground(new Color(0, 128, 128)); // Color similar al logo
         loginButton.setForeground(Color.WHITE);
         loginButton.setFocusPainted(false);
-        loginButton.addActionListener((ActionEvent e) -> dispose());
+        loginButton.setBorderPainted(false);
+        loginButton.addActionListener((ActionEvent e) -> {
+            if (txtPhone.getText().trim().isEmpty() || new String(txtPassword.getPassword()).trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                dispose();
+            }
+        });
         contentPane.add(loginButton);
 
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -94,8 +101,7 @@ public class VentanaLogin extends JFrame {
         linkLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Acción para el enlace
-                JOptionPane.showMessageDialog(null, "Redirigiendo al registro...");
+                new RegistroDialog(VentanaLogin.this).setVisible(true);
             }
         });
 
