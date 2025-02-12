@@ -49,6 +49,15 @@ public class VentanaMain extends JFrame {
         botonContactos.setBackground(new Color(0, 128, 128));
         botonContactos.setForeground(Color.WHITE);
         botonContactos.setBounds(280, 15, 120, 30); // Posición fija
+        botonContactos.addActionListener(e -> {
+            JPanel panelContactos = new VentanaContactos();
+            getContentPane().removeAll();
+            getContentPane().add(panelContactos, BorderLayout.CENTER);
+            revalidate();
+            repaint();
+        });
+
+        
         JButton botonPremium = new JButton("⭐  Premium");
         botonPremium.setBackground(new Color(0, 128, 128));
         botonPremium.setForeground(Color.WHITE);
