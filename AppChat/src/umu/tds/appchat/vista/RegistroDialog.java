@@ -8,14 +8,15 @@ import com.toedter.calendar.JDateChooser;
 @SuppressWarnings("serial")
 public class RegistroDialog extends JDialog {
     private JPanel contentPane, panelSeleccionarImagen, panelBotones;
-    private JTextField txtUsuario, txtMovil, txtSaludo;
+    private JTextField txtUsuario, txtEmail, txtMovil;
+    private JTextArea txtSaludo;
     private JPasswordField txtPassword, txtRepitePassword;
     private JDateChooser dateChooser;
     private JButton btnRegistrar, btnCancelar, btnSeleccionarImagen;
 
     public RegistroDialog(JFrame parent) {
         super(parent, "Registro de Usuario", true);
-        setSize(400, 500);
+        setSize(400, 550);
         setLocationRelativeTo(parent);
         
         // Configuración del panel principal
@@ -26,12 +27,13 @@ public class RegistroDialog extends JDialog {
         setContentPane(contentPane);
 
         // Campos de entrada
-        txtUsuario = createTextField("Usuario:");
-        txtPassword = createPasswordField("Contraseña:");
-        txtRepitePassword = createPasswordField("Repite Contraseña:");
-        txtMovil = createTextField("Móvil:");
+        txtUsuario = createTextField("Usuario *");
+        txtPassword = createPasswordField("Contraseña *");
+        txtRepitePassword = createPasswordField("Repite la contraseña *");
+        txtEmail = createTextField("Email *");
+        txtMovil = createTextField("Móvil *");
         
-        JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:        ");
+        JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento         ");
         lblFechaNacimiento.setAlignmentX(Component.RIGHT_ALIGNMENT);
         contentPane.add(lblFechaNacimiento);
         
@@ -55,7 +57,17 @@ public class RegistroDialog extends JDialog {
         contentPane.add(dateChooser);
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         
-        txtSaludo = createTextField("Saludo Inicial:");
+        txtSaludo = new JTextArea("Hi there...", 3, 15);
+        txtSaludo.setPreferredSize(new Dimension(300, 70));
+        txtSaludo.setMaximumSize(new Dimension(300, 70));
+        txtSaludo.setMinimumSize(new Dimension(300, 70));
+        txtSaludo.setBorder(BorderFactory.createTitledBorder("Saludo inicial"));
+        txtSaludo.setBackground(Color.WHITE);
+        txtSaludo.setForeground(Color.DARK_GRAY);
+        txtSaludo.setWrapStyleWord(true);
+        txtSaludo.setLineWrap(true);
+        contentPane.add(txtSaludo);
+        contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
         
         panelSeleccionarImagen = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panelSeleccionarImagen.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -126,11 +138,10 @@ public class RegistroDialog extends JDialog {
     }
     
     private void validarCampos(ActionEvent e) {
-        if (txtUsuario.getText().isEmpty() || txtMovil.getText().isEmpty() || dateChooser.getDate() == null || txtSaludo.getText().isEmpty() || 
-            new String(txtPassword.getPassword()).isEmpty() || new String(txtRepitePassword.getPassword()).isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
+        if (txtUsuario.getText().isEmpty() || txtEmail.getText().isEmpty() || txtMovil.getText().isEmpty() || new String(txtPassword.getPassword()).isEmpty() || new String(txtRepitePassword.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Rellena todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        }
+        } 
         
         JOptionPane.showMessageDialog(this, "Registro exitoso.", "Información", JOptionPane.INFORMATION_MESSAGE);
         dispose();
