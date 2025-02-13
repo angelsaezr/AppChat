@@ -2,6 +2,9 @@ package umu.tds.appchat.vista;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 
@@ -80,6 +83,12 @@ public class RegistroDialog extends JDialog {
         btnSeleccionarImagen.setForeground(Color.WHITE);
         btnSeleccionarImagen.setFocusPainted(false);
         btnSeleccionarImagen.setBorderPainted(false);
+        btnSeleccionarImagen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new PanelArrastraImagen(parent).showDialog();
+            }
+        });
         panelSeleccionarImagen.add(btnSeleccionarImagen);
         contentPane.add(panelSeleccionarImagen);
 
