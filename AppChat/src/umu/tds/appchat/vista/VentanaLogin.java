@@ -6,6 +6,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 @SuppressWarnings("serial")
 public class VentanaLogin extends JFrame {
     private JPanel contentPane;
@@ -18,6 +20,13 @@ public class VentanaLogin extends JFrame {
         setBounds(100, 100, 400, 500);
         setLocationRelativeTo(null);
         this.setResizable(false);
+        
+        // Aplicar FlatLaf
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         // Cambiar el icono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src/resources/logo_icono.png");

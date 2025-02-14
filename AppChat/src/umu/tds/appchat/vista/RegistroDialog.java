@@ -25,6 +25,7 @@ public class RegistroDialog extends JDialog {
         super(parent, "Registro de Usuario", true);
         setSize(400, 650);
         setLocationRelativeTo(parent);
+        this.setResizable(false);
         
         // Configuración del panel principal
         contentPane = new JPanel();
@@ -40,7 +41,7 @@ public class RegistroDialog extends JDialog {
         txtEmail = createTextField("Email *");
         txtMovil = createTextField("Móvil *");
         
-        JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento         ");
+        JLabel lblFechaNacimiento = new JLabel("Fecha de nacimiento            ");
         lblFechaNacimiento.setAlignmentX(Component.RIGHT_ALIGNMENT);
         contentPane.add(lblFechaNacimiento);
         

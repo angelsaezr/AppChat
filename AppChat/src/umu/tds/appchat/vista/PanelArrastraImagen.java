@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import java.awt.Font;
@@ -48,11 +49,12 @@ public class PanelArrastraImagen extends JDialog {
         contentPane.setLayout(new BorderLayout());
         
         JEditorPane editorPane = new JEditorPane();
+        editorPane.setBackground(Color.WHITE);
         editorPane.setEditable(false);
         editorPane.setContentType("text/html");  
         editorPane.setText("<html><body style='font-family:Arial; text-align:center;'>"
                 + "<h2 style='color:#008080;'>Agregar Foto</h2>"
-                + "<p>Puedes arrastrar el fichero aquí.</p></body></html>");
+                + "<p>Puedes arrastrar el fichero aquí</p></body></html>");
         contentPane.add(editorPane, BorderLayout.NORTH);
         
         JLabel imagenLabel = new JLabel();
