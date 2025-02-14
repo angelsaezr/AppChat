@@ -9,7 +9,6 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -18,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import java.awt.Font;
 import java.awt.Color;
 
@@ -34,10 +34,11 @@ public class PanelArrastraImagen extends JDialog {
      * Create the dialog.
      */
     @SuppressWarnings("serial")
-	public PanelArrastraImagen(JFrame owner) {
+    public PanelArrastraImagen(JFrame owner) {
         super(owner, "Agregar fotos", true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 500, 500);
+        this.setResizable(false);
         getContentPane().setLayout(new BorderLayout());
         
         contentPane = new JPanel();
@@ -63,7 +64,7 @@ public class PanelArrastraImagen extends JDialog {
                 try {
                     evt.acceptDrop(DnDConstants.ACTION_COPY);
                     @SuppressWarnings("unchecked")
-					List<File> droppedFiles = (List<File>) evt.getTransferable().
+                    List<File> droppedFiles = (List<File>) evt.getTransferable().
                             getTransferData(DataFlavor.javaFileListFlavor);
                     
                     if (!droppedFiles.isEmpty()) {
@@ -95,6 +96,22 @@ public class PanelArrastraImagen extends JDialog {
         botonElegir.setFont(new Font("Arial", Font.BOLD, 14));
         botonElegir.setFocusPainted(false);
         botonElegir.setBorderPainted(false);
+        botonElegir.addActionListener(ev -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            int returnValue = fileChooser.showOpenDialog(this);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                archivosSubidos.add(file);
+                
+                ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+                Image img = icon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                imagenLabel.setIcon(new ImageIcon(img));
+                
+                lblArchivoSubido.setText(file.getAbsolutePath());
+                lblArchivoSubido.setVisible(true);
+            }
+        });
         contentPane.add(botonElegir, BorderLayout.SOUTH);
         
         // Panel de botones Aceptar y Cancelar

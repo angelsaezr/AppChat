@@ -4,22 +4,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.List;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
 public class RegistroDialog extends JDialog {
-    private JPanel contentPane, panelSeleccionarImagen, panelBotones;
+    private JPanel contentPane, panelSeleccionarImagen, panelBotones, panelImagen;
     private JTextField txtUsuario, txtEmail, txtMovil;
     private JTextArea txtSaludo;
     private JPasswordField txtPassword, txtRepitePassword;
     private JDateChooser dateChooser;
     private JButton btnRegistrar, btnCancelar, btnSeleccionarImagen;
+    private JLabel lblImagenSeleccionada;
+    private File imagenSeleccionada;
 
     public RegistroDialog(JFrame parent) {
         super(parent, "Registro de Usuario", true);
-        setSize(400, 550);
+        setSize(400, 650);
         setLocationRelativeTo(parent);
         
         // Configuración del panel principal
@@ -86,9 +90,24 @@ public class RegistroDialog extends JDialog {
         btnSeleccionarImagen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new PanelArrastraImagen(parent).showDialog();
+            	List<File> archivos = new PanelArrastraImagen(parent).showDialog();
+                if (!archivos.isEmpty()) {
+                    imagenSeleccionada = archivos.get(0);
+                    ImageIcon icon = new ImageIcon(imagenSeleccionada.getAbsolutePath());
+                    Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    lblImagenSeleccionada.setIcon(new ImageIcon(img));
+                    lblImagenSeleccionada.setVisible(true);
+                }
             }
         });
+        lblImagenSeleccionada = new JLabel();
+        lblImagenSeleccionada.setHorizontalAlignment(JLabel.CENTER);
+        lblImagenSeleccionada.setVisible(false);
+        panelImagen = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelImagen.setBackground(new Color(240, 248, 255));
+        panelImagen.add(lblImagenSeleccionada);
+        contentPane.add(panelImagen);
+        
         panelSeleccionarImagen.add(btnSeleccionarImagen);
         contentPane.add(panelSeleccionarImagen);
 

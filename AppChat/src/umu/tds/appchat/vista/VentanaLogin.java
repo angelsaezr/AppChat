@@ -17,6 +17,7 @@ public class VentanaLogin extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 400, 500);
         setLocationRelativeTo(null);
+        this.setResizable(false);
         
         // Cambiar el icono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src/resources/logo_icono.png");
