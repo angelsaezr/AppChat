@@ -15,9 +15,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 public class VentanaMain extends JFrame {
     private JPanel panelContactos;
     private JPanel panelChat;
-    private JTextField campoBusqueda;
     private JTextArea areaTexto;
     private JList<String> listaContactos;
+    JButton botonBuscar, botonContactos;
 
     public VentanaMain() {
         setTitle("AppChat");
@@ -51,16 +51,15 @@ public class VentanaMain extends JFrame {
         JPanel panelIzquierda = new JPanel(null); // Usar diseño nulo para centrar manualmente
         panelIzquierda.setBackground(new Color(240, 248, 255));
         
-        campoBusqueda = new JTextField(20);
-        campoBusqueda.setBounds(10, 15, 200, 30); // Posición fija
-        JButton botonBuscar = new JButton("🔍");
+        botonBuscar = new JButton("🔍 Buscar Mensajes");
         botonBuscar.setBackground(new Color(0, 128, 128));
         botonBuscar.setForeground(Color.WHITE);
-        botonBuscar.setBounds(220, 15, 50, 30); // Posición fija
-        JButton botonContactos = new JButton("👥  Contactos");
+        botonBuscar.setBounds(10, 15, 140, 30);
+        
+        botonContactos = new JButton("👥  Contactos");
         botonContactos.setBackground(new Color(0, 128, 128));
         botonContactos.setForeground(Color.WHITE);
-        botonContactos.setBounds(280, 15, 120, 30); // Posición fija
+        botonContactos.setBounds(155, 15, 110, 30);
         botonContactos.addActionListener(e -> {
             JPanel panelContactos = new VentanaContactos();
             getContentPane().removeAll();
@@ -69,11 +68,25 @@ public class VentanaMain extends JFrame {
             repaint();
         });
 
+        JButton botonCrearContacto = new JButton("➕ Crear Contacto");
+        botonCrearContacto.setBackground(new Color(0, 128, 128));
+        botonCrearContacto.setForeground(Color.WHITE);
+        botonCrearContacto.setBounds(270, 15, 130, 30);
+        
+        JButton botonCrearGrupo = new JButton("📁 Crear Grupo");
+        botonCrearGrupo.setBackground(new Color(0, 128, 128));
+        botonCrearGrupo.setForeground(Color.WHITE);
+        botonCrearGrupo.setBounds(405, 15, 115, 30);
         
         JButton botonPremium = new JButton("⭐  Premium");
         botonPremium.setBackground(new Color(0, 128, 128));
         botonPremium.setForeground(Color.WHITE);
-        botonPremium.setBounds(410, 15, 120, 30);
+        botonPremium.setBounds(525, 15, 100, 30);
+        
+        JButton botonCerrarSesion = new JButton("🚪 Cerrar Sesión");
+        botonCerrarSesion.setBackground(new Color(255, 69, 0));
+        botonCerrarSesion.setForeground(Color.WHITE);
+        botonCerrarSesion.setBounds(630, 15, 110, 30);
         
         botonPremium.addMouseListener(new MouseAdapter() {
             @Override
@@ -82,11 +95,13 @@ public class VentanaMain extends JFrame {
             }
         });
 
-        panelIzquierda.setPreferredSize(new Dimension(550, 60));
-        panelIzquierda.add(campoBusqueda);
+        panelIzquierda.setPreferredSize(new Dimension(800, 60));
         panelIzquierda.add(botonBuscar);
         panelIzquierda.add(botonContactos);
+        panelIzquierda.add(botonCrearContacto);
+        panelIzquierda.add(botonCrearGrupo);
         panelIzquierda.add(botonPremium);
+        panelIzquierda.add(botonCerrarSesion);
 
         // Cargar imagen de perfil redondeada con tamaño fijo
         JLabel imagenPerfil = new JLabel();
