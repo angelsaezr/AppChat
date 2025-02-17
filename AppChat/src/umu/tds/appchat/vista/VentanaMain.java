@@ -2,11 +2,16 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
+@SuppressWarnings("serial")
 public class VentanaMain extends JFrame {
     private JPanel panelContactos;
     private JPanel panelChat;
@@ -20,6 +25,13 @@ public class VentanaMain extends JFrame {
         setSize(900, 650);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        
+        // Aplicar FlatLaf
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Cambiar el icono de la ventana
         Image icon = Toolkit.getDefaultToolkit().getImage("src/resources/logo_icono.png");
@@ -61,7 +73,14 @@ public class VentanaMain extends JFrame {
         JButton botonPremium = new JButton("⭐  Premium");
         botonPremium.setBackground(new Color(0, 128, 128));
         botonPremium.setForeground(Color.WHITE);
-        botonPremium.setBounds(410, 15, 120, 30); // Posición fija
+        botonPremium.setBounds(410, 15, 120, 30);
+        
+        botonPremium.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new PremiumDialog(VentanaMain.this).setVisible(true);
+            }
+        });
 
         panelIzquierda.setPreferredSize(new Dimension(550, 60));
         panelIzquierda.add(campoBusqueda);
