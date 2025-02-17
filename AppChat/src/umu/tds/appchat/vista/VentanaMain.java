@@ -55,43 +55,79 @@ public class VentanaMain extends JFrame {
         botonBuscar.setBackground(new Color(0, 128, 128));
         botonBuscar.setForeground(Color.WHITE);
         botonBuscar.setBounds(10, 15, 140, 30);
+        botonBuscar.setBorderPainted(false);
         
         botonContactos = new JButton("👥  Contactos");
         botonContactos.setBackground(new Color(0, 128, 128));
         botonContactos.setForeground(Color.WHITE);
         botonContactos.setBounds(155, 15, 110, 30);
-        botonContactos.addActionListener(e -> {
-            JPanel panelContactos = new VentanaContactos();
-            getContentPane().removeAll();
-            getContentPane().add(panelContactos, BorderLayout.CENTER);
-            revalidate();
-            repaint();
+        botonContactos.setBorderPainted(false);
+        botonContactos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new VentanaContactos(VentanaMain.this).setVisible(true);
+            }
         });
 
         JButton botonCrearContacto = new JButton("➕ Crear Contacto");
         botonCrearContacto.setBackground(new Color(0, 128, 128));
         botonCrearContacto.setForeground(Color.WHITE);
         botonCrearContacto.setBounds(270, 15, 130, 30);
+        botonCrearContacto.setBorderPainted(false);
         
         JButton botonCrearGrupo = new JButton("📁 Crear Grupo");
         botonCrearGrupo.setBackground(new Color(0, 128, 128));
         botonCrearGrupo.setForeground(Color.WHITE);
         botonCrearGrupo.setBounds(405, 15, 115, 30);
+        botonCrearGrupo.setBorderPainted(false);
         
         JButton botonPremium = new JButton("⭐  Premium");
         botonPremium.setBackground(new Color(0, 128, 128));
         botonPremium.setForeground(Color.WHITE);
         botonPremium.setBounds(525, 15, 100, 30);
+        botonPremium.setBorderPainted(false);
+        botonPremium.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new PremiumDialog(VentanaMain.this).setVisible(true);
+            }
+        });
         
         JButton botonCerrarSesion = new JButton("🚪 Cerrar Sesión");
         botonCerrarSesion.setBackground(new Color(255, 69, 0));
         botonCerrarSesion.setForeground(Color.WHITE);
         botonCerrarSesion.setBounds(630, 15, 110, 30);
-        
-        botonPremium.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new PremiumDialog(VentanaMain.this).setVisible(true);
+        botonCerrarSesion.setBorderPainted(false);
+        botonCerrarSesion.addActionListener(e -> {
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    VentanaMain.this,
+                    "¿Seguro que quieres cerrar sesión?",
+                    "Cerrar sesión",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                // Crea un JDialog sin botones
+                JDialog dialogo = new JDialog(VentanaMain.this, "Cerrar sesión", false);
+                JLabel mensaje = new JLabel("Cerrando sesión...", SwingConstants.CENTER);
+                mensaje.setFont(new Font("Arial", Font.BOLD, 14));
+                dialogo.add(mensaje);
+
+                dialogo.setSize(200, 100);
+                dialogo.setLocationRelativeTo(VentanaMain.this);
+                dialogo.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+                dialogo.setVisible(true);
+
+                // Temporizador para cerrar el mensaje y redirigir a la ventana de login
+                Timer timer = new Timer(2000, event -> {
+                    dialogo.dispose();
+                    new VentanaLogin().setVisible(true);
+                    dispose(); // Cierra la ventana actual
+                });
+
+                timer.setRepeats(false);
+                timer.start();
             }
         });
 
@@ -152,6 +188,7 @@ public class VentanaMain extends JFrame {
         botonEnviar.setBackground(new Color(0, 128, 128));
         botonEnviar.setForeground(Color.WHITE);
         botonEnviar.setFocusPainted(false);
+        botonEnviar.setBorderPainted(false);
 
         JPanel panelEscribir = new JPanel(new BorderLayout());
         panelEscribir.setBackground(Color.WHITE);

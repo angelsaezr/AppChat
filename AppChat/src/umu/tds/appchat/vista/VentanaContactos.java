@@ -1,49 +1,80 @@
 package umu.tds.appchat.vista;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class VentanaContactos extends JPanel {
-    public VentanaContactos() {
+@SuppressWarnings("serial")
+public class VentanaContactos extends JDialog {
+    private JTable table;
+    private ContactTableModel tableModel;
+
+    public VentanaContactos(Frame parent) {
+        super(parent, "Lista contactos", true);
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
-        
-        // Panel Izquierdo - Lista de Contactos
-        JPanel panelListaContactos = new JPanel(new BorderLayout());
-        panelListaContactos.setBackground(Color.WHITE);
-        panelListaContactos.setBorder(BorderFactory.createTitledBorder("Lista de Contactos"));
-        
-        DefaultListModel<String> modeloLista = new DefaultListModel<>();
-        //modeloLista.addElement("contacto1");
-        //modeloLista.addElement("grupo2");
-        
-        JList<String> listaContactos = new JList<>(modeloLista);
-        panelListaContactos.add(new JScrollPane(listaContactos), BorderLayout.CENTER);
-        
-        JButton btnAgregarContacto = new JButton("Añadir Contacto");
-        btnAgregarContacto.setBackground(new Color(0, 128, 128));
-        btnAgregarContacto.setForeground(Color.WHITE);
-        panelListaContactos.add(btnAgregarContacto, BorderLayout.SOUTH);
-        
-        // Panel Derecho - Grupo Seleccionado
-        JPanel panelGrupo = new JPanel(new BorderLayout());
-        panelGrupo.setBackground(Color.WHITE);
-        panelGrupo.setBorder(BorderFactory.createTitledBorder("Grupo"));
-        
-        DefaultListModel<String> modeloGrupo = new DefaultListModel<>();
-        //modeloGrupo.addElement("contacto4");
-        //modeloGrupo.addElement("contacto5");
-        
-        JList<String> listaGrupo = new JList<>(modeloGrupo);
-        panelGrupo.add(new JScrollPane(listaGrupo), BorderLayout.CENTER);
-        
-        JButton btnAgregarGrupo = new JButton("Añadir Grupo");
-        btnAgregarGrupo.setBackground(new Color(0, 128, 128));
-        btnAgregarGrupo.setForeground(Color.WHITE);
-        panelGrupo.add(btnAgregarGrupo, BorderLayout.SOUTH);
-        
-        // Agregar Paneles al Panel Principal
-        add(panelListaContactos, BorderLayout.WEST);
-        add(panelGrupo, BorderLayout.EAST);
+
+        // Crear el modelo de la tabla
+        tableModel = new ContactTableModel();
+        table = new JTable(tableModel);
+
+        // Agregar la tabla con scroll
+        JScrollPane scrollPane = new JScrollPane(table);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Panel para los botones
+        JPanel buttonPanel = new JPanel();
+        JButton okButton = new JButton("OK");
+
+        // Acciones de los botones
+        okButton.addActionListener(e -> dispose());
+
+        // Agregar botones al panel
+        buttonPanel.add(okButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+        setSize(400, 300);
+        setLocationRelativeTo(parent);
+    }
+
+    // Clase interna para el modelo de la tabla
+    // TODO Comprobar
+    private static class ContactTableModel extends AbstractTableModel {
+        private final String[] nombresColumna = {"Nombre", "Teléfono", "Saludo"};
+        private final List<Object[]> data;
+
+        public ContactTableModel() {
+            data = new ArrayList<>();
+            data.add(new Object[]{"Angel", "660392750", "En el gimnasio"});
+            data.add(new Object[]{"Javi", "696305617", "Durmiendo"});
+        }
+
+        @Override
+        public int getRowCount() {
+            return data.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return nombresColumna.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return data.get(rowIndex)[columnIndex];
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return nombresColumna[column];
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return false; // La tabla no será editable
+        }
     }
 }
+
+
