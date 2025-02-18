@@ -11,12 +11,16 @@ import javax.imageio.ImageIO;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.utils.Utils;
+
 @SuppressWarnings("serial")
 public class VentanaMain extends JFrame {
     private JPanel panelContactos;
     private JPanel panelChat;
     private JTextArea areaTexto;
-    private JList<String> listaContactos;
+    private JList<ContactoIndividual> listaContactos;
     JButton botonBuscar, botonContactos;
 
     public VentanaMain() {
@@ -161,7 +165,7 @@ public class VentanaMain extends JFrame {
         JLabel imagenPerfil = new JLabel();
         try {
             BufferedImage originalImage = ImageIO.read(new File("src/resources/profile1.jpg"));
-            Image roundedImage = createRoundedImage(originalImage, 50);
+            Image roundedImage = Utils.createRoundedImage(originalImage, 50);
             imagenPerfil.setIcon(new ImageIcon(roundedImage));
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,15 +180,22 @@ public class VentanaMain extends JFrame {
 
         contentPane.add(barraSuperior, BorderLayout.NORTH);
 
-        // Panel izquierdo - Lista de contactos con borde sutil
+     // Panel izquierdo - Lista de contactos con borde sutil
         panelContactos = new JPanel(new BorderLayout());
         panelContactos.setBackground(new Color(245, 245, 245));
         panelContactos.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
-        listaContactos = new JList<>(new DefaultListModel<>());
+        
+        DefaultListModel<ContactoIndividual> modeloLista = new DefaultListModel<>();
+        modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "Guanyarem la Champions", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "El Heredero", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "Bon dia", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg")));
+        
+        listaContactos = new JList<>(modeloLista);
+        listaContactos.setCellRenderer(new ContactoListCellRenderer());
         panelContactos.add(new JScrollPane(listaContactos), BorderLayout.CENTER);
         panelContactos.setPreferredSize(new Dimension(270, getHeight()));
         contentPane.add(panelContactos, BorderLayout.WEST);
-
+        
         // Panel derecho - Chat con diseño minimalista
         panelChat = new JPanel(new BorderLayout());
         panelChat.setBackground(Color.WHITE);
@@ -216,16 +227,6 @@ public class VentanaMain extends JFrame {
         panelChat.add(scrollChat, BorderLayout.CENTER);
         panelChat.add(panelEscribir, BorderLayout.SOUTH);
         contentPane.add(panelChat, BorderLayout.CENTER);
-    }
-
-    private Image createRoundedImage(BufferedImage image, int size) {
-        BufferedImage roundedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = roundedImage.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setClip(new Ellipse2D.Float(0, 0, size, size));
-        g2.drawImage(image, 0, 0, size, size, null);
-        g2.dispose();
-        return roundedImage;
     }
 
     public static void main(String[] args) {

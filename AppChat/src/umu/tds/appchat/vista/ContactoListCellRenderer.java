@@ -12,8 +12,11 @@ import javax.swing.border.Border;
 
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
@@ -52,23 +55,27 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 			boolean isSelected, boolean cellHasFocus) {
 		// Configuración de la imagen
 		String fotoUsuario = contacto.getUsuario().getImagen();
-		URL url = getClass().getResource(fotoUsuario);
-		if (url != null) {
-			Image imagenOriginal;
-			try {
-				imagenOriginal = ImageIO.read(url);
-				int anchoDeseado = 50;
-		        int altoDeseado = 50;
-		        Image imagenEscalada = imagenOriginal.getScaledInstance(anchoDeseado, altoDeseado, Image.SCALE_SMOOTH);
-		        ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);		
-		        lblImagen.setIcon(iconoEscalado);
-			} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-			}
-	            
-		} else System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
-
+		try {
+	        Image imagenOriginal;
+	        if (fotoUsuario.startsWith("http")) {
+	            // Cargar imagen desde URL externa
+	            URL url = new URL(fotoUsuario);
+	            imagenOriginal = ImageIO.read(url);
+	        } else {
+	            // Cargar imagen desde recursos locales
+	            File file = new File(fotoUsuario);
+	            imagenOriginal = ImageIO.read(file);
+	        }
+	        
+	        if (imagenOriginal != null) {
+	            Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
+	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+	            lblImagen.setIcon(iconoEscalado);
+	        }
+	    } catch (IOException e) {
+	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
+	        e.printStackTrace();
+	    }
 		// Configuración del texto
 		lblNombre.setText(contacto.getNombre());
 		lblTelefono.setText("Tel: " + contacto.getUsuario().getMovil());

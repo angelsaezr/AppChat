@@ -3,13 +3,13 @@ package umu.tds.appchat.dominio;
 public class Usuario {
 
 	private String saludo;
-	private Usuario usuario;
+	private String nombre;
 	private String movil;
 	private String imagen; // TODO CAMBIAR
 	
-	public Usuario(String saludo, Usuario usuario, String movil, String imagen) {
+	public Usuario(String nombre, String movil, String saludo, String imagen) {
 		this.saludo = saludo;
-		this.usuario = usuario;
+		this.nombre = nombre;
 		this.movil = movil;
 		this.imagen = imagen;
 	}
@@ -18,8 +18,8 @@ public class Usuario {
 		return saludo;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public String getUsuario() {
+		return nombre;
 	}
 
 	public String getImagen() {
