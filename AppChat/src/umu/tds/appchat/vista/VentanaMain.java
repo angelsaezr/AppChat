@@ -180,7 +180,7 @@ public class VentanaMain extends JFrame {
 
         contentPane.add(barraSuperior, BorderLayout.NORTH);
 
-     // Panel izquierdo - Lista de contactos con borde sutil
+        // Panel izquierdo - Lista de contactos con borde sutil
         panelContactos = new JPanel(new BorderLayout());
         panelContactos.setBackground(new Color(245, 245, 245));
         panelContactos.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
@@ -189,7 +189,16 @@ public class VentanaMain extends JFrame {
         modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "Guanyarem la Champions", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg")));
         modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "El Heredero", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg")));
         modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "Que miras bobo", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg")));
-        
+        modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "Guanyarem la Champions", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "El Heredero", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "Que miras bobo", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "Guanyarem la Champions", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "El Heredero", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "Que miras bobo", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "Guanyarem la Champions", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "El Heredero", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg")));
+        modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "Que miras bobo", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg")));
+
         listaContactos = new JList<>(modeloLista);
         listaContactos.setCellRenderer(new ContactoListCellRenderer());
         panelContactos.add(new JScrollPane(listaContactos), BorderLayout.CENTER);
