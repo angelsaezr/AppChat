@@ -4,12 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class PremiumDialog extends JDialog {
-	private JButton btnAceptar, btnCancelar;
+public class VentanaCrearGrupo extends JDialog {
+    private JTextField groupNameField;
+    private JList<String> contactList;
+    private DefaultListModel<String> contactListModel;
+    private JButton btnAceptar, btnCancelar;
 
-    public PremiumDialog(JFrame parent) {
-        super(parent, "Seleccionar Descuento Premium", true);
-        setSize(400, 160);
+    public VentanaCrearGrupo(Frame parent) {
+        super(parent, "Crear Grupo", true);
+        setSize(400, 250);
         setLocationRelativeTo(parent);
         setLayout(new GridBagLayout());
         this.setResizable(false);
@@ -22,26 +25,31 @@ public class PremiumDialog extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Etiqueta y ComboBox
-        JLabel lblDescuento = new JLabel("Selecciona un descuento:");
-        lblDescuento.setFont(new Font("Arial", Font.BOLD, 12));
+        // Etiqueta y campo de Nombre del Grupo
+        JLabel lblNombre = new JLabel("Nombre del Grupo:");
+        lblNombre.setFont(new Font("Arial", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        panel.add(lblDescuento, gbc);
+        panel.add(lblNombre, gbc);
 
-        JComboBox<String> comboDescuentos = new JComboBox<>(new String[]{"Descuento Mayores", "Descuento Estudiantes", "Descuento Familiar"});
-        comboDescuentos.setPreferredSize(new Dimension(180, 25));
+        groupNameField = new JTextField(15);
         gbc.gridx = 1;
-        panel.add(comboDescuentos, gbc);
+        panel.add(groupNameField, gbc);
 
-        // Etiqueta de cantidad a pagar (centrada horizontalmente)
-        JLabel lblCantidad = new JLabel("Cantidad a pagar: 99,75€", SwingConstants.CENTER);
-        lblCantidad.setFont(new Font("Arial", Font.BOLD, 12));
+        // Lista de contactos
+        JLabel lblContactos = new JLabel("Seleccionar Contactos:");
+        lblContactos.setFont(new Font("Arial", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 1;
-        gbc.gridwidth = 2;  // Ocupar ambas columnas
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(lblCantidad, gbc);
+        panel.add(lblContactos, gbc);
+
+        contactListModel = new DefaultListModel<>();
+        contactList = new JList<>(contactListModel);
+        contactList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JScrollPane scrollPane = new JScrollPane(contactList);
+        scrollPane.setPreferredSize(new Dimension(200, 100));
+        gbc.gridx = 1;
+        panel.add(scrollPane, gbc);
 
         // Botones
         JPanel panelBotones = new JPanel();
@@ -51,7 +59,7 @@ public class PremiumDialog extends JDialog {
         btnAceptar.setFont(new Font("Arial", Font.BOLD, 12));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
-        
+
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
@@ -62,15 +70,14 @@ public class PremiumDialog extends JDialog {
         panelBotones.add(btnAceptar);
         panelBotones.add(btnCancelar);
         gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         panel.add(panelBotones, gbc);
 
         add(panel);
 
         // Acción de los botones
-        btnCancelar.addActionListener(e -> dispose());
-        btnAceptar.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Descuento aplicado: " + comboDescuentos.getSelectedItem());
-            dispose();
-        });
+        btnCancelar.addActionListener(e -> setVisible(false));
+        btnAceptar.addActionListener(e -> setVisible(false));
     }
 }

@@ -11,7 +11,7 @@ import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")
-public class RegistroDialog extends JDialog {
+public class VentanaRegistro extends JDialog {
     private JPanel contentPane, panelSeleccionarImagen, panelBotones, panelImagen;
     private JTextField txtUsuario, txtEmail, txtMovil;
     private JTextArea txtSaludo;
@@ -21,7 +21,7 @@ public class RegistroDialog extends JDialog {
     private JLabel lblImagenSeleccionada;
     private File imagenSeleccionada;
 
-    public RegistroDialog(JFrame parent) {
+    public VentanaRegistro(JFrame parent) {
         super(parent, "Registro de Usuario", true);
         setSize(400, 650);
         setLocationRelativeTo(parent);

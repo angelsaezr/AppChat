@@ -111,7 +111,7 @@ public class VentanaLogin extends JFrame {
         linkLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new RegistroDialog(VentanaLogin.this).setVisible(true);
+                new VentanaRegistro(VentanaLogin.this).setVisible(true);
             }
         });
 

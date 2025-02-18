@@ -56,6 +56,12 @@ public class VentanaMain extends JFrame {
         botonBuscar.setForeground(Color.WHITE);
         botonBuscar.setBounds(10, 15, 140, 30);
         botonBuscar.setBorderPainted(false);
+        botonBuscar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new VentanaBusqueda(VentanaMain.this).setVisible(true);
+            }
+        });
         
         botonContactos = new JButton("👥  Contactos");
         botonContactos.setBackground(new Color(0, 128, 128));
@@ -74,12 +80,24 @@ public class VentanaMain extends JFrame {
         botonCrearContacto.setForeground(Color.WHITE);
         botonCrearContacto.setBounds(270, 15, 130, 30);
         botonCrearContacto.setBorderPainted(false);
+        botonCrearContacto.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new VentanaCrearContacto(VentanaMain.this).setVisible(true);
+            }
+        });
         
         JButton botonCrearGrupo = new JButton("📁 Crear Grupo");
         botonCrearGrupo.setBackground(new Color(0, 128, 128));
         botonCrearGrupo.setForeground(Color.WHITE);
         botonCrearGrupo.setBounds(405, 15, 115, 30);
         botonCrearGrupo.setBorderPainted(false);
+        botonCrearGrupo.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new VentanaCrearGrupo(VentanaMain.this).setVisible(true);
+            }
+        });
         
         JButton botonPremium = new JButton("⭐  Premium");
         botonPremium.setBackground(new Color(0, 128, 128));
@@ -89,7 +107,7 @@ public class VentanaMain extends JFrame {
         botonPremium.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new PremiumDialog(VentanaMain.this).setVisible(true);
+                new VentanaPremium(VentanaMain.this).setVisible(true);
             }
         });
         

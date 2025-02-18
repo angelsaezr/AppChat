@@ -10,36 +10,44 @@ import java.util.List;
 public class VentanaContactos extends JDialog {
     private JTable table;
     private ContactTableModel tableModel;
+    private JButton btnAceptar;
 
     public VentanaContactos(Frame parent) {
-        super(parent, "Lista contactos", true);
+        super(parent, "Contactos", true);
+        setSize(400, 300);
+        setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
+        this.setResizable(false);
+
+        // Panel principal
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(new Color(245, 245, 245));
 
         // Crear el modelo de la tabla
         tableModel = new ContactTableModel();
         table = new JTable(tableModel);
-
-        // Agregar la tabla con scroll
         JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        panel.add(scrollPane, BorderLayout.CENTER);
 
-        // Panel para los botones
-        JPanel buttonPanel = new JPanel();
-        JButton okButton = new JButton("OK");
+        // Panel de botones
+        JPanel panelBotones = new JPanel();
+        btnAceptar = new JButton("Aceptar");
+        btnAceptar.setBackground(new Color(0, 128, 128));
+        btnAceptar.setForeground(Color.WHITE);
+        btnAceptar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAceptar.setFocusPainted(false);
+        btnAceptar.setBorderPainted(false);
 
-        // Acciones de los botones
-        okButton.addActionListener(e -> dispose());
+        panelBotones.add(btnAceptar);
+        panel.add(panelBotones, BorderLayout.SOUTH);
 
-        // Agregar botones al panel
-        buttonPanel.add(okButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(panel);
 
-        setSize(400, 300);
-        setLocationRelativeTo(parent);
+        // Acción del botón
+        btnAceptar.addActionListener(e -> dispose());
     }
 
     // Clase interna para el modelo de la tabla
-    // TODO Comprobar
     private static class ContactTableModel extends AbstractTableModel {
         private final String[] nombresColumna = {"Nombre", "Teléfono", "Saludo"};
         private final List<Object[]> data;
@@ -76,5 +84,3 @@ public class VentanaContactos extends JDialog {
         }
     }
 }
-
-
