@@ -50,7 +50,7 @@ public class VentanaLogin extends JFrame {
 
         // Título
         JLabel titleLabel = new JLabel("Bienvenido a AppChat");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 20));
         titleLabel.setForeground(new Color(0, 128, 128)); // Color similar al logo
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPane.add(titleLabel);

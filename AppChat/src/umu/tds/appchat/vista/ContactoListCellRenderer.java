@@ -21,9 +21,10 @@ import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class ContactoListCellRenderer extends JPanel implements ListCellRenderer<ContactoIndividual> {
-	private static final Border SELECCIONADO = BorderFactory.createLineBorder(Color.BLUE, 2);
-    private static final Border NO_SELECCIONADO = BorderFactory.createEmptyBorder(2, 2, 2, 2);
-
+	private static final Border SELECCIONADO = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255));
+    private static final Border NO_SELECCIONADO = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255));
+    
+    private JPanel panelTexto;
 	private JLabel lblImagen;
 	private JLabel lblNombre;
 	private JLabel lblTelefono;
@@ -37,11 +38,12 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 		lblTelefono = new JLabel();
 		lblSaludo = new JLabel();
 
-		lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
-		lblTelefono.setFont(new Font("Arial", Font.PLAIN, 12));
-		lblSaludo.setFont(new Font("Arial", Font.ITALIC, 12));
+		lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		lblTelefono.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		lblSaludo.setFont(new Font("Segoe UI", Font.ITALIC, 12));
 
-		JPanel panelTexto = new JPanel(new GridLayout(3, 1)); // Para organizar los textos verticalmente
+		panelTexto = new JPanel(new GridLayout(3, 1)); // Para organizar los textos verticalmente
+		panelTexto.setBackground(Color.WHITE);
 		panelTexto.add(lblNombre);
 		panelTexto.add(lblTelefono);
 		panelTexto.add(lblSaludo);
@@ -80,14 +82,16 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 		lblNombre.setText(contacto.getNombre());
 		lblTelefono.setText("Tel: " + contacto.getUsuario().getMovil());
 		lblSaludo.setText(contacto.getUsuario().getSaludo());
-
+		
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255)));
+		
 		// Configuración de colores para selección
 		if (isSelected) {
-            setBackground(new Color(184, 207, 229)); // Color de fondo para selección
-            setBorder(SELECCIONADO); // Borde azul para mostrar selección
+		    setBackground(new Color(240,242,245,255));
+		    panelTexto.setBackground(new Color(240,242,245,255));
         } else {
-            setBackground(Color.WHITE); // Fondo blanco cuando no está seleccionado
-            setBorder(NO_SELECCIONADO); // Sin borde cuando no está seleccionado
+            setBackground(Color.WHITE);
+            panelTexto.setBackground(Color.WHITE);
         }
 
 		setOpaque(true); // Para que el fondo se muestre correctamente

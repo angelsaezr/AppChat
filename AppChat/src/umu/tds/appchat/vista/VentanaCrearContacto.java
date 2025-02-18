@@ -26,7 +26,7 @@ public class VentanaCrearContacto extends JDialog {
 
         // Etiqueta y campo de Nombre
         JLabel lblNombre = new JLabel("Nombre:");
-        lblNombre.setFont(new Font("Arial", Font.BOLD, 12));
+        lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(lblNombre, gbc);
@@ -37,7 +37,7 @@ public class VentanaCrearContacto extends JDialog {
 
         // Etiqueta y campo de Teléfono
         JLabel lblTelefono = new JLabel("Teléfono:");
-        lblTelefono.setFont(new Font("Arial", Font.BOLD, 12));
+        lblTelefono.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(lblTelefono, gbc);
@@ -51,14 +51,14 @@ public class VentanaCrearContacto extends JDialog {
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
 

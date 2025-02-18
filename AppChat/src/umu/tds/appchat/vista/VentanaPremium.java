@@ -24,7 +24,7 @@ public class VentanaPremium extends JDialog {
 
         // Etiqueta y ComboBox
         JLabel lblDescuento = new JLabel("Selecciona un descuento:");
-        lblDescuento.setFont(new Font("Arial", Font.BOLD, 12));
+        lblDescuento.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(lblDescuento, gbc);
@@ -36,7 +36,7 @@ public class VentanaPremium extends JDialog {
 
         // Etiqueta de cantidad a pagar (centrada horizontalmente)
         JLabel lblCantidad = new JLabel("Cantidad a pagar: 99,75€", SwingConstants.CENTER);
-        lblCantidad.setFont(new Font("Arial", Font.BOLD, 12));
+        lblCantidad.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;  // Ocupar ambas columnas
@@ -48,14 +48,14 @@ public class VentanaPremium extends JDialog {
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
         
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
 

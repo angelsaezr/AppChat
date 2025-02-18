@@ -52,7 +52,7 @@ public class PanelArrastraImagen extends JDialog {
         editorPane.setBackground(Color.WHITE);
         editorPane.setEditable(false);
         editorPane.setContentType("text/html");  
-        editorPane.setText("<html><body style='font-family:Arial; text-align:center;'>"
+        editorPane.setText("<html><body style='font-family:Segoe UI; text-align:center;'>"
                 + "<h2 style='color:#008080;'>Agregar Foto</h2>"
                 + "<p>Puedes arrastrar el fichero aquí</p></body></html>");
         contentPane.add(editorPane, BorderLayout.NORTH);
@@ -88,14 +88,14 @@ public class PanelArrastraImagen extends JDialog {
         
         lblArchivoSubido = new JLabel();
         lblArchivoSubido.setForeground(new Color(80, 80, 80));
-        lblArchivoSubido.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblArchivoSubido.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblArchivoSubido.setVisible(false);
         contentPane.add(lblArchivoSubido, BorderLayout.SOUTH);
         
         JButton botonElegir = new JButton("Seleccionar de tu ordenador");
         botonElegir.setForeground(Color.WHITE);
         botonElegir.setBackground(new Color(0, 128, 128));
-        botonElegir.setFont(new Font("Arial", Font.BOLD, 14));
+        botonElegir.setFont(new Font("Segoe UI", Font.BOLD, 14));
         botonElegir.setFocusPainted(false);
         botonElegir.setBorderPainted(false);
         botonElegir.addActionListener(ev -> {
@@ -123,7 +123,7 @@ public class PanelArrastraImagen extends JDialog {
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
         btnAceptar.addActionListener(ev -> dispose());
@@ -131,7 +131,7 @@ public class PanelArrastraImagen extends JDialog {
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
         btnCancelar.addActionListener(ev -> {

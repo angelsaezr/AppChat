@@ -34,7 +34,7 @@ public class VentanaContactos extends JDialog {
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
 

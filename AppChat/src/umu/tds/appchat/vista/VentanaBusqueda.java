@@ -28,7 +28,7 @@ public class VentanaBusqueda extends JDialog {
 
         // Campo de texto
         JLabel lblTexto = new JLabel("Texto:");
-        lblTexto.setFont(new Font("Arial", Font.BOLD, 12));
+        lblTexto.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(lblTexto, gbc);
@@ -39,7 +39,7 @@ public class VentanaBusqueda extends JDialog {
 
         // Campo de teléfono
         JLabel lblTelefono = new JLabel("Teléfono:");
-        lblTelefono.setFont(new Font("Arial", Font.BOLD, 12));
+        lblTelefono.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(lblTelefono, gbc);
@@ -50,7 +50,7 @@ public class VentanaBusqueda extends JDialog {
 
         // Campo de contacto
         JLabel lblContacto = new JLabel("Contacto:");
-        lblContacto.setFont(new Font("Arial", Font.BOLD, 12));
+        lblContacto.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 2;
         panel.add(lblContacto, gbc);
@@ -64,14 +64,14 @@ public class VentanaBusqueda extends JDialog {
         btnBuscar = new JButton("Buscar");
         btnBuscar.setBackground(new Color(0, 128, 128));
         btnBuscar.setForeground(Color.WHITE);
-        btnBuscar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnBuscar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnBuscar.setFocusPainted(false);
         btnBuscar.setBorderPainted(false);
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFont(new Font("Arial", Font.BOLD, 12));
+        btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
 
@@ -108,7 +108,7 @@ class VentanaBusquedaResultado extends JDialog {
         JButton closeButton = new JButton("Cerrar");
         closeButton.setBackground(new Color(255, 69, 0));
         closeButton.setForeground(Color.WHITE);
-        closeButton.setFont(new Font("Arial", Font.BOLD, 12));
+        closeButton.setFont(new Font("Segoe UI", Font.BOLD, 12));
         closeButton.setFocusPainted(false);
         closeButton.setBorderPainted(false);
         closeButton.addActionListener(e -> setVisible(false));
