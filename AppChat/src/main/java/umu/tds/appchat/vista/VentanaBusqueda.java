@@ -11,7 +11,8 @@ public class VentanaBusqueda extends JDialog {
     private JTextField contactField;
     private JButton btnBuscar, btnCancelar;
 
-    public VentanaBusqueda(Frame parent) {
+    @SuppressWarnings("unused")
+	public VentanaBusqueda(Frame parent) {
         super(parent, "Buscar Mensajes", true);
         setSize(400, 200);
         setLocationRelativeTo(parent);
@@ -92,7 +93,8 @@ public class VentanaBusqueda extends JDialog {
 
 @SuppressWarnings("serial")
 class VentanaBusquedaResultado extends JDialog {
-    public VentanaBusquedaResultado(Frame parent, List<String> results) {
+    @SuppressWarnings("unused")
+	public VentanaBusquedaResultado(Frame parent, List<String> results) {
         super(parent, "Resultados de Búsqueda", true);
         setSize(400, 300);
         setLocationRelativeTo(parent);

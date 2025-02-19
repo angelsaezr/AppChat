@@ -34,7 +34,7 @@ public class PanelArrastraImagen extends JDialog {
     /**
      * Create the dialog.
      */
-    @SuppressWarnings("serial")
+    @SuppressWarnings({ "serial", "unused" })
     public PanelArrastraImagen(JFrame owner) {
         super(owner, "Agregar fotos", true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

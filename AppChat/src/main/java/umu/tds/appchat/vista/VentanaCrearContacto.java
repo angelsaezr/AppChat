@@ -9,7 +9,8 @@ public class VentanaCrearContacto extends JDialog {
     private JTextField phoneField;
     private JButton btnAceptar, btnCancelar;
 
-    public VentanaCrearContacto(Frame parent) {
+    @SuppressWarnings("unused")
+	public VentanaCrearContacto(Frame parent) {
         super(parent, "Crear Contacto", true);
         setSize(400, 180);
         setLocationRelativeTo(parent);

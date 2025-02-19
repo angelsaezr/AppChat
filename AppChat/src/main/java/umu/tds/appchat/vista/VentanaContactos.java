@@ -12,7 +12,8 @@ public class VentanaContactos extends JDialog {
     private ContactTableModel tableModel;
     private JButton btnAceptar;
 
-    public VentanaContactos(Frame parent) {
+    @SuppressWarnings("unused")
+	public VentanaContactos(Frame parent) {
         super(parent, "Contactos", true);
         setSize(400, 300);
         setLocationRelativeTo(parent);

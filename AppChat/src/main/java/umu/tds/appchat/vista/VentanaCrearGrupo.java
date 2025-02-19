@@ -10,7 +10,8 @@ public class VentanaCrearGrupo extends JDialog {
     private DefaultListModel<String> contactListModel;
     private JButton btnAceptar, btnCancelar;
 
-    public VentanaCrearGrupo(Frame parent) {
+    @SuppressWarnings("unused")
+	public VentanaCrearGrupo(Frame parent) {
         super(parent, "Crear Grupo", true);
         setSize(400, 250);
         setLocationRelativeTo(parent);

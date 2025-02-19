@@ -27,7 +27,8 @@ public class VentanaMain extends JFrame {
     private JLabel imagenPerfil;
     private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir;
     
-    public VentanaMain() {
+    @SuppressWarnings("unused")
+	public VentanaMain() {
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 650);

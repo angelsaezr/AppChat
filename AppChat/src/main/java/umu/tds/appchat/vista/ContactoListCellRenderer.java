@@ -1,5 +1,6 @@
 package umu.tds.appchat.vista;
 
+import java.net.URI;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -55,7 +56,8 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	        Image imagenOriginal;
 	        if (fotoUsuario.startsWith("http")) {
 	            // Cargar imagen desde URL externa
-	            URL url = new URL(fotoUsuario);
+				URI uri = URI.create(fotoUsuario);  // Crear un objeto URI a partir del String
+				URL url = uri.toURL();  // Convertir URI en un objeto URL
 	            imagenOriginal = ImageIO.read(url);
 	        } else {
 	            // Cargar imagen desde recursos locales
