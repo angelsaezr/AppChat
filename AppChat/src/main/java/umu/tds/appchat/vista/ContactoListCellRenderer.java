@@ -8,22 +8,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import javax.swing.border.Border;
 
-import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class ContactoListCellRenderer extends JPanel implements ListCellRenderer<ContactoIndividual> {
-	private static final Border SELECCIONADO = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255));
-    private static final Border NO_SELECCIONADO = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255));
-    
     private JPanel panelTexto;
 	private JLabel lblImagen;
 	private JLabel lblNombre;
