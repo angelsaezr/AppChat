@@ -1,21 +1,18 @@
 package umu.tds.appchat.dominio;
 
-public class ContactoIndividual {
-
-	private String nombre;
+public class ContactoIndividual extends Contacto {
 	private Usuario usuario;
-	
+
 	public ContactoIndividual(String nombre, Usuario usuario) {
-		this.nombre = nombre;
+		super(nombre);
 		this.usuario = usuario;
 	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
 	
+	public String getImagen() {
+		return usuario.getImagen();
+	}
 }
