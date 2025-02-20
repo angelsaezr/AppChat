@@ -12,6 +12,7 @@ public class Usuario {
 	private boolean isPremium;
 	private String saludo;
 	private List<Contacto> contactos;
+	//private Descuento descuento;
 
 	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo) {
 		this.nombre = nombre;
@@ -21,6 +22,7 @@ public class Usuario {
 		this.saludo = saludo;
 		this.isPremium = false;
 		this.contactos = new LinkedList<>();
+		//this.descuento = ;
 	}
 
 	// Métodos Getters
