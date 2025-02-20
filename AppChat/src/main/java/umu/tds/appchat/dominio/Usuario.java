@@ -1,32 +1,84 @@
 package umu.tds.appchat.dominio;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Usuario {
 
-	private String saludo;
 	private String nombre;
 	private String movil;
-	private String imagen; // TODO CAMBIAR
-	
-	public Usuario(String nombre, String movil, String saludo, String imagen) {
-		this.saludo = saludo;
+	private String contraseña;
+	private String imagen;
+	private boolean isPremium;
+	private String saludo;
+	private List<Contacto> contactos;
+
+	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo) {
 		this.nombre = nombre;
 		this.movil = movil;
+		this.contraseña = contraseña;
 		this.imagen = imagen;
+		this.saludo = saludo;
+		this.isPremium = false;
+		this.contactos = new LinkedList<>();
+	}
+
+	// Métodos Getters
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getMovil() {
+		return movil;
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public String getImagen() {
+		return imagen;
 	}
 
 	public String getSaludo() {
 		return saludo;
 	}
 
-	public String getUsuario() {
-		return nombre;
+	public boolean isPremium() {
+		return isPremium;
 	}
 
-	public String getImagen() {
-		return imagen;
+	public List<Contacto> getContactos() {
+		return new LinkedList<>(contactos);
+	} // Devuelve una copia para evitar modificaciones externas
+
+	// Métodos modificadores
+	public void setImagen(String imagen) {
+		this.imagen = imagen;
 	}
-	
-	public String getMovil() {
-		return movil;
+
+	public void setSaludo(String saludo) {
+		this.saludo = saludo;
+	}
+
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
+	}
+
+	public void setPremium(boolean premium) {
+		this.isPremium = premium;
+	}
+
+	// Métodos para gestionar contactos
+	public boolean addContacto(Contacto contacto) {
+		if (contacto == null || contactos.contains(contacto))
+			return false;
+		return contactos.add(contacto);
+	}
+
+	public boolean removeContacto(Contacto contacto) {
+		if (contacto == null)
+			return false;
+		return contactos.remove(contacto);
 	}
 }
