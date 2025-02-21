@@ -12,7 +12,7 @@ public class Usuario {
 	private boolean isPremium;
 	private String saludo;
 	private List<Contacto> contactos;
-	//private Descuento descuento;
+	private Descuento descuento;
 
 	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo) {
 		this.nombre = nombre;
@@ -22,7 +22,7 @@ public class Usuario {
 		this.saludo = saludo;
 		this.isPremium = false;
 		this.contactos = new LinkedList<>();
-		//this.descuento = ;
+		this.descuento = null; // Por defecto, el usuario no tiene descuento
 	}
 
 	// Métodos Getters
@@ -54,6 +54,10 @@ public class Usuario {
 		return new LinkedList<>(contactos);
 	} // Devuelve una copia para evitar modificaciones externas
 
+	public Descuento getDescuento() {
+		return descuento;
+	}
+
 	// Métodos modificadores
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
@@ -71,6 +75,10 @@ public class Usuario {
 		this.isPremium = premium;
 	}
 
+	public void setDescuento(Descuento descuento) {
+		this.descuento = descuento;
+	}
+
 	// Métodos para gestionar contactos
 	public boolean addContacto(Contacto contacto) {
 		if (contacto == null || contactos.contains(contacto))
@@ -82,5 +90,13 @@ public class Usuario {
 		if (contacto == null)
 			return false;
 		return contactos.remove(contacto);
+	}
+
+	// Método para calcular el descuento aplicado al usuario
+	public double calcularDescuento(int numMensajes) {
+		if (descuento != null) {
+			return descuento.getDescuento(numMensajes);
+		}
+		return 0.0;
 	}
 }
