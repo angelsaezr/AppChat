@@ -99,4 +99,17 @@ public class Usuario {
 		}
 		return 0.0;
 	}
+	
+	public boolean addMensaje(Contacto receptor, String texto, int emoticono, int tipo) {
+		Mensaje mensaje;
+		if(texto != null)
+			mensaje = new Mensaje(texto, tipo);
+		else
+			mensaje = new Mensaje(emoticono, tipo);
+		for(Contacto c : contactos) {
+			if (c.getNombre().equals(receptor.getNombre()))
+				return c.addMensaje(mensaje);
+		}
+		return false;
+	}
 }
