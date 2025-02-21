@@ -100,7 +100,7 @@ public class Usuario {
 		return 0.0;
 	}
 	
-	public boolean addMensaje(Contacto receptor, String texto, int emoticono, int tipo) {
+	public boolean addMensaje(Contacto receptor, String texto, int emoticono, TipoMensaje tipo) {
 		Mensaje mensaje;
 		if(texto != null)
 			mensaje = new Mensaje(texto, tipo);
@@ -112,4 +112,17 @@ public class Usuario {
 		}
 		return false;
 	}
+	
+	public ContactoIndividual getContactoIndividual(String movil) {
+	    for (Contacto contacto : contactos) {
+	        if (contacto instanceof ContactoIndividual) {
+	            ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
+	            if (contactoIndividual.getUsuario().getMovil().equals(movil)) {
+	                return contactoIndividual;
+	            }
+	        }
+	    }
+	    return null;
+	}
+
 }

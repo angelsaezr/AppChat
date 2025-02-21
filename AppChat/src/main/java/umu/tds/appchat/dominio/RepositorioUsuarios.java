@@ -30,7 +30,7 @@ public class RepositorioUsuarios {
     }
 
     // Método para buscar un usuario por móvil
-    public Usuario getUsuario(String movil) {
+    public Usuario buscarUsuarioPorMovil(String movil) {
         return usuarios.get(movil);
     }
 

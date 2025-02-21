@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
+import umu.tds.appchat.dominio.TipoMensaje;
 
 public class AppChat {
 
@@ -23,7 +24,7 @@ public class AppChat {
 
     // Registrar un nuevo usuario
     public boolean registrarUsuario(String nombre, String movil, String contraseña, LocalDate fechaNacimiento, String imagen, String saludo) {
-        if (repositorioUsuarios.getUsuario(movil) != null) {
+        if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
             return false; // Ya existe un usuario con ese número
         }
 
@@ -33,7 +34,7 @@ public class AppChat {
 
     // Iniciar sesión con móvil y contraseña
     public boolean login(String movil, String contraseña) {
-        Usuario usuario = repositorioUsuarios.getUsuario(movil);
+        Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
             this.usuarioActual = usuario;
             return true;
@@ -45,7 +46,7 @@ public class AppChat {
     public ContactoIndividual agregarContacto(String nombre, String movil) {
         if (usuarioActual == null) return null;
 
-        Usuario usuarioContacto = repositorioUsuarios.getUsuario(movil);
+        Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuarioContacto == null) return null;
 
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
@@ -56,7 +57,7 @@ public class AppChat {
     }
 
     // Enviar mensaje a un contacto individual
-    public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono, int tipo) {
+    public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
         if (usuarioActual == null || receptor == null) return false;
         return usuarioActual.addMensaje(receptor, texto, emoticono, tipo);
     }

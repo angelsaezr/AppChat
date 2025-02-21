@@ -5,16 +5,16 @@ import java.time.LocalDateTime;
 public class Mensaje {
     private String texto;
     private int emoticono;
-    private int tipo;
+    private TipoMensaje tipo;
     private LocalDateTime fechaHoraEnvio;
 
-    public Mensaje(String texto, int tipo) {
+    public Mensaje(String texto, TipoMensaje tipo) {
         this.texto = texto;
         this.tipo = tipo;
         this.fechaHoraEnvio = LocalDateTime.now();
     }
     
-    public Mensaje(int emoticono, int tipo) {
+    public Mensaje(int emoticono, TipoMensaje tipo) {
     	this.emoticono = emoticono;
         this.tipo = tipo;
         this.fechaHoraEnvio = LocalDateTime.now();
@@ -28,7 +28,7 @@ public class Mensaje {
 		return emoticono;
 	}
 
-	public int getTipo() {
+	public TipoMensaje getTipo() {
 		return tipo;
 	}
 

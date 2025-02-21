@@ -1,32 +1,12 @@
 package umu.tds.appchat.controlador;
 
 import java.awt.EventQueue;
-
-import umu.tds.appchat.vista.VentanaLogin;
-
-public class CargarAppChat {
-	public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VentanaLogin frame = new VentanaLogin();
-                    frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-}
-
-/*
 import java.time.LocalDate;
 
 import umu.tds.appchat.dominio.ContactoIndividual;
-import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
 import umu.tds.appchat.dominio.TipoMensaje;
-import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.vista.VentanaLogin;
 
 public class CargarAppChat {
 	
@@ -55,13 +35,24 @@ public class CargarAppChat {
 		//ContactoIndividual c1 =appChat.agregarContacto("jesus", "11");
 		ContactoIndividual c1 = RepositorioUsuarios.INSTANCE.buscarUsuarioPorMovil("22").getContactoIndividual("11");
 		ContactoIndividual c4 = appChat.agregarContacto("diego", "44");
-		ContactoIndividual c5 = appChat.agregarContacto("anne", "55");
+		//ContactoIndividual c5 = appChat.agregarContacto("anne", "55");
 		
 		appChat.enviarMensajeContacto(c1, "Vienes este finde?", -1, TipoMensaje.ENVIADO);
 		appChat.enviarMensajeContacto(c1, "", 3, TipoMensaje.ENVIADO);
 	    appChat.enviarMensajeContacto(c4, "Juegas esta semana?", -1, TipoMensaje.ENVIADO);	
 	    
 	    System.out.println("Fin de la carga de datos");
+	    
+	    EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VentanaLogin frame = new VentanaLogin();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 
-}*/
+}
