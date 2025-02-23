@@ -123,19 +123,20 @@ public class Usuario {
 			if (c.getNombre().equals(receptor.getNombre()))
 				return c.addMensaje(mensaje);
 		}
-		return false;
+		return contactos.stream()
+				.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
+				.findFirst()
+				.map(contacto -> contacto.addMensaje(mensaje))
+				.orElse(false);
 	}
 	
 	public ContactoIndividual getContactoIndividual(String movil) {
-	    for (Contacto contacto : contactos) {
-	        if (contacto instanceof ContactoIndividual) {
-	            ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
-	            if (contactoIndividual.getUsuario().getMovil().equals(movil)) {
-	                return contactoIndividual;
-	            }
-	        }
-	    }
-	    return null;
+		return contactos.stream()
+		        .filter(contacto -> contacto instanceof ContactoIndividual)
+		        .map(contacto -> (ContactoIndividual) contacto)
+		        .filter(contactoIndividual -> contactoIndividual.getUsuario().getMovil().equals(movil))
+		        .findFirst()
+		        .orElse(null);
 	}
 
 }
