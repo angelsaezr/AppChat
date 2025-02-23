@@ -13,8 +13,8 @@ public class CargarAppChat {
 
 	public static void main(String[] args) {
 		AppChat appChat = AppChat.INSTANCE;
-		appChat.registrarUsuario("aa", "11", "aa", LocalDate.of(1960, 10, 03),"/usuarios/fotoJGM.png", "Hola, soy jesus", "email");
-		appChat.registrarUsuario("bb", "22", "bb", LocalDate.of(1995, 12, 28), "/usuarios/foto-elena.png", "hola, soy elena", "email");
+		appChat.registrarUsuario("aa", "11", "aa", LocalDate.of(1960, 10, 03),"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png", "Hola, soy jesus", "email");
+		appChat.registrarUsuario("bb", "22", "bb", LocalDate.of(1995, 12, 28), "", "hola, soy elena", "email");
 		appChat.registrarUsuario("cc", "33", "cc", LocalDate.of(2000, 5, 15), "/usuarios/rosalia.jpg", "hola, soy rosalia", "email");
 		appChat.registrarUsuario("dd", "44", "dd", LocalDate.of(1970, 5, 11), "/usuarios/foto-diego.png", "hola, soy diego", "email");
 		appChat.registrarUsuario("ee", "55", "ee", LocalDate.of(1990, 3, 28), "/usuarios/annetaylor.jpg", "hola, soy anne", "email");

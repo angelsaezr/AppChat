@@ -7,14 +7,17 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.time.LocalDate;
 
 import javax.imageio.ImageIO;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.utils.Utils;
@@ -170,13 +173,43 @@ public class VentanaMain extends JFrame {
 
         // Cargar imagen de perfil redondeada con tamaño fijo
         imagenPerfil = new JLabel();
-        try {
-            BufferedImage originalImage = ImageIO.read(new File("src/main/resources/profile1.jpg"));
-            Image roundedImage = Utils.createRoundedImage(originalImage, 50);
-            imagenPerfil.setIcon(new ImageIcon(roundedImage));
-        } catch (Exception e) {
-            e.printStackTrace();
+        String fotoUsuario = Controlador.INSTANCE.getImagenPerfil();
+        Image imagenOriginal;
+        if (fotoUsuario != "") {
+        	try {
+    	        if (fotoUsuario.startsWith("http")) {
+    	            // Cargar imagen desde URL externa
+    				URI uri = URI.create(fotoUsuario);  // Crear un objeto URI a partir del String
+    				URL url = uri.toURL();  // Convertir URI en un objeto URL
+    	            imagenOriginal = ImageIO.read(url);
+    	        } else {
+    	            // Cargar imagen desde recursos locales
+    	            File file = new File(fotoUsuario);
+    	            imagenOriginal = ImageIO.read(file);
+    	        }
+    	        
+    	        if (imagenOriginal != null) {
+    	            Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
+    	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+    	            imagenPerfil.setIcon(iconoEscalado);
+    	        }
+    	    } catch (IOException e) {
+    	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
+    	        e.printStackTrace();
+    	    }
+        } else {
+        	File file = new File("src/main/resources/profile1.jpg");
+            try {
+				imagenOriginal = ImageIO.read(file);
+				Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
+	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+	            imagenPerfil.setIcon(iconoEscalado);
+			} catch (IOException e1) {
+				System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
+				e1.printStackTrace();
+			}
         }
+        
 
         panelDerecha = new JPanel(new GridBagLayout()); // Centrado vertical
         panelDerecha.setBackground(new Color(240, 248, 255));

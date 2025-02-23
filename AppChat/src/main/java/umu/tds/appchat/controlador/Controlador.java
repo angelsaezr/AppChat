@@ -6,7 +6,6 @@ import java.time.ZoneId;
 import java.util.Date;
 
 import umu.tds.appchat.dominio.Usuario;
-import umu.tds.appchat.utils.Utils;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.TipoMensaje;
 
@@ -22,7 +21,7 @@ public class Controlador {
     public boolean registrarUsuario(String nombre, String movil, String contraseña, Date fechaNacimiento, File imagen, String saludo, String email) {
     	String rutaImagen = "";
     	if (imagen != null)
-    		rutaImagen = Utils.getRutaResourceFromFile(imagen);
+    		rutaImagen = imagen.getAbsolutePath();
     	LocalDate fechaNacimientoLocal = LocalDate.now();
     	if (fechaNacimiento != null)
     		fechaNacimientoLocal = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
