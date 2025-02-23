@@ -23,6 +23,14 @@ public class Controlador {
     private Controlador() {
         this.appChat = AppChat.INSTANCE;
     }
+    
+    public Usuario getUsuarioActual() {
+        return appChat.getUsuarioActual();
+    }
+    
+    public String getImagenPerfil() {
+    	return appChat.getUsuarioActual().getImagen();
+    }
 
     public boolean registrarUsuario(String nombre, String movil, String contraseña, Date fechaNacimiento, File imagen, String saludo, String email) {
     	String rutaImagen = "";
@@ -45,12 +53,8 @@ public class Controlador {
     public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
         return appChat.enviarMensajeContacto(receptor, texto, emoticono, tipo);
     }
-
-    public Usuario getUsuarioActual() {
-        return appChat.getUsuarioActual();
-    }
     
-    public String getImagenPerfil() {
-    	return appChat.getUsuarioActual().getImagen();
-    }
+    public boolean esMiembroGrupo(String contacto, String grupo) {
+		return appChat.esMiembroGrupo(contacto, grupo);
+	}
 }

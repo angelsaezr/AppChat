@@ -71,4 +71,9 @@ public class AppChat {
         if (usuarioActual == null || receptor == null) return false;
         return usuarioActual.addMensaje(receptor, texto, emoticono, tipo);
     }
+    
+    // Comprobar si el contacto es miembro del grupo
+    public boolean esMiembroGrupo(String contacto, String grupo) {
+		return usuarioActual.esMiembroGrupo(contacto, grupo);
+	}
 }

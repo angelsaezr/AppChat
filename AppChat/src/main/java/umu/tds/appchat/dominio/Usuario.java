@@ -3,6 +3,7 @@ package umu.tds.appchat.dominio;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Clase Usuario. Cada usuario tiene su lista de contactos.
@@ -139,6 +140,21 @@ public class Usuario {
 		        .filter(contactoIndividual -> contactoIndividual.getUsuario().getMovil().equals(movil))
 		        .findFirst()
 		        .orElse(null);
+	}
+	
+	public Optional<Grupo> obtenerGrupo(String nombreGrupo) {
+		return contactos.stream().filter(c -> c instanceof Grupo).map(c -> (Grupo) c)
+				.filter(c -> c.getNombre().equals(nombreGrupo)).findFirst();
+	}
+	
+	public boolean esMiembroGrupo(String contacto, String grupo) {		
+		Optional<Grupo> grupo1 = obtenerGrupo(grupo);
+		
+		if (grupo1.isPresent()) {
+			return grupo1.get().getMiembros().stream().anyMatch(c -> c.getNombre().equals(contacto));
+		} else {
+			return false;
+		}
 	}
 
 }
