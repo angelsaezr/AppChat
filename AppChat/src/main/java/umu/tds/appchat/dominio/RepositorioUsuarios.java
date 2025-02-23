@@ -37,11 +37,15 @@ public class RepositorioUsuarios {
 
     // Método para buscar un usuario por móvil
     public Usuario buscarUsuarioPorMovil(String movil) {
-        return usuarios.get(movil);
+        return usuarios.entrySet().stream()
+                .filter(entry -> entry.getKey().equals(movil))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(null);
     }
 
     // Método para verificar si un usuario está registrado
     public boolean existeUsuario(String movil) {
-        return usuarios.containsKey(movil);
+        return usuarios.keySet().stream().anyMatch(key -> key.equals(movil));
     }
 }

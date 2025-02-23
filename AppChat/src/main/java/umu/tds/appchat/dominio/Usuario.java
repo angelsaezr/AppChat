@@ -125,10 +125,6 @@ public class Usuario {
 			mensaje = new Mensaje(texto, tipo);
 		else
 			mensaje = new Mensaje(emoticono, tipo);
-		for(Contacto c : contactos) {
-			if (c.getNombre().equals(receptor.getNombre()))
-				return c.addMensaje(mensaje);
-		}
 		return contactos.stream()
 				.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
 				.findFirst()
