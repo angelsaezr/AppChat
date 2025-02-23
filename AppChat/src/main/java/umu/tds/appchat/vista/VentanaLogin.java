@@ -8,6 +8,8 @@ import javax.swing.*;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import umu.tds.appchat.controlador.Controlador;
+
 @SuppressWarnings("serial")
 public class VentanaLogin extends JFrame {
     private JPanel contentPane;
@@ -92,7 +94,14 @@ public class VentanaLogin extends JFrame {
             if (txtPhone.getText().trim().isEmpty() || new String(txtPassword.getPassword()).trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                dispose();
+                boolean exito = Controlador.INSTANCE.login(txtPhone.getText().trim(), new String(txtPassword.getPassword()).trim());
+                if (exito) {
+                	JOptionPane.showMessageDialog(this, "Sesión iniciada", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                    new VentanaMain().setVisible(true); // Abre VentanaMain
+                } else {
+                    JOptionPane.showMessageDialog(this, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         contentPane.add(loginButton);

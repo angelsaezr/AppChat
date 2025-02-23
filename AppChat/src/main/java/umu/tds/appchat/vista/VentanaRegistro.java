@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 
+import umu.tds.appchat.controlador.Controlador;
+
 @SuppressWarnings("serial")
 public class VentanaRegistro extends JDialog {
     private JPanel contentPane, panelSeleccionarImagen, panelBotones, panelImagen;
@@ -172,7 +174,7 @@ public class VentanaRegistro extends JDialog {
             JOptionPane.showMessageDialog(this, "Rellena todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } 
-        
+        Controlador.INSTANCE.registrarUsuario(txtUsuario.getText(), txtMovil.getText(), new String(txtPassword.getPassword()), dateChooser.getDate(), imagenSeleccionada, txtSaludo.getText(), txtEmail.getText());
         JOptionPane.showMessageDialog(this, "Registro exitoso.", "Información", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }

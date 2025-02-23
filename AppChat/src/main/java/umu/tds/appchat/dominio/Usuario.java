@@ -1,5 +1,6 @@
 package umu.tds.appchat.dominio;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,18 +9,22 @@ public class Usuario {
 	private String nombre;
 	private String movil;
 	private String contraseña;
+	private String email;
 	private String imagen;
 	private boolean isPremium;
 	private String saludo;
+	private LocalDate fechaNacimiento;
 	private List<Contacto> contactos;
 	private Descuento descuento;
 
-	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo) {
+	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo, String email, LocalDate fechaNacimiento) {
 		this.nombre = nombre;
 		this.movil = movil;
 		this.contraseña = contraseña;
 		this.imagen = imagen;
 		this.saludo = saludo;
+		this.email = email;
+		this.fechaNacimiento = fechaNacimiento;
 		this.isPremium = false;
 		this.contactos = new LinkedList<>();
 		this.descuento = null; // Por defecto, el usuario no tiene descuento
@@ -44,6 +49,14 @@ public class Usuario {
 
 	public String getSaludo() {
 		return saludo;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
 	}
 
 	public boolean isPremium() {

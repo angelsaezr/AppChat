@@ -17,18 +17,22 @@ public class AppChat {
     private AppChat() {
         this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
     }
+    
+    public Usuario getUsuarioActual() {
+		return usuarioActual;
+	}
 
     public void setUsuarioActual(Usuario usuarioActual) {
         this.usuarioActual = usuarioActual;
     }
 
     // Registrar un nuevo usuario
-    public boolean registrarUsuario(String nombre, String movil, String contraseña, LocalDate fechaNacimiento, String imagen, String saludo) {
+    public boolean registrarUsuario(String nombre, String movil, String contraseña, LocalDate fechaNacimiento, String imagen, String saludo, String email) {
         if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
             return false; // Ya existe un usuario con ese número
         }
 
-        Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo);
+        Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
         return repositorioUsuarios.addUsuario(nuevoUsuario);
     }
 
