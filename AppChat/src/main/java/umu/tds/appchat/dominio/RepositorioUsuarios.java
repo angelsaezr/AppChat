@@ -3,6 +3,12 @@ package umu.tds.appchat.dominio;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Clase RepositorioUsuarios.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class RepositorioUsuarios {
 	public static final RepositorioUsuarios INSTANCE = new RepositorioUsuarios();
     private Map<String, Usuario> usuarios; // Mapa con clave = móvil, valor = usuario

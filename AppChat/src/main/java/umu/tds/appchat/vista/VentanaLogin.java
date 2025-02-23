@@ -10,6 +10,12 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import umu.tds.appchat.controlador.Controlador;
 
+/**
+ * Ventana de inicio de sesion.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaLogin extends JFrame {
     private JPanel contentPane;

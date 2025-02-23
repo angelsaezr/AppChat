@@ -3,6 +3,12 @@ package umu.tds.appchat.vista;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Ventana para crear grupos.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaCrearGrupo extends JDialog {
     private JTextField groupNameField;

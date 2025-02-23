@@ -1,5 +1,11 @@
 package umu.tds.appchat.dominio;
 
+/**
+ * Clase DescuentoPorMensaje.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class DescuentoPorMensaje implements Descuento {
     private int umbralMensajes;
     private double porcentajeDescuento;

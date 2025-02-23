@@ -17,6 +17,12 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Panel donde se seleccionan los chats.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class ContactoListCellRenderer extends JPanel implements ListCellRenderer<ContactoIndividual> {
     private JPanel panelTexto;

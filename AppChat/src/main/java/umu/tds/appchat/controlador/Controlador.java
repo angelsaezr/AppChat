@@ -9,6 +9,12 @@ import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.TipoMensaje;
 
+/**
+ * Clase controlador para delegar acciones.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class Controlador {
     public static final Controlador INSTANCE = new Controlador();
     

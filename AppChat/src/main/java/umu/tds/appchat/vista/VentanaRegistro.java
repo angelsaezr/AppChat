@@ -12,6 +12,12 @@ import com.toedter.calendar.JDateChooser;
 
 import umu.tds.appchat.controlador.Controlador;
 
+/**
+ * Ventana para registrarse.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaRegistro extends JDialog {
     private JPanel contentPane, panelSeleccionarImagen, panelBotones, panelImagen;

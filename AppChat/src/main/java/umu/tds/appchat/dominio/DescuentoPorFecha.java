@@ -2,6 +2,12 @@ package umu.tds.appchat.dominio;
 
 import java.time.LocalDate;
 
+/**
+ * Clase DescuentoPorFecha.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class DescuentoPorFecha implements Descuento {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;

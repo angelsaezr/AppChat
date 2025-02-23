@@ -10,7 +10,12 @@ import umu.tds.appchat.vista.VentanaLogin;
 
 public class CargarAppChat {
 	
-
+	/**
+	 * Clase para lanzar la aplicacion.
+	 * 
+	 * @author Ángel
+	 * @author Francisco Javier
+	 */
 	public static void main(String[] args) {
 		AppChat appChat = AppChat.INSTANCE;
 		appChat.registrarUsuario("aa", "11", "aa", LocalDate.of(1960, 10, 03),"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png", "Hola, soy jesus", "email");

@@ -3,6 +3,12 @@ package umu.tds.appchat.vista;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Ventana para el servicio premium.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaPremium extends JDialog {
 	private JButton btnAceptar, btnCancelar;

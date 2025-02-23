@@ -4,6 +4,12 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Clase Usuario. Cada usuario tiene su lista de contactos.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class Usuario {
 
 	private String nombre;

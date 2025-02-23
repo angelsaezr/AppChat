@@ -2,6 +2,12 @@ package umu.tds.appchat.dominio;
 
 import java.util.List;
 
+/**
+ * Clase Grupo. Un grupo es un tipo de Contacto.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class Grupo extends Contacto {
 	private String urlImagen;
 	private List<ContactoIndividual> miembros;

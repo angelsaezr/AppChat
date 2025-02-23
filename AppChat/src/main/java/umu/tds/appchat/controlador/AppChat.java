@@ -7,6 +7,12 @@ import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
 import umu.tds.appchat.dominio.TipoMensaje;
 
+/**
+ * Clase AppChat que tiene todos los usuarios.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class AppChat {
 
     public static final AppChat INSTANCE = new AppChat();

@@ -22,6 +22,12 @@ import javax.swing.JFileChooser;
 import java.awt.Font;
 import java.awt.Color;
 
+/**
+ * Panel para arrastrar la imagen.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class PanelArrastraImagen extends JDialog {
 
     private static final long serialVersionUID = 1L;

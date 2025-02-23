@@ -4,6 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import tds.BubbleText;
 
+/**
+ * Clase del panel donde se intercambian mensajes.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class ChatPanel extends JPanel {
     private JPanel chatContainer;

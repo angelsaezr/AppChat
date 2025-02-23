@@ -1,5 +1,11 @@
 package umu.tds.appchat.dominio;
 
+/**
+ * Clase contacto individual.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class ContactoIndividual extends Contacto {
 	private Usuario usuario;
 

@@ -22,6 +22,12 @@ import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.utils.Utils;
 
+/**
+ * Ventana principal de la aplicacion.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaMain extends JFrame {
     private JPanel panelContactos;

@@ -4,6 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Ventana del buscador.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaBusqueda extends JDialog {
     private JTextField textField;

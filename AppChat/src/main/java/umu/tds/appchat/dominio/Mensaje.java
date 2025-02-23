@@ -2,6 +2,12 @@ package umu.tds.appchat.dominio;
 
 import java.time.LocalDateTime;
 
+/**
+ * Clase Mensaje. Cada contacto tiene su propia lista de mensajes.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class Mensaje {
     private String texto;
     private int emoticono;

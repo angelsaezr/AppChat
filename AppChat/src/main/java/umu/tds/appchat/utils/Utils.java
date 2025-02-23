@@ -9,6 +9,12 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Clase utilidades.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class Utils {
 
 	public static String getRutaResourceFromFile(File archivoImagen) {

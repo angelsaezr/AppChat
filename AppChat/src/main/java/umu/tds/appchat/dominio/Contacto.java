@@ -3,6 +3,12 @@ package umu.tds.appchat.dominio;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Clase contacto. Un contacto puede ser individual o un grupo.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public abstract class Contacto {
 	private String nombre;
 	private List<Mensaje> mensajes;

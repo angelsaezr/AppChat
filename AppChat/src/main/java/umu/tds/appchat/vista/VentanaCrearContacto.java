@@ -3,6 +3,12 @@ package umu.tds.appchat.vista;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Ventana para añadir o crear contactos.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaCrearContacto extends JDialog {
     private JTextField nameField;
