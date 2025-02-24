@@ -10,7 +10,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * @author Francisco Javier
  */
 @SuppressWarnings("serial")
-public class ContactoListCellRenderer extends JPanel implements ListCellRenderer<ContactoIndividual> {
+public class ContactoListCellRenderer extends JPanel implements ListCellRenderer<Contacto> {
     private JPanel panelTexto;
 	private JLabel lblImagen;
 	private JLabel lblNombre;
@@ -46,18 +46,18 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 		panelTexto = new JPanel(new GridLayout(3, 1)); // Para organizar los textos verticalmente
 		panelTexto.setBackground(Color.WHITE);
 		panelTexto.add(lblNombre);
-		panelTexto.add(lblTelefono);
-		panelTexto.add(lblSaludo);
+		//panelTexto.add(lblTelefono);
+		//panelTexto.add(lblSaludo);
 
 		add(lblImagen, BorderLayout.WEST);  // Imagen a la izquierda
 		add(panelTexto, BorderLayout.CENTER);  // Texto a la derecha
 	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends ContactoIndividual> listacontactos, ContactoIndividual contacto, int index,
+	public Component getListCellRendererComponent(JList<? extends Contacto> listacontactos, Contacto contacto, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		// Configuración de la imagen
-		String fotoUsuario = contacto.getUsuario().getImagen();
+		String fotoUsuario = contacto.getImagen();
 		try {
 	        Image imagenOriginal;
 	        if (fotoUsuario.startsWith("http")) {
@@ -82,8 +82,8 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	    }
 		// Configuración del texto
 		lblNombre.setText(contacto.getNombre());
-		lblTelefono.setText("Tel: " + contacto.getUsuario().getMovil());
-		lblSaludo.setText(contacto.getUsuario().getSaludo());
+		//lblTelefono.setText("Tel: " + contacto.getUsuario().getMovil());
+		//lblSaludo.setText(contacto.getUsuario().getSaludo());
 		
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255)));
 		

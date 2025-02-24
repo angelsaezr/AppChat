@@ -4,9 +4,12 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.TipoMensaje;
 
 /**
@@ -57,4 +60,12 @@ public class Controlador {
     public boolean esMiembroGrupo(String contacto, String grupo) {
 		return appChat.esMiembroGrupo(contacto, grupo);
 	}
+    
+    public List<Mensaje> getMensajes(Contacto contacto) {
+        return appChat.getMensajesDelContacto(contacto);
+    }
+    
+    public List<Contacto> getContactosUsuarioActual() {
+        return appChat.getContactosUsuarioActual();
+    }
 }

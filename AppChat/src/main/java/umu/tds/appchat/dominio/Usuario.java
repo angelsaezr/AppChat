@@ -77,6 +77,14 @@ public class Usuario {
 	public Descuento getDescuento() {
 		return descuento;
 	}
+	
+	public List<Mensaje> getMensajesDeContacto(Contacto contacto){
+		for(Contacto c : contactos) {
+			if (c.getNombre().equals(contacto.getNombre()))
+				return c.getMensajes();
+		}
+		return new LinkedList<Mensaje>();
+	}
 
 	// Métodos modificadores
 	public void setImagen(String imagen) {
@@ -121,11 +129,7 @@ public class Usuario {
 	}
 	
 	public boolean addMensaje(Contacto receptor, String texto, int emoticono, TipoMensaje tipo) {
-		Mensaje mensaje;
-		if(texto != null)
-			mensaje = new Mensaje(texto, tipo);
-		else
-			mensaje = new Mensaje(emoticono, tipo);
+		Mensaje mensaje = new Mensaje(texto, emoticono, tipo);
 		return contactos.stream()
 				.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
 				.findFirst()

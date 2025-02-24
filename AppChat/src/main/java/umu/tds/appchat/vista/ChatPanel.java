@@ -35,18 +35,30 @@ public class ChatPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void addMessage(String text, String sender, boolean isSent) {
+    public void addMensaje(String sender, String text, int emoticono, boolean isSent) {
         Color bubbleColor = isSent ? new Color(173, 216, 230) : new Color(200, 200, 200); // Azul claro para enviados, gris para recibidos
         int type = isSent ? BubbleText.SENT : BubbleText.RECEIVED;
         
-        BubbleText bubble = new BubbleText(chatContainer, text, bubbleColor, sender, type, 14);
-        chatContainer.add(bubble);
-        chatContainer.revalidate();
-        chatContainer.repaint();
-        chatContainer.scrollRectToVisible(chatContainer.getBounds());
-        
-        // Desplazar automáticamente al último mensaje
-        SwingUtilities.invokeLater(() -> scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum()));
+        BubbleText bubble;
+        if (text != null && text != "") {
+        	bubble = new BubbleText(chatContainer, text, bubbleColor, sender, type, 14);
+        	chatContainer.add(bubble);
+            chatContainer.revalidate();
+            chatContainer.repaint();
+            chatContainer.scrollRectToVisible(chatContainer.getBounds());
+            // Desplazar automáticamente al último mensaje
+            SwingUtilities.invokeLater(() -> scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum()));
+        }
+        if (emoticono != -1) {
+        	bubble = new BubbleText(chatContainer, emoticono, bubbleColor, sender, type, 12);
+        	chatContainer.add(bubble);
+            chatContainer.revalidate();
+            chatContainer.repaint();
+            chatContainer.scrollRectToVisible(chatContainer.getBounds());
+            // Desplazar automáticamente al último mensaje
+            SwingUtilities.invokeLater(() -> scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum()));
+        }
+        return;
     }
 
     public void addEmoticon(int emojiId, String sender, boolean isSent) {

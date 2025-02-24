@@ -11,15 +11,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.time.LocalDate;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
 import umu.tds.appchat.controlador.Controlador;
-import umu.tds.appchat.dominio.ContactoIndividual;
-import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.TipoMensaje;
 import umu.tds.appchat.utils.Utils;
 
 /**
@@ -33,10 +33,12 @@ public class VentanaMain extends JFrame {
     private JPanel panelContactos;
     private JPanel panelChat;
     private JTextArea areaTexto;
-    private JList<ContactoIndividual> listaContactos;
+    private JList<Contacto> listaContactos;
+    private Contacto contactoSeleccionado;
     private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar;
     private JLabel imagenPerfil;
     private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir;
+    private DefaultListModel<Contacto> modeloLista;
     
     @SuppressWarnings("unused")
 	public VentanaMain() {
@@ -231,14 +233,24 @@ public class VentanaMain extends JFrame {
         panelContactos.setBackground(new Color(245, 245, 245));
         panelContactos.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
         
-        DefaultListModel<ContactoIndividual> modeloLista = new DefaultListModel<>();
-        modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "123", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg", "Guanyarem la Champions", "email", LocalDate.now())));
-        modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "123", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg", "El Heredero", "email", LocalDate.now())));
-        modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "123", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg", "Que miras bobo", "email", LocalDate.now())));
+        modeloLista = new DefaultListModel<>();
+        //modeloLista.addElement(new ContactoIndividual("Hansi", new Usuario("Hansi Flick", "123456789", "123", "https://upload.wikimedia.org/wikipedia/commons/0/05/2022-07-30_Fu%C3%9Fball%2C_M%C3%A4nner%2C_DFL-Supercup%2C_RB_Leipzig_-_FC_Bayern_M%C3%BCnchen_1DX_3166_by_Stepro.jpg", "Guanyarem la Champions", "email", LocalDate.now())));
+        //modeloLista.addElement(new ContactoIndividual("Lamine", new Usuario("Lamine Yamal", "1823817", "123", "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg", "El Heredero", "email", LocalDate.now())));
+        //modeloLista.addElement(new ContactoIndividual("Messi", new Usuario("Leo Messi", "8912378", "123", "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg", "Que miras bobo", "email", LocalDate.now())));
         // Añadir más contactos al modeloLista...
-
+        
+        actualizarListaContactos();
         listaContactos = new JList<>(modeloLista);
         listaContactos.setCellRenderer(new ContactoListCellRenderer());
+        
+        listaContactos.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) { // Para evitar eventos múltiples en una sola selección
+                contactoSeleccionado = listaContactos.getSelectedValue();
+                actualizarChat(); // Método para mostrar los mensajes del contacto seleccionado
+            }
+        });
+
+        
         panelContactos.add(new JScrollPane(listaContactos), BorderLayout.CENTER);
         panelContactos.setPreferredSize(new Dimension(270, getHeight()));
         contentPane.add(panelContactos, BorderLayout.WEST);
@@ -247,9 +259,9 @@ public class VentanaMain extends JFrame {
         panelChat = new JPanel(new BorderLayout());
         panelChat.setBackground(Color.WHITE);
         ChatPanel chatPanel = new ChatPanel();
-        chatPanel.addMessage("Hola, ¿cómo estás?", "Yo", true);
-        chatPanel.addMessage("Bien, gracias. ¿Y tú?", "Contacto", false);
-        chatPanel.addEmoticon(3, "Yo", true);
+        //chatPanel.addMessage("Hola, ¿cómo estás?", "Yo", true);
+        //chatPanel.addMessage("Bien, gracias. ¿Y tú?", "Contacto", false);
+        //chatPanel.addEmoticon(3, "Yo", true);
         JScrollPane scrollChat = new JScrollPane(chatPanel);
         scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollChat.setBorder(BorderFactory.createEmptyBorder());
@@ -299,4 +311,34 @@ public class VentanaMain extends JFrame {
     	areaTexto.setPreferredSize(new Dimension(300, altura));
     	areaTexto.revalidate();
     }
+    
+    private void actualizarChat() {
+        if (contactoSeleccionado != null) {
+            panelChat.removeAll(); // Limpiar el panel antes de cargar el nuevo chat
+            ChatPanel chatPanel = new ChatPanel();
+            
+            Controlador.INSTANCE.getMensajes(contactoSeleccionado).stream()
+            .forEach(mensaje -> {
+                boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
+                String nombre = esEnviado ? contactoSeleccionado.getNombre() : Controlador.INSTANCE.getUsuarioActual().getNombre();
+                chatPanel.addMensaje(nombre, mensaje.getTexto(), mensaje.getEmoticono(), esEnviado);
+            });
+
+
+            JScrollPane scrollChat = new JScrollPane(chatPanel);
+            scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollChat.setBorder(BorderFactory.createEmptyBorder());
+
+            panelChat.add(scrollChat, BorderLayout.CENTER);
+            panelChat.revalidate();
+            panelChat.repaint();
+        }
+    }
+    
+    public void actualizarListaContactos() {
+        modeloLista.clear();
+        List<Contacto> contactos = Controlador.INSTANCE.getContactosUsuarioActual();
+        contactos.forEach(modeloLista::addElement);
+    }
+
 }

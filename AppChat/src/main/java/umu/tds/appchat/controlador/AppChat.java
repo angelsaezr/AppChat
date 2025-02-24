@@ -1,9 +1,12 @@
 package umu.tds.appchat.controlador;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
 import umu.tds.appchat.dominio.TipoMensaje;
 
@@ -75,5 +78,13 @@ public class AppChat {
     // Comprobar si el contacto es miembro del grupo
     public boolean esMiembroGrupo(String contacto, String grupo) {
 		return usuarioActual.esMiembroGrupo(contacto, grupo);
+	}
+    
+    public List<Mensaje> getMensajesDelContacto(Contacto contacto) {
+    	return usuarioActual.getMensajesDeContacto(contacto);
+    }
+    
+    public List<Contacto> getContactosUsuarioActual() {
+    	return usuarioActual.getContactos();
 	}
 }

@@ -14,14 +14,9 @@ public class Mensaje {
     private TipoMensaje tipo;
     private LocalDateTime fechaHoraEnvio;
 
-    public Mensaje(String texto, TipoMensaje tipo) {
+    public Mensaje(String texto, int emoticono, TipoMensaje tipo) {
         this.texto = texto;
-        this.tipo = tipo;
-        this.fechaHoraEnvio = LocalDateTime.now();
-    }
-    
-    public Mensaje(int emoticono, TipoMensaje tipo) {
-    	this.emoticono = emoticono;
+        this.emoticono = emoticono;
         this.tipo = tipo;
         this.fechaHoraEnvio = LocalDateTime.now();
     }
