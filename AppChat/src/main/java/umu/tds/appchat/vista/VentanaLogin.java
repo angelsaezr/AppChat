@@ -136,15 +136,4 @@ public class VentanaLogin extends JFrame {
         linkPanel.add(linkLabel);
         contentPane.add(linkPanel);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                VentanaLogin frame = new VentanaLogin();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
 }

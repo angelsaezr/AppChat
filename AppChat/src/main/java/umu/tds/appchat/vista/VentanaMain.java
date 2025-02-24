@@ -290,12 +290,6 @@ public class VentanaMain extends JFrame {
         contentPane.add(panelChat, BorderLayout.CENTER);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new VentanaMain().setVisible(true);
-        });
-    }
-    
     // Método para ajustar el tamaño del JTextArea dinámicamente
     private void ajustarTamañoAreaTexto() {
     	int lineas = areaTexto.getLineCount();
