@@ -320,7 +320,7 @@ public class VentanaMain extends JFrame {
             Controlador.INSTANCE.getMensajes(contactoSeleccionado).stream()
             .forEach(mensaje -> {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
-                String nombre = esEnviado ? contactoSeleccionado.getNombre() : Controlador.INSTANCE.getUsuarioActual().getNombre();
+                String nombre = !esEnviado ? contactoSeleccionado.getNombre() : Controlador.INSTANCE.getUsuarioActual().getNombre();
                 chatPanel.addMensaje(nombre, mensaje.getTexto(), mensaje.getEmoticono(), esEnviado);
             });
 

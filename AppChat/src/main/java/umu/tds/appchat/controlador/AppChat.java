@@ -6,6 +6,7 @@ import java.util.List;
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
 import umu.tds.appchat.dominio.TipoMensaje;
@@ -70,9 +71,48 @@ public class AppChat {
     }
 
     // Enviar mensaje a un contacto individual
-    public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono, TipoMensaje tipo) {
-        if (usuarioActual == null || receptor == null) return false;
-        return usuarioActual.addMensaje(receptor, texto, emoticono, tipo);
+    public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
+        // Intentar enviar el mensaje desde el usuario actual
+        if (!usuarioActual.addMensaje(receptor, texto, emoticono, TipoMensaje.ENVIADO)) {
+            return false;
+        }
+
+        if (receptor instanceof ContactoIndividual) {
+            return enviarMensajeAUsuario((ContactoIndividual) receptor, texto, emoticono);
+        } else if (receptor instanceof Grupo) {
+            return enviarMensajeAGrupo((Grupo) receptor, texto, emoticono);
+        }
+
+        return true;
+    }
+
+    // Método auxiliar para enviar mensaje a un usuario individual
+    private boolean enviarMensajeAUsuario(ContactoIndividual contactoReceptor, String texto, int emoticono) {
+        Usuario usuarioReceptor = contactoReceptor.getUsuario();
+        ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
+
+        if (usuarioReceptor.getContactoIndividual(usuarioActual.getMovil()) == null) { 
+        	contactoSender = new ContactoIndividual("", usuarioActual);
+        	usuarioReceptor.addContacto(contactoSender); // Si no lo tiene agregado, lo agrega sin nombre
+        }
+
+        return usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+    }
+
+    // Método auxiliar para enviar mensaje a un grupo
+    private boolean enviarMensajeAGrupo(Grupo grupo, String texto, int emoticono) {
+        return grupo.getMiembros().stream()
+            .map(ContactoIndividual::getUsuario)
+            .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
+            .map(usuarioReceptor -> {
+                ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
+                if (contactoSender == null) {
+                	contactoSender = new ContactoIndividual("", usuarioActual);
+                    usuarioReceptor.addContacto(contactoSender); // Si no lo tiene agregado, lo agrega sin nombre
+                }
+                return usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+            })
+            .allMatch(Boolean::booleanValue); // Devuelve true si TODOS los mensajes se envían con éxito
     }
     
     // Comprobar si el contacto es miembro del grupo

@@ -109,10 +109,20 @@ public class Usuario {
 
 	// Métodos para gestionar contactos
 	public boolean addContacto(Contacto contacto) {
-		if (contacto == null || contactos.contains(contacto))
-			return false;
-		return contactos.add(contacto);
+	    if (contacto == null || contactos.contains(contacto)) return false;
+
+	    boolean esMismoMovil = switch (contacto) {
+	        case ContactoIndividual c -> c.getUsuario().getMovil().equals(this.movil);
+	        case Grupo g -> g.getMiembros().stream()
+	                         .map(ContactoIndividual::getUsuario)
+	                         .map(Usuario::getMovil)
+	                         .anyMatch(movil -> movil.equals(this.movil));
+	        default -> false;
+	    };
+
+	    return !esMismoMovil && contactos.add(contacto);
 	}
+
 
 	public boolean removeContacto(Contacto contacto) {
 		if (contacto == null)

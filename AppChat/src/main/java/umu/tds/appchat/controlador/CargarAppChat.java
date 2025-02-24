@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
-import umu.tds.appchat.dominio.TipoMensaje;
 import umu.tds.appchat.vista.VentanaLogin;
 
 public class CargarAppChat {
@@ -27,14 +26,14 @@ public class CargarAppChat {
 		appChat.login("11", "aa");
 		
 		ContactoIndividual c2 = appChat.agregarContacto("Lamine", "22");
-		ContactoIndividual c3 = appChat.agregarContacto("Messi", "33");
+		//ContactoIndividual c3 = appChat.agregarContacto("Messi", "33");
 		
-		appChat.enviarMensajeContacto(c2, "Hola, ¿cómo estás?", -1, TipoMensaje.ENVIADO);
-		appChat.enviarMensajeContacto(c2, "", 2, TipoMensaje.ENVIADO);
-		appChat.enviarMensajeContacto(c2, "Bien?", 2, TipoMensaje.ENVIADO);
+		appChat.enviarMensajeContacto(c2, "Hola, ¿cómo estás?", -1);
+		appChat.enviarMensajeContacto(c2, "", 2);
+		appChat.enviarMensajeContacto(c2, "Bien?", 2);
 		
-		appChat.enviarMensajeContacto(c3, "Cuando juegas?", -1, TipoMensaje.ENVIADO);
-		appChat.enviarMensajeContacto(c3, "", 6, TipoMensaje.ENVIADO);
+		//appChat.enviarMensajeContacto(c3, "Cuando juegas?", -1);
+		//appChat.enviarMensajeContacto(c3, "", 6);
 		
 		appChat.login("22", "bb");
 		
@@ -43,9 +42,15 @@ public class CargarAppChat {
 		//ContactoIndividual c4 = appChat.agregarContacto("diego", "44");
 		//ContactoIndividual c5 = appChat.agregarContacto("anne", "55");
 		
-		appChat.enviarMensajeContacto(c1, "Vienes este finde?", -1, TipoMensaje.ENVIADO);
-		appChat.enviarMensajeContacto(c1, "", 3, TipoMensaje.ENVIADO);
-	    //appChat.enviarMensajeContacto(c4, "Juegas esta semana?", -1, TipoMensaje.ENVIADO);	
+		appChat.enviarMensajeContacto(c1, "Vienes este finde?", -1);
+		appChat.enviarMensajeContacto(c1, "", 3);
+	    //appChat.enviarMensajeContacto(c4, "Juegas esta semana?", -1, TipoMensaje.ENVIADO);
+		
+		appChat.login("33", "cc");
+		
+		ContactoIndividual c4 =appChat.agregarContacto("javi", "11");
+		appChat.enviarMensajeContacto(c4, "Que miras bobo", -1);
+		appChat.enviarMensajeContacto(c4, "", 3);
 	    
 	    System.out.println("Fin de la carga de datos");
 	    

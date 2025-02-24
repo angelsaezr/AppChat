@@ -10,7 +10,6 @@ import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Mensaje;
-import umu.tds.appchat.dominio.TipoMensaje;
 
 /**
  * Clase controlador para delegar acciones.
@@ -53,8 +52,8 @@ public class Controlador {
         return appChat.agregarContacto(nombre, movil);
     }
 
-    public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
-        return appChat.enviarMensajeContacto(receptor, texto, emoticono, tipo);
+    public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono) {
+        return appChat.enviarMensajeContacto(receptor, texto, emoticono);
     }
     
     public boolean esMiembroGrupo(String contacto, String grupo) {
