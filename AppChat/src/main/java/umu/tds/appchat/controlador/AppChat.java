@@ -70,7 +70,7 @@ public class AppChat {
     }
 
     // Enviar mensaje a un contacto individual
-    public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
+    public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono, TipoMensaje tipo) {
         if (usuarioActual == null || receptor == null) return false;
         return usuarioActual.addMensaje(receptor, texto, emoticono, tipo);
     }
