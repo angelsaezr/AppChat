@@ -111,14 +111,21 @@ public class Usuario {
 	public boolean addContacto(Contacto contacto) {
 	    if (contacto == null || contactos.contains(contacto)) return false;
 
-	    boolean esMismoMovil = switch (contacto) {
-	        case ContactoIndividual c -> c.getUsuario().getMovil().equals(this.movil);
-	        case Grupo g -> g.getMiembros().stream()
-	                         .map(ContactoIndividual::getUsuario)
-	                         .map(Usuario::getMovil)
-	                         .anyMatch(movil -> movil.equals(this.movil));
-	        default -> false;
-	    };
+	    boolean esMismoMovil;
+
+	    if (contacto instanceof ContactoIndividual) {
+	        ContactoIndividual c = (ContactoIndividual) contacto;
+	        esMismoMovil = c.getUsuario().getMovil().equals(this.movil);
+	    } else if (contacto instanceof Grupo) {
+	        Grupo g = (Grupo) contacto;
+	        esMismoMovil = g.getMiembros().stream()
+	                        .map(ContactoIndividual::getUsuario)
+	                        .map(Usuario::getMovil)
+	                        .anyMatch(movil -> movil.equals(this.movil));
+	    } else {
+	        esMismoMovil = false;
+	    }
+
 
 	    return !esMismoMovil && contactos.add(contacto);
 	}
