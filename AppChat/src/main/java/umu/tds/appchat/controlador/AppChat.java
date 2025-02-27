@@ -78,7 +78,7 @@ public class AppChat {
         }
 
         if (receptor instanceof ContactoIndividual) {
-            return enviarMensajeAUsuario((ContactoIndividual) receptor, texto, emoticono);
+            return enviarMensajeAContactoIndividual((ContactoIndividual) receptor, texto, emoticono);
         } else if (receptor instanceof Grupo) {
             return enviarMensajeAGrupo((Grupo) receptor, texto, emoticono);
         }
@@ -87,7 +87,7 @@ public class AppChat {
     }
 
     // Método auxiliar para enviar mensaje a un usuario individual
-    private boolean enviarMensajeAUsuario(ContactoIndividual contactoReceptor, String texto, int emoticono) {
+    private boolean enviarMensajeAContactoIndividual(ContactoIndividual contactoReceptor, String texto, int emoticono) {
         Usuario usuarioReceptor = contactoReceptor.getUsuario();
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
 
