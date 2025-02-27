@@ -29,7 +29,6 @@ public class VentanaRegistro extends JDialog {
     private JLabel lblImagenSeleccionada;
     private File imagenSeleccionada;
 
-    @SuppressWarnings("unused")
 	public VentanaRegistro(JFrame parent) {
         super(parent, "Registro de Usuario", true);
         setSize(400, 650);

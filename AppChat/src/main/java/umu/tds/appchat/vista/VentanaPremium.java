@@ -13,7 +13,6 @@ import java.awt.*;
 public class VentanaPremium extends JDialog {
 	private JButton btnAceptar, btnCancelar;
 
-    @SuppressWarnings("unused")
 	public VentanaPremium(JFrame parent) {
         super(parent, "Seleccionar Descuento Premium", true);
         setSize(400, 160);

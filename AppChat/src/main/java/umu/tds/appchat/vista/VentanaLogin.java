@@ -96,7 +96,7 @@ public class VentanaLogin extends JFrame {
         loginButton.setForeground(Color.WHITE);
         loginButton.setFocusPainted(false);
         loginButton.setBorderPainted(false);
-        loginButton.addActionListener((@SuppressWarnings("unused") ActionEvent e) -> {
+        loginButton.addActionListener((ActionEvent e) -> {
             if (txtPhone.getText().trim().isEmpty() || new String(txtPassword.getPassword()).trim().isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             } else {

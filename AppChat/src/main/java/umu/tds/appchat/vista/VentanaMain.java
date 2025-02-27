@@ -40,7 +40,6 @@ public class VentanaMain extends JFrame {
     private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir;
     private DefaultListModel<Contacto> modeloLista;
     
-    @SuppressWarnings("unused")
 	public VentanaMain() {
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -266,8 +265,6 @@ public class VentanaMain extends JFrame {
         scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollChat.setBorder(BorderFactory.createEmptyBorder());
 
-        panelChat.add(scrollChat, BorderLayout.CENTER);
-
         // Campo de entrada de texto
         areaTexto = new JTextArea(1, 30);
         areaTexto.setLineWrap(true);
@@ -298,7 +295,6 @@ public class VentanaMain extends JFrame {
         panelEscribir.add(panelEnviar, BorderLayout.EAST);
 
         panelChat.add(scrollChat, BorderLayout.CENTER);
-        panelChat.add(panelEscribir, BorderLayout.SOUTH);
         contentPane.add(panelChat, BorderLayout.CENTER);
     }
 
@@ -330,8 +326,13 @@ public class VentanaMain extends JFrame {
             scrollChat.setBorder(BorderFactory.createEmptyBorder());
 
             panelChat.add(scrollChat, BorderLayout.CENTER);
+            panelChat.add(panelEscribir, BorderLayout.SOUTH);
             panelChat.revalidate();
             panelChat.repaint();
+            
+            SwingUtilities.invokeLater(() -> 
+            	scrollChat.getVerticalScrollBar().setValue(scrollChat.getVerticalScrollBar().getMaximum())
+        );
         }
     }
     

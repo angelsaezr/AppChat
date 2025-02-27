@@ -52,6 +52,11 @@ public class CargarAppChat {
 		appChat.enviarMensajeContacto(c4, "Que miras bobo", -1);
 		appChat.enviarMensajeContacto(c4, "", 3);
 	    
+		appChat.login("11", "aa");
+		appChat.enviarMensajeContacto(c2, "Sí, voy", 2);
+		appChat.enviarMensajeContacto(c2, "", 5);
+		appChat.enviarMensajeContacto(c2, "Adiós", 8);
+		
 	    System.out.println("Fin de la carga de datos");
 	    
 	    EventQueue.invokeLater(new Runnable() {
