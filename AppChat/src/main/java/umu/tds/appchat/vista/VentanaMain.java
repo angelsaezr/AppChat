@@ -35,9 +35,9 @@ public class VentanaMain extends JFrame {
     private JTextArea areaTexto;
     private JList<Contacto> listaContactos;
     private Contacto contactoSeleccionado;
-    private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar;
+    private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar, botonEmoticonos;
     private JLabel imagenPerfil;
-    private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir;
+    private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos;
     private DefaultListModel<Contacto> modeloLista;
     
 	public VentanaMain() {
@@ -270,31 +270,19 @@ public class VentanaMain extends JFrame {
         areaTexto.setLineWrap(true);
         areaTexto.setWrapStyleWord(true);
         areaTexto.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        // Hacer que el JTextArea crezca dinámicamente
-        //areaTexto.setPreferredSize(new Dimension(300, 30));
+        areaTexto.setMargin(new Insets(10, 10, 10, 10));
         areaTexto.getDocument().addDocumentListener(new DocumentListener() {
         	public void insertUpdate(DocumentEvent e) { ajustarTamañoAreaTexto(); }
         	public void removeUpdate(DocumentEvent e) { ajustarTamañoAreaTexto(); }
         	public void changedUpdate(DocumentEvent e) { ajustarTamañoAreaTexto(); }
         });
-        
-        /*areaTexto.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    e.consume(); // Evita que se inserte un salto de línea
-                    enviarMensaje();
-                }
-            }
-        });*/
-
 
         botonEnviar = new JButton("📨  Enviar");
         botonEnviar.setBackground(new Color(0, 128, 128));
         botonEnviar.setForeground(Color.WHITE);
         botonEnviar.setFocusPainted(false);
         botonEnviar.setBorderPainted(false);
-        botonEnviar.setPreferredSize(new Dimension(80,22));
+        botonEnviar.setPreferredSize(new Dimension(80,30));
         
         botonEnviar.addMouseListener(new MouseAdapter() {
             @Override
@@ -303,14 +291,25 @@ public class VentanaMain extends JFrame {
             }
         });
         
+        botonEmoticonos = new JButton("😊");
+        botonEmoticonos.setBackground(new Color(0, 128, 128));
+        botonEmoticonos.setForeground(Color.WHITE);
+        botonEmoticonos.setFocusPainted(false);
+        botonEmoticonos.setBorderPainted(false);
+        botonEmoticonos.setPreferredSize(new Dimension(30, 30));
+        
         panelAreaTexto = new JPanel(new BorderLayout());
         panelEnviar = new JPanel(new FlowLayout());
         panelAreaTexto.add(areaTexto, BorderLayout.CENTER);
         panelEnviar.add(botonEnviar);
+        panelEmoticonos = new JPanel(new FlowLayout());
+        panelEmoticonos.add(botonEmoticonos);
+        
         panelEscribir = new JPanel(new BorderLayout());
         panelEscribir.setBackground(Color.WHITE);
         panelEscribir.add(panelAreaTexto, BorderLayout.CENTER);
         panelEscribir.add(panelEnviar, BorderLayout.EAST);
+        panelEscribir.add(panelEmoticonos, BorderLayout.WEST);
 
         panelChat.add(scrollChat, BorderLayout.CENTER);
         contentPane.add(panelChat, BorderLayout.CENTER);
@@ -319,7 +318,9 @@ public class VentanaMain extends JFrame {
     // Método para ajustar el tamaño del JTextArea dinámicamente
 	private void ajustarTamañoAreaTexto() {
     	int lineas = areaTexto.getLineCount();
-    	int altura = 20 * lineas; // Ajusta el valor según el tamaño de fuente
+    	FontMetrics fm = areaTexto.getFontMetrics(areaTexto.getFont());
+    	int alturaLinea = fm.getHeight();
+    	int altura = alturaLinea * lineas + 20; // Ajusta el valor según el tamaño de fuente
     	if (altura > 550)
     		altura = 550;
     	areaTexto.setPreferredSize(new Dimension(300, altura));
