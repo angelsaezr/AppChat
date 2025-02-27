@@ -52,7 +52,7 @@ public class Controlador {
         return appChat.agregarContacto(nombre, movil);
     }
 
-    public boolean enviarMensajeContacto(ContactoIndividual receptor, String texto, int emoticono) {
+    public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
         return appChat.enviarMensajeContacto(receptor, texto, emoticono);
     }
     

@@ -271,12 +271,23 @@ public class VentanaMain extends JFrame {
         areaTexto.setWrapStyleWord(true);
         areaTexto.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         // Hacer que el JTextArea crezca dinámicamente
-        areaTexto.setPreferredSize(new Dimension(300, 30));
+        //areaTexto.setPreferredSize(new Dimension(300, 30));
         areaTexto.getDocument().addDocumentListener(new DocumentListener() {
         	public void insertUpdate(DocumentEvent e) { ajustarTamañoAreaTexto(); }
         	public void removeUpdate(DocumentEvent e) { ajustarTamañoAreaTexto(); }
         	public void changedUpdate(DocumentEvent e) { ajustarTamañoAreaTexto(); }
         });
+        
+        /*areaTexto.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    e.consume(); // Evita que se inserte un salto de línea
+                    enviarMensaje();
+                }
+            }
+        });*/
+
 
         botonEnviar = new JButton("📨  Enviar");
         botonEnviar.setBackground(new Color(0, 128, 128));
@@ -284,6 +295,13 @@ public class VentanaMain extends JFrame {
         botonEnviar.setFocusPainted(false);
         botonEnviar.setBorderPainted(false);
         botonEnviar.setPreferredSize(new Dimension(80,22));
+        
+        botonEnviar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                enviarMensaje();
+            }
+        });
         
         panelAreaTexto = new JPanel(new BorderLayout());
         panelEnviar = new JPanel(new FlowLayout());
@@ -299,7 +317,7 @@ public class VentanaMain extends JFrame {
     }
 
     // Método para ajustar el tamaño del JTextArea dinámicamente
-    private void ajustarTamañoAreaTexto() {
+	private void ajustarTamañoAreaTexto() {
     	int lineas = areaTexto.getLineCount();
     	int altura = 20 * lineas; // Ajusta el valor según el tamaño de fuente
     	if (altura > 550)
@@ -307,6 +325,7 @@ public class VentanaMain extends JFrame {
     	areaTexto.setPreferredSize(new Dimension(300, altura));
     	areaTexto.revalidate();
     }
+
     
     private void actualizarChat() {
         if (contactoSeleccionado != null) {
@@ -340,6 +359,21 @@ public class VentanaMain extends JFrame {
         modeloLista.clear();
         List<Contacto> contactos = Controlador.INSTANCE.getContactosUsuarioActual();
         contactos.forEach(modeloLista::addElement);
+    }
+    
+    private void enviarMensaje() {
+    	String texto = areaTexto.getText().trim();
+        if (!texto.isEmpty()) {
+            // Dividir el texto en líneas usando el salto de línea (\n) como delimitador
+            String[] lineas = texto.split("\n");
+            
+            // Enviar un mensaje por cada línea
+            for (String linea : lineas) {
+                Controlador.INSTANCE.enviarMensajeContacto(contactoSeleccionado, linea.trim(), -1);
+            }
+            areaTexto.setText("");
+        	actualizarChat();
+        }
     }
 
 }
