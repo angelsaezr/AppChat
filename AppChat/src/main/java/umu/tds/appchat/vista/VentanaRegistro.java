@@ -2,6 +2,8 @@ package umu.tds.appchat.vista;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -133,6 +135,25 @@ public class VentanaRegistro extends JDialog {
         btnRegistrar.setBorderPainted(false);
         btnRegistrar.addActionListener(this::validarCampos);
         panelBotones.add(btnRegistrar);
+        
+        // Agrega KeyListener para detectar la tecla Enter en txtPhone y txtPassword
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnRegistrar.doClick(); // Simula el clic en el botón de inicio de sesión
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        txtUsuario.addKeyListener(enterKeyListener);
+        txtPassword.addKeyListener(enterKeyListener);
+        txtRepitePassword.addKeyListener(enterKeyListener);
+        txtEmail.addKeyListener(enterKeyListener);
+        txtMovil.addKeyListener(enterKeyListener);
+        txtSaludo.addKeyListener(enterKeyListener);
+
         
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setAlignmentX(Component.CENTER_ALIGNMENT);
