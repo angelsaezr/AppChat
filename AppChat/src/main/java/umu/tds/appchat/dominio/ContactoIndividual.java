@@ -21,4 +21,12 @@ public class ContactoIndividual extends Contacto {
 	public String getImagen() {
 		return usuario.getImagen();
 	}
+	
+	public String getMovil() {
+		return usuario.getMovil();
+	}
+	
+	public String getSaludo() {
+		return usuario.getSaludo();
+	}
 }

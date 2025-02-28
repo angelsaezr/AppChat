@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
@@ -46,8 +47,8 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 		panelTexto = new JPanel(new GridLayout(3, 1)); // Para organizar los textos verticalmente
 		panelTexto.setBackground(Color.WHITE);
 		panelTexto.add(lblNombre);
-		//panelTexto.add(lblTelefono);
-		//panelTexto.add(lblSaludo);
+		panelTexto.add(lblTelefono);
+		panelTexto.add(lblSaludo);
 
 		add(lblImagen, BorderLayout.WEST);  // Imagen a la izquierda
 		add(panelTexto, BorderLayout.CENTER);  // Texto a la derecha
@@ -81,9 +82,20 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	        e.printStackTrace();
 	    }
 		// Configuración del texto
-		lblNombre.setText(contacto.getNombre());
-		//lblTelefono.setText("Tel: " + contacto.getUsuario().getMovil());
-		//lblSaludo.setText(contacto.getUsuario().getSaludo());
+		String nombre = contacto.getNombre();
+		lblNombre.setText(nombre);
+		
+		ContactoIndividual c;
+		if (contacto instanceof ContactoIndividual) {
+			c = (ContactoIndividual) contacto;
+			lblTelefono.setText("Tel: " + c.getMovil());
+			
+			if (nombre.equals(""))
+				lblNombre.setText(c.getMovil());
+			
+			lblSaludo.setText(c.getSaludo());
+		}
+		
 		
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255)));
 		

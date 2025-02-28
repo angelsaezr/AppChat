@@ -178,7 +178,11 @@ public class VentanaRegistro extends JDialog {
         if (txtUsuario.getText().isEmpty() || txtEmail.getText().isEmpty() || txtMovil.getText().isEmpty() || new String(txtPassword.getPassword()).isEmpty() || new String(txtRepitePassword.getPassword()).isEmpty()) {
             JOptionPane.showMessageDialog(this, "Rellena todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
-        } 
+        }
+        if (new String(txtPassword.getPassword()).equals(new String(txtRepitePassword.getPassword()))) {
+        	JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         Controlador.INSTANCE.registrarUsuario(txtUsuario.getText(), txtMovil.getText(), new String(txtPassword.getPassword()), dateChooser.getDate(), imagenSeleccionada, txtSaludo.getText(), txtEmail.getText());
         JOptionPane.showMessageDialog(this, "Registro exitoso.", "Información", JOptionPane.INFORMATION_MESSAGE);
         dispose();
