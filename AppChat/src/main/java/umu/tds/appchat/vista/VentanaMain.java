@@ -299,6 +299,13 @@ public class VentanaMain extends JFrame {
         botonEmoticonos.setBorderPainted(false);
         botonEmoticonos.setPreferredSize(new Dimension(30, 30));
         
+        botonEmoticonos.addActionListener(e -> {
+            Point location = botonEmoticonos.getLocationOnScreen();
+            EmoticonosDialog popup = new EmoticonosDialog(VentanaMain.this, contactoSeleccionado);
+            popup.setLocation(location.x, location.y - 130);
+            popup.setVisible(true);
+        });
+        
         panelAreaTexto = new JPanel(new BorderLayout());
         panelEnviar = new JPanel(new FlowLayout());
         panelAreaTexto.add(areaTexto, BorderLayout.CENTER);
@@ -329,7 +336,7 @@ public class VentanaMain extends JFrame {
     }
 
     
-    private void actualizarChat() {
+    public void actualizarChat() {
         if (contactoSeleccionado != null) {
             panelChat.removeAll(); // Limpiar el panel antes de cargar el nuevo chat
             ChatPanel chatPanel = new ChatPanel();
