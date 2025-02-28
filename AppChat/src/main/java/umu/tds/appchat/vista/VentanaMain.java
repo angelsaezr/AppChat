@@ -19,6 +19,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.TipoMensaje;
 import umu.tds.appchat.utils.Utils;
 
@@ -337,6 +338,12 @@ public class VentanaMain extends JFrame {
             .forEach(mensaje -> {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
                 String nombre = !esEnviado ? contactoSeleccionado.getNombre() : Controlador.INSTANCE.getUsuarioActual().getNombre();
+                
+                if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.equals("")) {
+                	ContactoIndividual c = (ContactoIndividual) contactoSeleccionado;
+                	nombre = c.getMovil();
+                }
+                
                 chatPanel.addMensaje(nombre, mensaje.getTexto(), mensaje.getEmoticono(), esEnviado);
             });
 
