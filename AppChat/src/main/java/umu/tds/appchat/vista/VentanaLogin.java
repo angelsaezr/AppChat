@@ -2,6 +2,8 @@ package umu.tds.appchat.vista;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.*;
@@ -111,6 +113,20 @@ public class VentanaLogin extends JFrame {
             }
         });
         contentPane.add(loginButton);
+        
+        // Agrega KeyListener para detectar la tecla Enter en txtPhone y txtPassword
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    loginButton.doClick(); // Simula el clic en el botón de inicio de sesión
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        txtPhone.addKeyListener(enterKeyListener);
+        txtPassword.addKeyListener(enterKeyListener);
 
         contentPane.add(Box.createRigidArea(new Dimension(0, 10)));
 
