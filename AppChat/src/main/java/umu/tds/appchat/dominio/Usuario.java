@@ -85,7 +85,13 @@ public class Usuario {
 	            .map(Contacto::getMensajes)
 	            .orElseGet(LinkedList::new);
 	}
-
+	
+	public int getNumMensajesEnviados() {
+	    return contactos.stream()
+	            .flatMap(contacto -> contacto.getMensajes().stream()) // Obtiene todos los mensajes de los contactos
+	            .mapToInt(mensaje -> 1) // Convierte cada mensaje en un valor 1 para contar
+	            .sum(); // Suma todos los valores
+	}
 
 	// Métodos modificadores
 	public void setImagen(String imagen) {
