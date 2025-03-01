@@ -67,4 +67,12 @@ public class Controlador {
     public List<Contacto> getContactosUsuarioActual() {
         return appChat.getContactosUsuarioActual();
     }
+    
+    public boolean activarPremium() {
+		return appChat.activarPremium();
+	}
+
+	public boolean anularPremium() {
+		return appChat.anularPremium();
+	}
 }

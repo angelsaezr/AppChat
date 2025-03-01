@@ -127,4 +127,16 @@ public class AppChat {
     public List<Contacto> getContactosUsuarioActual() {
     	return usuarioActual.getContactos();
 	}
+    
+    public boolean activarPremium() {
+		this.usuarioActual.setPremium(true);
+		// TODO
+		return true;
+	}
+
+	public boolean anularPremium() {
+		this.usuarioActual.setPremium(false);
+		// TODO
+		return true;
+	}
 }
