@@ -78,13 +78,14 @@ public class Usuario {
 		return descuento;
 	}
 	
-	public List<Mensaje> getMensajesDeContacto(Contacto contacto){
-		for(Contacto c : contactos) {
-			if (c.getNombre().equals(contacto.getNombre()))
-				return c.getMensajes();
-		}
-		return new LinkedList<Mensaje>();
+	public List<Mensaje> getMensajesDeContacto(Contacto contacto) {
+	    return contactos.stream()
+	            .filter(c -> c.getNombre().equals(contacto.getNombre()))
+	            .findFirst()
+	            .map(Contacto::getMensajes)
+	            .orElseGet(LinkedList::new);
 	}
+
 
 	// Métodos modificadores
 	public void setImagen(String imagen) {
