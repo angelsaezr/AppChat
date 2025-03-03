@@ -132,8 +132,21 @@ public class Usuario {
 	    } else {
 	        esMismoMovil = false;
 	    }
-
-
+	    
+	    if (!esMismoMovil && contacto instanceof ContactoIndividual) {
+	        ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
+	        // Buscar y actualizar el contacto si ya existe
+	        boolean contactoActualizado = contactos.stream()
+	            .filter(c -> c instanceof ContactoIndividual)  // Solo los ContactoIndividual
+	            .map(c -> (ContactoIndividual) c)
+	            .filter(cI -> cI.getUsuario().getMovil().equals(contactoIndividual.getMovil()))  // Comparamos los números de móvil
+	            .peek(cI -> cI.setNombre(contacto.getNombre()))  // Actualizamos el nombre
+	            .findFirst()
+	            .isPresent();
+	        if (contactoActualizado) {
+	            return true;
+	        }
+	    }
 	    return !esMismoMovil && contactos.add(contacto);
 	}
 

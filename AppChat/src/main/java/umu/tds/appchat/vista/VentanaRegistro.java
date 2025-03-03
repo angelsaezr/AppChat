@@ -196,7 +196,7 @@ public class VentanaRegistro extends JDialog {
     }
     
     private void validarCampos(ActionEvent e) {
-        if (txtUsuario.getText().isEmpty() || txtEmail.getText().isEmpty() || txtMovil.getText().isEmpty() || new String(txtPassword.getPassword()).isEmpty() || new String(txtRepitePassword.getPassword()).isEmpty()) {
+        if (txtUsuario.getText().isBlank() || txtEmail.getText().isBlank() || txtMovil.getText().isBlank()|| new String(txtPassword.getPassword()).isBlank() || new String(txtRepitePassword.getPassword()).isBlank()) {
             JOptionPane.showMessageDialog(this, "Rellena todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

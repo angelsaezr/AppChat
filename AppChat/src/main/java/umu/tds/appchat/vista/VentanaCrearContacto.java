@@ -1,6 +1,10 @@
 package umu.tds.appchat.vista;
 
 import javax.swing.*;
+
+import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.dominio.ContactoIndividual;
+
 import java.awt.*;
 
 /**
@@ -15,10 +19,10 @@ public class VentanaCrearContacto extends JDialog {
     private JTextField phoneField;
     private JButton btnAceptar, btnCancelar;
 
-	public VentanaCrearContacto(Frame parent) {
-        super(parent, "Crear Contacto", true);
+	public VentanaCrearContacto(VentanaMain ventanaMain) {
+        super(ventanaMain, "Crear Contacto", true);
         setSize(400, 180);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(ventanaMain);
         setLayout(new GridBagLayout());
         this.setResizable(false);
 
@@ -80,7 +84,18 @@ public class VentanaCrearContacto extends JDialog {
         // Acción de los botones
         btnCancelar.addActionListener(e -> setVisible(false));
         btnAceptar.addActionListener(e -> {
-            setVisible(false);
+        	if(nameField.getText().isBlank() || phoneField.getText().isBlank())
+        		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+        	else {
+        		ContactoIndividual c = Controlador.INSTANCE.agregarContacto(nameField.getText(), phoneField.getText());
+        		if(c == null)
+        			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
+        		else {
+        			JOptionPane.showMessageDialog(this, "Contacto agregado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        			ventanaMain.actualizarListaContactos();
+        			dispose();
+        		}
+        	}
         });
     }
 }

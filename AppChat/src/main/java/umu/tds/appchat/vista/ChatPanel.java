@@ -37,7 +37,7 @@ public class ChatPanel extends JPanel {
         Color bubbleColor = isSent ? new Color(173, 216, 230) : new Color(200, 200, 200);
         int type = isSent ? BubbleText.SENT : BubbleText.RECEIVED;
 
-        if (text != null && !text.isEmpty()) {
+        if (text != null && !text.isBlank()) {
             agregarBurbuja(new BubbleText(chatContainer, text, bubbleColor, sender, type, 14));
         }
         if (emoticono != -1) {

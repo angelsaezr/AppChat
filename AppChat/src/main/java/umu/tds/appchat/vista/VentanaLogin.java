@@ -99,7 +99,7 @@ public class VentanaLogin extends JFrame {
         loginButton.setFocusPainted(false);
         loginButton.setBorderPainted(false);
         loginButton.addActionListener((ActionEvent e) -> {
-            if (txtPhone.getText().trim().isEmpty() || new String(txtPassword.getPassword()).trim().isEmpty()) {
+            if (txtPhone.getText().trim().isBlank() || new String(txtPassword.getPassword()).trim().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 boolean exito = Controlador.INSTANCE.login(txtPhone.getText().trim(), new String(txtPassword.getPassword()).trim());
