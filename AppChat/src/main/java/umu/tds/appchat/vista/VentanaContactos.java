@@ -60,8 +60,6 @@ public class VentanaContactos extends JDialog {
 
         public ContactTableModel() {
             data = new ArrayList<>();
-            data.add(new Object[]{"Angel", "660392750", "En el gimnasio"});
-            data.add(new Object[]{"Javi", "696305617", "Durmiendo"});
         }
 
         @Override
@@ -88,5 +86,13 @@ public class VentanaContactos extends JDialog {
         public boolean isCellEditable(int rowIndex, int columnIndex) {
             return false; // La tabla no será editable
         }
+        
+        public boolean add(String nombre, String movil, String saludo) {
+        	return data.add(new Object[] {nombre, movil, saludo});
+        }
+    }
+    
+    public boolean addContactoIndividual(String nombre, String movil, String saludo) {
+    	return tableModel.add(nombre, movil, saludo);
     }
 }
