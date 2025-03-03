@@ -93,15 +93,14 @@ public class VentanaMain extends JFrame {
         botonContactos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                VentanaContactos listaContactos = new VentanaContactos(VentanaMain.this);
-                for (Contacto c : Controlador.INSTANCE.getContactosUsuarioActual()) {
-                	if(c instanceof ContactoIndividual) {
-                		ContactoIndividual cI = (ContactoIndividual) c;
-                		if(!cI.getNombre().isBlank())
-                			listaContactos.addContactoIndividual(cI.getNombre(), cI.getMovil(), cI.getSaludo());
-                	}
-                }
-                listaContactos.setVisible(true);
+                VentanaContactos tablaContactos = new VentanaContactos(VentanaMain.this);
+                Controlador.INSTANCE.getContactosUsuarioActual().stream()
+                	.filter(ContactoIndividual.class::isInstance) // Filtrar solo ContactoIndividual
+                	.map(ContactoIndividual.class::cast) // Hacer el casting a ContactoIndividual
+                	.filter(cI -> !cI.getNombre().isBlank()) // Filtrar contactos con nombre no vacío
+                	.forEach(cI -> tablaContactos.addContactoIndividual(cI.getNombre(), cI.getMovil(), cI.getSaludo())); // Agregar a la tabla
+
+                tablaContactos.setVisible(true);
             }
         });
 
