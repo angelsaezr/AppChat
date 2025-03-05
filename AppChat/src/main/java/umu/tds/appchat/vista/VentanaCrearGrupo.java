@@ -1,89 +1,170 @@
 package umu.tds.appchat.vista;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.List;
+import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.ContactoIndividual;
 
-/**
- * Ventana para crear grupos.
- * 
- * @author Ángel
- * @author Francisco Javier
- */
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+
 @SuppressWarnings("serial")
 public class VentanaCrearGrupo extends JDialog {
     private JTextField groupNameField;
-    private JList<String> contactList;
-    private DefaultListModel<String> contactListModel;
-    private JButton btnAceptar, btnCancelar;
+    private JList<String> contactList, groupList;
+    private List<Contacto> listaContactos;
+    private DefaultListModel<String> contactListModel, groupListModel;
+    private JButton btnAceptar, btnCancelar, btnAdd, btnRemove, btnSeleccionarImagen;
+    private JLabel lblImagenSeleccionada;
+    private File imagenSeleccionada;
 
-	public VentanaCrearGrupo(Frame parent) {
+    public VentanaCrearGrupo(JFrame parent) {
         super(parent, "Crear Grupo", true);
-        setSize(400, 250);
+        setSize(500, 500);
         setLocationRelativeTo(parent);
         setLayout(new GridBagLayout());
         this.setResizable(false);
 
-        // Panel principal
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(245, 245, 245));
-
+        panel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.BOTH;
 
-        // Etiqueta y campo de Nombre del Grupo
-        JLabel lblNombre = new JLabel("Nombre del Grupo:");
-        lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(lblNombre, gbc);
-
-        groupNameField = new JTextField(15);
-        gbc.gridx = 1;
+        // Nombre del Grupo
+        gbc.gridx = 0; gbc.gridy = 0;
+        panel.add(new JLabel("Nombre del Grupo:"), gbc);
+        groupNameField = new JTextField(33);
+        gbc.gridx = 0; gbc.gridy = 1;
         panel.add(groupNameField, gbc);
 
-        // Lista de contactos
-        JLabel lblContactos = new JLabel("Seleccionar Contactos:");
-        lblContactos.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(lblContactos, gbc);
-
+        // Listas
         contactListModel = new DefaultListModel<>();
-        contactList = new JList<>(contactListModel);
-        contactList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        JScrollPane scrollPane = new JScrollPane(contactList);
-        scrollPane.setPreferredSize(new Dimension(200, 100));
-        gbc.gridx = 1;
-        panel.add(scrollPane, gbc);
+        groupListModel = new DefaultListModel<>();
 
-        // Botones
+        listaContactos = Controlador.INSTANCE.getContactosUsuarioActual();
+        for (Contacto c : listaContactos) {
+        	if (c instanceof ContactoIndividual)
+        		contactListModel.addElement(c.getNombre());
+        }
+
+        contactList = new JList<>(contactListModel);
+        groupList = new JList<>(groupListModel);
+        contactList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        groupList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+        JScrollPane scrollContactList = new JScrollPane(contactList);
+        JScrollPane scrollGroupList = new JScrollPane(groupList);
+        scrollContactList.setPreferredSize(new Dimension(150, 150));
+        scrollGroupList.setPreferredSize(new Dimension(150, 150));
+
+        // Botones para mover contactos
+        btnAdd = new JButton(">>");
+        btnRemove = new JButton("<<");
+        btnAdd.addActionListener(e -> moverSeleccionados(contactList, contactListModel, groupListModel));
+        btnRemove.addActionListener(e -> moverSeleccionados(groupList, groupListModel, contactListModel));
+        btnAdd.setPreferredSize(new Dimension(50, 30));
+        btnRemove.setPreferredSize(new Dimension(50, 30));
+
+        // Panel de listas y botones
+        JPanel panelListas = new JPanel(new GridBagLayout());
+        panelListas.setOpaque(false);
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelListas.add(new JLabel("Contactos disponibles:"), gbc);
+        gbc.gridx = 2;
+        panelListas.add(new JLabel("Contactos seleccionados:"), gbc);
+        
+        gbc.gridx = 0; gbc.gridy = 3;
+        panelListas.add(scrollContactList, gbc);
+
+        gbc.gridx = 1;
+        JPanel panelBotonesMover = new JPanel(new GridBagLayout());
+        panelBotonesMover.setOpaque(false);
+        GridBagConstraints gbcBotones = new GridBagConstraints();
+        gbcBotones.insets = new Insets(5, 0, 5, 0);
+        gbcBotones.gridx = 0;
+        gbcBotones.gridy = 0;
+        panelBotonesMover.add(btnAdd, gbcBotones);
+        gbcBotones.gridy = 1;
+        panelBotonesMover.add(btnRemove, gbcBotones);
+        panelListas.add(panelBotonesMover, gbc);
+
+        gbc.gridx = 2;
+        panelListas.add(scrollGroupList, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
+        panel.add(panelListas, gbc);
+
+        // Panel de selección de imagen
+        JPanel panelImagen = new JPanel(new GridBagLayout());
+        panelImagen.setOpaque(false);
+
+        btnSeleccionarImagen = new JButton("Seleccionar Imagen");
+        btnSeleccionarImagen.setPreferredSize(new Dimension(300, 25));
+        btnSeleccionarImagen.setBackground(new Color(0, 128, 128));
+        btnSeleccionarImagen.setForeground(Color.WHITE);
+        btnSeleccionarImagen.setFocusPainted(false);
+        btnSeleccionarImagen.setBorderPainted(false);
+        btnSeleccionarImagen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	List<File> archivos = new PanelArrastraImagen(parent).showDialog();
+                if (!archivos.isEmpty()) {
+                    imagenSeleccionada = archivos.get(0);
+                    ImageIcon icon = new ImageIcon(imagenSeleccionada.getAbsolutePath());
+                    Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+                    lblImagenSeleccionada.setIcon(new ImageIcon(img));
+                    lblImagenSeleccionada.setVisible(true);
+                }
+            }
+        });
+        
+        lblImagenSeleccionada = new JLabel();
+        lblImagenSeleccionada.setHorizontalAlignment(JLabel.CENTER);
+        lblImagenSeleccionada.setVisible(false);
+        
+        gbc.gridy = 4;
+        panelImagen.add(lblImagenSeleccionada, gbc);
+        gbc.gridy = 5;
+        panelImagen.add(btnSeleccionarImagen, gbc);
+        
+        gbc.gridy = 3;
+        panel.add(panelImagen, gbc);
+
+        // Botones Aceptar y Cancelar
         JPanel panelBotones = new JPanel();
+        panelBotones.setOpaque(false);
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btnAceptar.setFocusPainted(false);
+        btnAceptar.addActionListener(e -> setVisible(false));
         btnAceptar.setBorderPainted(false);
-
+        btnAceptar.setFocusPainted(false);
+        
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
-
+        btnCancelar.setFocusPainted(false);
+        btnCancelar.addActionListener(e -> setVisible(false));
+        
+        
         panelBotones.add(btnAceptar);
         panelBotones.add(btnCancelar);
-        gbc.gridy = 2;
-        gbc.gridwidth = 2;
-        gbc.anchor = GridBagConstraints.CENTER;
+
+        gbc.gridy = 4;
         panel.add(panelBotones, gbc);
-
         add(panel);
+    }
 
-        // Acción de los botones
-        btnCancelar.addActionListener(e -> setVisible(false));
-        btnAceptar.addActionListener(e -> setVisible(false));
+    private void moverSeleccionados(JList<String> origen, DefaultListModel<String> modeloOrigen, DefaultListModel<String> modeloDestino) {
+        List<String> seleccionados = origen.getSelectedValuesList();
+        for (String s : seleccionados) {
+            modeloDestino.addElement(s);
+            modeloOrigen.removeElement(s);
+        }
     }
 }
