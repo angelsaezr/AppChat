@@ -81,7 +81,7 @@ public class VentanaCrearContacto extends JDialog {
         add(panel);
 
         // Acción de los botones
-        btnCancelar.addActionListener(e -> setVisible(false));
+        btnCancelar.addActionListener(e -> dispose());
         btnAceptar.addActionListener(e -> {
         	if(nameField.getText().isBlank() || phoneField.getText().isBlank())
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);

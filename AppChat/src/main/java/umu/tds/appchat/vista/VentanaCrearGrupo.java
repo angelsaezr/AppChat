@@ -168,7 +168,7 @@ public class VentanaCrearGrupo extends JDialog {
         btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setBorderPainted(false);
         btnCancelar.setFocusPainted(false);
-        btnCancelar.addActionListener(e -> setVisible(false));
+        btnCancelar.addActionListener(e -> dispose());
         
         
         panelBotones.add(btnAceptar);
