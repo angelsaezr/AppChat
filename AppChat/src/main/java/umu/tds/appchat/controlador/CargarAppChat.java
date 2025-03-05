@@ -22,8 +22,11 @@ public class CargarAppChat {
 		appChat.registrarUsuario("Leo Messi", "33", "cc", LocalDate.of(2000, 5, 15), "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg", "hola, soy messi", "email");
 		//appChat.registrarUsuario("dd", "44", "dd", LocalDate.of(1970, 5, 11), "/usuarios/foto-diego.png", "hola, soy diego", "email");
 		//appChat.registrarUsuario("ee", "55", "ee", LocalDate.of(1990, 3, 28), "/usuarios/annetaylor.jpg", "hola, soy anne", "email");
+		appChat.registrarUsuario("Vini", "66", "ff", LocalDate.of(2000, 5, 8), "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcrtPce7b6gWsXKstlBJzScoOLHmZkwtAFbw&s", "hola, soy el balon de oro", "email");
 		
 		appChat.login("11", "aa");
+		appChat.login("66", "ff");
+
 		
 		ContactoIndividual c2 = appChat.agregarContacto("Lamine", "22");
 		//ContactoIndividual c3 = appChat.agregarContacto("Messi", "33");
@@ -56,6 +59,9 @@ public class CargarAppChat {
 		appChat.enviarMensajeContacto(c2, "Sí, voy", 2);
 		appChat.enviarMensajeContacto(c2, "", 5);
 		appChat.enviarMensajeContacto(c2, "Adiós", 8);
+		
+		ContactoIndividual c6 = appChat.agregarContacto("Vini", "66");
+		appChat.enviarMensajeContacto(c6, "Soy el mejor", -1);
 		
 	    System.out.println("Fin de la carga de datos");
 	    
