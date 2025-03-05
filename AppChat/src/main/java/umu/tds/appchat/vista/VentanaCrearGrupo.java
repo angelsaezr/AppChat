@@ -1,6 +1,8 @@
 package umu.tds.appchat.vista;
 
 import javax.swing.*;
+
+import java.util.LinkedList;
 import java.util.List;
 import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.Contacto;
@@ -21,10 +23,10 @@ public class VentanaCrearGrupo extends JDialog {
     private JLabel lblImagenSeleccionada;
     private File imagenSeleccionada;
 
-    public VentanaCrearGrupo(JFrame parent) {
-        super(parent, "Crear Grupo", true);
+    public VentanaCrearGrupo(VentanaMain ventanaMain) {
+        super(ventanaMain, "Crear Grupo", true);
         setSize(500, 500);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(ventanaMain);
         setLayout(new GridBagLayout());
         this.setResizable(false);
 
@@ -111,7 +113,7 @@ public class VentanaCrearGrupo extends JDialog {
         btnSeleccionarImagen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	List<File> archivos = new PanelArrastraImagen(parent).showDialog();
+            	List<File> archivos = new PanelArrastraImagen(ventanaMain).showDialog();
                 if (!archivos.isEmpty()) {
                     imagenSeleccionada = archivos.get(0);
                     ImageIcon icon = new ImageIcon(imagenSeleccionada.getAbsolutePath());
@@ -143,6 +145,24 @@ public class VentanaCrearGrupo extends JDialog {
         btnAceptar.addActionListener(e -> setVisible(false));
         btnAceptar.setBorderPainted(false);
         btnAceptar.setFocusPainted(false);
+        
+        btnAceptar.addActionListener(e -> {
+        	if(groupNameField.getText().isBlank() || groupListModel.isEmpty())
+        		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+        	else {
+        		List<String> miembros = new LinkedList<>();
+                for (int i = 0; i < groupListModel.size(); i++) {
+                	miembros.add(groupListModel.get(i)); // Agregar cada elemento a la lista
+                }
+        		if(!Controlador.INSTANCE.agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada))
+        			JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
+        		else {
+        			JOptionPane.showMessageDialog(this, "Grupo creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        			ventanaMain.actualizarListaContactos();
+        			dispose();
+        		}
+        	}
+        });
         
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));

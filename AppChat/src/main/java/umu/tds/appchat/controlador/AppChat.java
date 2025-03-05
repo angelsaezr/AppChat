@@ -1,6 +1,7 @@
 package umu.tds.appchat.controlador;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
 
 import umu.tds.appchat.dominio.Usuario;
@@ -64,14 +65,38 @@ public class AppChat {
         if (usuarioContacto == null) return null;
 
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
-        if (usuarioActual.addContacto(nuevoContacto)) {
-            return nuevoContacto;
-        }
+        if (usuarioActual.addContacto(nuevoContacto)) return nuevoContacto;
+        
         return null;
+    }
+    
+    public Grupo agregarGrupo(String nombreGrupo, List<String> miembros, String imagenGrupo) {
+    	if (usuarioActual == null) return null;
+    	
+    	List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
+    	for(Contacto c : getContactosUsuarioActual()) {
+    		if (c instanceof ContactoIndividual) {
+    			for(String s : miembros) {
+    	    		if (s.equals(c.getNombre())) {
+    	    			ContactoIndividual cI = (ContactoIndividual) c;
+    	    			Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(cI.getMovil());
+    	    			if (usuarioContacto == null || cI.getMovil().equals(usuarioActual.getMovil())) return null;
+    	    			contactos.add(cI);
+    	    		}
+    	    	}
+    		}
+    	}
+    	
+    	Grupo nuevoGrupo = new Grupo(nombreGrupo, contactos, imagenGrupo);
+    	if(usuarioActual.addContacto(nuevoGrupo)) return nuevoGrupo;
+    	
+    	return null;
     }
 
     // Enviar mensaje a un contacto individual
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
+    	if (usuarioActual == null) return false;
+    	
         // Intentar enviar el mensaje desde el usuario actual
         if (!usuarioActual.addMensaje(receptor, texto, emoticono, TipoMensaje.ENVIADO)) {
             return false;
@@ -129,12 +154,16 @@ public class AppChat {
 	}
     
     public boolean activarPremium() {
+    	if (usuarioActual == null) return false;
+    	
 		this.usuarioActual.setPremium(true);
 		// TODO
 		return true;
 	}
 
 	public boolean anularPremium() {
+		if (usuarioActual == null) return false;
+		
 		this.usuarioActual.setPremium(false);
 		// TODO
 		return true;

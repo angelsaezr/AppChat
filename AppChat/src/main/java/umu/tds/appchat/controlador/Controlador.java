@@ -9,6 +9,7 @@ import java.util.List;
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.Mensaje;
 
 /**
@@ -48,8 +49,20 @@ public class Controlador {
         return appChat.login(movil, contraseña);
     }
 
-    public ContactoIndividual agregarContacto(String nombre, String movil) {
-        return appChat.agregarContacto(nombre, movil);
+    public boolean agregarContacto(String nombre, String movil) {
+        ContactoIndividual nuevoContacto = appChat.agregarContacto(nombre, movil);
+        if(nuevoContacto != null) return true;
+        return false;
+    }
+    
+    public boolean agregarGrupo(String nombreGrupo, List<String> miembros, File imagenGrupo) {
+    	String rutaImagen = "";
+    	if (imagenGrupo != null)
+    		rutaImagen = imagenGrupo.getAbsolutePath();
+    	
+    	Grupo nuevoGrupo = appChat.agregarGrupo(nombreGrupo, miembros, rutaImagen);
+    	if(nuevoGrupo != null) return true;
+    	return false;
     }
 
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
