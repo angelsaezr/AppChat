@@ -142,7 +142,6 @@ public class VentanaCrearGrupo extends JDialog {
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.addActionListener(e -> setVisible(false));
         btnAceptar.setBorderPainted(false);
         btnAceptar.setFocusPainted(false);
         
