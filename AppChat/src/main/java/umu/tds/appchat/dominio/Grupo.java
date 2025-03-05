@@ -15,7 +15,10 @@ public class Grupo extends Contacto {
 	public Grupo(String nombreGrupo, List<ContactoIndividual> miembros, String imagenGrupo) {
 		super(nombreGrupo);
 		this.miembros = miembros;
-		urlImagen = imagenGrupo;
+		if(imagenGrupo != "")
+			urlImagen = imagenGrupo;
+		else
+			urlImagen = "src/main/resources/profile1.jpg";
 	}
 	
 	public Grupo(String nombreGrupo, List<ContactoIndividual> miembros) {

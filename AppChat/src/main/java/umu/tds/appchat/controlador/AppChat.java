@@ -42,7 +42,8 @@ public class AppChat {
         if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
             return false; // Ya existe un usuario con ese número
         }
-
+        if (imagen == "")
+        	imagen = "src/main/resources/profile1.jpg";
         Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
         return repositorioUsuarios.addUsuario(nuevoUsuario);
     }
