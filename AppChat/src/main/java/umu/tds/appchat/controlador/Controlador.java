@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.Contacto;
@@ -87,5 +88,11 @@ public class Controlador {
 
 	public boolean anularPremium() {
 		return appChat.anularPremium();
+	}
+
+	public List<String> getMiembrosGrupo(Grupo grupo) {
+	    return appChat.getMiembrosGrupo(grupo).stream()
+	        .map(ContactoIndividual::getNombre) // Obtener el nombre de cada contacto
+	        .collect(Collectors.toList()); // Convertir a lista
 	}
 }

@@ -10,13 +10,17 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
+import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Panel donde se seleccionan los chats.
@@ -94,6 +98,17 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 				lblNombre.setText(c.getMovil());
 			
 			lblSaludo.setText(c.getSaludo());
+		} else {
+			Grupo g = (Grupo) contacto;
+			List<String> miembros = Controlador.INSTANCE.getMiembrosGrupo(g);
+
+			// Usamos `joining(", ")` para unir los nombres sin coma final
+			String miembrosTexto = miembros.stream()
+			    .collect(Collectors.joining(", "));
+
+			lblTelefono.setText("Miembros: " + miembrosTexto);
+			lblSaludo.setText("");
+
 		}
 		
 		

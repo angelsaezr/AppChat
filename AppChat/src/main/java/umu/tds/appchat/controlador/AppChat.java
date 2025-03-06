@@ -21,6 +21,7 @@ import umu.tds.appchat.dominio.TipoMensaje;
 public class AppChat {
 
     public static final AppChat INSTANCE = new AppChat();
+    public static double COSTE_PREMIUM = 100.0;
     
     private RepositorioUsuarios repositorioUsuarios;
     private Usuario usuarioActual;
@@ -168,5 +169,9 @@ public class AppChat {
 		this.usuarioActual.setPremium(false);
 		// TODO
 		return true;
+	}
+
+	public List<ContactoIndividual> getMiembrosGrupo(Grupo grupo) {
+		return grupo.getMiembros();
 	}
 }

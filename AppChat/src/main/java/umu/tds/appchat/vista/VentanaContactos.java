@@ -20,7 +20,7 @@ public class VentanaContactos extends JDialog {
 
 	public VentanaContactos(Frame parent) {
         super(parent, "Contactos", true);
-        setSize(400, 300);
+        setSize(600, 400);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
         this.setResizable(false);

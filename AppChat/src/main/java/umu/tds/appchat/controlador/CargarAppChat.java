@@ -22,7 +22,7 @@ public class CargarAppChat {
 		appChat.registrarUsuario("Leo Messi", "33", "cc", LocalDate.of(2000, 5, 15), "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg", "hola, soy messi", "email");
 		//appChat.registrarUsuario("dd", "44", "dd", LocalDate.of(1970, 5, 11), "/usuarios/foto-diego.png", "hola, soy diego", "email");
 		//appChat.registrarUsuario("ee", "55", "ee", LocalDate.of(1990, 3, 28), "/usuarios/annetaylor.jpg", "hola, soy anne", "email");
-		appChat.registrarUsuario("Vini", "66", "ff", LocalDate.of(2000, 5, 8), "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcrtPce7b6gWsXKstlBJzScoOLHmZkwtAFbw&s", "hola, soy el balon de oro", "email");
+		appChat.registrarUsuario("Vini", "66", "ff", LocalDate.of(2000, 5, 8), "https://bilbaohiria.com/wp-content/uploads/2024/10/viniciusjr809890.jpg", "hola, soy el balon de playa", "email");
 		
 		appChat.login("11", "aa");
 		appChat.login("66", "ff");
