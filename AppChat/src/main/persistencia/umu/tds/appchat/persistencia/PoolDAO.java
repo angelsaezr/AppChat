@@ -2,13 +2,20 @@ package umu.tds.appchat.persistencia;
 
 import java.util.Hashtable;
 
-public enum PoolDAO {
+public class PoolDAO {
 
-	INSTANCE;
 	private Hashtable<Integer, Object> pool;
+	private static PoolDAO unicaInstancia;
 	
 	private PoolDAO(){
 		pool = new Hashtable<Integer,Object>();
+	}
+	
+	public static PoolDAO getUnicaInstancia() {
+		if (unicaInstancia == null)
+			unicaInstancia = new PoolDAO();
+		return unicaInstancia;
+		
 	}
 	
 	public Object getObject(int id) {
