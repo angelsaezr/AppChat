@@ -102,7 +102,7 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 			Grupo g = (Grupo) contacto;
 			List<String> miembros = Controlador.INSTANCE.getMiembrosGrupo(g);
 
-			// Usamos `joining(", ")` para unir los nombres sin coma final
+			// Usamos `joining(", ")` para unir los nombres
 			String miembrosTexto = miembros.stream()
 			    .collect(Collectors.joining(", "));
 

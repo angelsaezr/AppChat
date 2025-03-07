@@ -81,7 +81,7 @@ public class VentanaMain extends JFrame {
         botonBuscar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new VentanaBusqueda(VentanaMain.this).setVisible(true);
+                new VentanaBuscarMensaje(VentanaMain.this).setVisible(true);
             }
         });
         
