@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.Normalizer;
 
 @SuppressWarnings("serial")
 public class VentanaBuscarMensaje extends JDialog {
@@ -101,10 +102,18 @@ public class VentanaBuscarMensaje extends JDialog {
     private void mostrarResultados(String texto, String movil, String contacto) {
         panelResultados.removeAll();
 
+        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
+
         List<JPanel> resultados = Controlador.INSTANCE.getContactosUsuarioActual().stream()
             .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
             .flatMap(c -> Controlador.INSTANCE.getMensajes(c).stream()
-                .filter(m -> texto.isBlank() || m.getTexto().toLowerCase().contains(texto.toLowerCase())) // Búsqueda flexible
+                .filter(m -> textoNormalizado.isBlank() || 
+                    Normalizer.normalize(m.getTexto(), Normalizer.Form.NFD)
+                        .replaceAll("\\p{M}", "")
+                        .toLowerCase()
+                        .contains(textoNormalizado)) // Búsqueda flexible y sin tildes
                 .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
                 .map(m -> Map.entry(m, c)) // Guarda mensaje y contacto asociado
             )
