@@ -3,6 +3,8 @@ package umu.tds.appchat.vista;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,26 @@ public class VentanaContactos extends JDialog {
 
         // Acción del botón
         btnAceptar.addActionListener(e -> dispose());
+        
+        // Agrega KeyListener a la ventana y la tabla
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnAceptar.doClick(); // Simula el clic en el botón
+                    e.consume(); // Evita que el evento se propague
+                }
+            }
+        };
+
+        // Agrega el KeyListener a la ventana
+        this.addKeyListener(enterKeyListener);
+        this.setFocusable(true);
+        this.setFocusTraversalKeysEnabled(false);
+
+        // Pone el KeyListener a la tabla
+        table.addKeyListener(enterKeyListener);
+
     }
 
     // Clase interna para el modelo de la tabla

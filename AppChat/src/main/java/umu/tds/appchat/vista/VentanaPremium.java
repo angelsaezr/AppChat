@@ -2,6 +2,8 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Ventana para el servicio premium.
@@ -78,5 +80,19 @@ public class VentanaPremium extends JDialog {
             JOptionPane.showMessageDialog(this, "Descuento aplicado: " + comboDescuentos.getSelectedItem());
             dispose();
         });
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnAceptar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        comboDescuentos.addKeyListener(enterKeyListener);
+        
     }
 }

@@ -5,6 +5,8 @@ import javax.swing.*;
 import umu.tds.appchat.controlador.Controlador;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 /**
  * Ventana para añadir o crear contactos.
@@ -95,5 +97,19 @@ public class VentanaCrearContacto extends JDialog {
         		}
         	}
         });
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnAceptar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        nameField.addKeyListener(enterKeyListener);
+        phoneField.addKeyListener(enterKeyListener);
     }
 }

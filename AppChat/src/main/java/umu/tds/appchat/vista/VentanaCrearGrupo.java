@@ -9,6 +9,8 @@ import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -162,6 +164,21 @@ public class VentanaCrearGrupo extends JDialog {
         		}
         	}
         });
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnAceptar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        groupNameField.addKeyListener(enterKeyListener);
+        btnAdd.addKeyListener(enterKeyListener);
+        btnRemove.addKeyListener(enterKeyListener);
         
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));

@@ -136,12 +136,12 @@ public class VentanaRegistro extends JDialog {
         btnRegistrar.addActionListener(this::validarCampos);
         panelBotones.add(btnRegistrar);
         
-        // Agrega KeyListener para detectar la tecla Enter en txtPhone y txtPassword
+        // Agrega KeyListener para detectar la tecla Enter
         KeyAdapter enterKeyListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    btnRegistrar.doClick(); // Simula el clic en el botón de inicio de sesión
+                    btnRegistrar.doClick(); // Simula el clic en el botón
                 }
             }
         };

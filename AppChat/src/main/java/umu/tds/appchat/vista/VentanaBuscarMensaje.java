@@ -16,6 +16,8 @@ import umu.tds.appchat.dominio.TipoMensaje;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 @SuppressWarnings("serial")
 public class VentanaBuscarMensaje extends JDialog {
@@ -79,6 +81,21 @@ public class VentanaBuscarMensaje extends JDialog {
                 mostrarResultados(textFieldTexto.getText(), textFieldTelefono.getText(), textFieldContacto.getText());
             }
         });
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnBuscar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        textFieldTexto.addKeyListener(enterKeyListener);
+        textFieldTelefono.addKeyListener(enterKeyListener);
+        textFieldContacto.addKeyListener(enterKeyListener);
     }
 
     private void mostrarResultados(String texto, String movil, String contacto) {
@@ -109,9 +126,6 @@ public class VentanaBuscarMensaje extends JDialog {
         panelResultados.revalidate();
         panelResultados.repaint();
     }
-
-
-
 
     // Método auxiliar para verificar si un contacto es relevante según móvil o nombre
     private boolean esContactoRelevante(Contacto c, String movil, String nombre) {

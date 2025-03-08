@@ -114,12 +114,12 @@ public class VentanaLogin extends JFrame {
         });
         contentPane.add(loginButton);
         
-        // Agrega KeyListener para detectar la tecla Enter en txtPhone y txtPassword
+        // Agrega KeyListener para detectar la tecla Enter
         KeyAdapter enterKeyListener = new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    loginButton.doClick(); // Simula el clic en el botón de inicio de sesión
+                    loginButton.doClick(); // Simula el clic en el botón
                 }
             }
         };
