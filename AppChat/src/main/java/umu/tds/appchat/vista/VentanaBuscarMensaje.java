@@ -2,10 +2,15 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
+import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.TipoMensaje;
 
 import java.awt.*;
@@ -79,26 +84,33 @@ public class VentanaBuscarMensaje extends JDialog {
     private void mostrarResultados(String texto, String movil, String contacto) {
         panelResultados.removeAll();
 
-        Controlador.INSTANCE.getContactosUsuarioActual().stream()
+        List<JPanel> resultados = Controlador.INSTANCE.getContactosUsuarioActual().stream()
             .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
             .flatMap(c -> Controlador.INSTANCE.getMensajes(c).stream()
-                .filter(m -> texto.isBlank() || m.getTexto().toLowerCase().contains(texto.toLowerCase())) // Ahora permite fragmentos
-                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos (emoticonos)
-                .map(m -> crearPanelMensaje(
-                    m.getTipo() == TipoMensaje.ENVIADO 
-                        ? Controlador.INSTANCE.getUsuarioActual().getNombre() 
-                        : getNombreContacto(c),
-                    m.getTipo() == TipoMensaje.ENVIADO 
-                        ? getNombreContacto(c)
-                        : Controlador.INSTANCE.getUsuarioActual().getNombre(),
-                    m.getTexto()
-                ))
+                .filter(m -> texto.isBlank() || m.getTexto().toLowerCase().contains(texto.toLowerCase())) // Búsqueda flexible
+                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
+                .map(m -> Map.entry(m, c)) // Guarda mensaje y contacto asociado
             )
-            .forEach(panelResultados::add);
+            .sorted(Comparator.comparing((Map.Entry<Mensaje, Contacto> entry) -> entry.getKey().getFechaHoraEnvio())
+                .reversed()) // Ordena de más reciente a más antiguo
+            .map(entry -> crearPanelMensaje(
+                entry.getKey().getTipo() == TipoMensaje.ENVIADO 
+                    ? Controlador.INSTANCE.getUsuarioActual().getNombre() 
+                    : getNombreContacto(entry.getValue()),
+                entry.getKey().getTipo() == TipoMensaje.ENVIADO 
+                    ? getNombreContacto(entry.getValue())
+                    : Controlador.INSTANCE.getUsuarioActual().getNombre(),
+                entry.getKey().getTexto()
+            ))
+            .toList();
+
+        resultados.forEach(panelResultados::add);
 
         panelResultados.revalidate();
         panelResultados.repaint();
     }
+
+
 
 
     // Método auxiliar para verificar si un contacto es relevante según móvil o nombre
