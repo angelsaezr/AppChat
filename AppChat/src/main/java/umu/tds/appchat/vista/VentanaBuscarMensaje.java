@@ -1,6 +1,13 @@
 package umu.tds.appchat.vista;
 
 import javax.swing.*;
+
+import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Grupo;
+import umu.tds.appchat.dominio.TipoMensaje;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,32 +71,63 @@ public class VentanaBuscarMensaje extends JDialog {
         btnBuscar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mostrarResultados();
+                mostrarResultados(textFieldTexto.getText(), textFieldTelefono.getText(), textFieldContacto.getText());
             }
         });
     }
 
-    private void mostrarResultados() {
+    private void mostrarResultados(String texto, String movil, String contacto) {
         panelResultados.removeAll();
-        
-        // Mensajes de prueba
-        String[][] mensajes = {
-            {"Usuario1", "Usuario2", "Hola, ¿cómo estás?"},
-            {"Usuario2", "Usuario1", "Bien, ¿y tú?"},
-            {"Usuario3", "Usuario1", "Nos vemos mañana a las 5"},
-            {"Manolo", "Javi", "Holaaa"},
-            {"Usuario2", "Usuario1", "Bien, ¿y tú?"},
-            {"Usuario3", "Usuario1", "Nos vemos mañana a las 5"},
-            {"Manolo", "Javi", "Holaaa"}
-        };
-        
-        for (String[] mensaje : mensajes) {
-            panelResultados.add(crearPanelMensaje(mensaje[0], mensaje[1], mensaje[2]));
-        }
-        
+
+        Controlador.INSTANCE.getContactosUsuarioActual().stream()
+            .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
+            .flatMap(c -> Controlador.INSTANCE.getMensajes(c).stream()
+                .filter(m -> texto.isBlank() || m.getTexto().equals(texto)) // Filtra por texto si es necesario
+                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
+                .map(m -> crearPanelMensaje(
+                    m.getTipo() == TipoMensaje.ENVIADO 
+                        ? Controlador.INSTANCE.getUsuarioActual().getNombre() 
+                        : getNombreContacto(c),
+                    m.getTipo() == TipoMensaje.ENVIADO 
+                        ? getNombreContacto(c)
+                        : Controlador.INSTANCE.getUsuarioActual().getNombre(),
+                    m.getTexto()
+                ))
+            )
+            .forEach(panelResultados::add);
+
         panelResultados.revalidate();
         panelResultados.repaint();
     }
+
+    // Método auxiliar para verificar si un contacto es relevante según móvil o nombre
+    private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
+        if (!movil.isBlank()) {
+            if (c instanceof ContactoIndividual) {
+                return ((ContactoIndividual) c).getMovil().equals(movil);
+            } else if (c instanceof Grupo) {
+                return ((Grupo) c).getMiembros().stream()
+                    .anyMatch(miembro -> miembro.getMovil().equals(movil));
+            }
+        }
+        if (!nombre.isBlank()) {
+            if (c.getNombre().equals(nombre)) return true;
+            if (c instanceof Grupo) {
+                return ((Grupo) c).getMiembros().stream()
+                    .anyMatch(miembro -> miembro.getNombre().equals(nombre));
+            }
+            return false;
+        }
+        return true; // Si no hay filtros, el contacto es relevante
+    }
+
+    // Método auxiliar para obtener el nombre del contacto
+    private String getNombreContacto(Contacto c) {
+        return c.getNombre().isBlank() && c instanceof ContactoIndividual 
+            ? ((ContactoIndividual) c).getMovil() 
+            : c.getNombre();
+    }
+
 
     private JPanel crearPanelMensaje(String emisor, String receptor, String mensaje) {
         JPanel panelMensaje = new JPanel(new BorderLayout());

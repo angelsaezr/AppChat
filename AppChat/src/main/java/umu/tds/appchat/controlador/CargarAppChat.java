@@ -25,7 +25,6 @@ public class CargarAppChat {
 		appChat.registrarUsuario("Vini", "66", "ff", LocalDate.of(2000, 5, 8), "https://bilbaohiria.com/wp-content/uploads/2024/10/viniciusjr809890.jpg", "hola, soy el balon de playa", "email");
 		
 		appChat.login("11", "aa");
-		appChat.login("66", "ff");
 
 		
 		ContactoIndividual c2 = appChat.agregarContacto("Lamine", "22");
