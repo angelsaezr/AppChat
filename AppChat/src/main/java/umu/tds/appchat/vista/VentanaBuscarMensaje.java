@@ -82,8 +82,8 @@ public class VentanaBuscarMensaje extends JDialog {
         Controlador.INSTANCE.getContactosUsuarioActual().stream()
             .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
             .flatMap(c -> Controlador.INSTANCE.getMensajes(c).stream()
-                .filter(m -> texto.isBlank() || m.getTexto().equals(texto)) // Filtra por texto si es necesario
-                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
+                .filter(m -> texto.isBlank() || m.getTexto().toLowerCase().contains(texto.toLowerCase())) // Ahora permite fragmentos
+                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos (emoticonos)
                 .map(m -> crearPanelMensaje(
                     m.getTipo() == TipoMensaje.ENVIADO 
                         ? Controlador.INSTANCE.getUsuarioActual().getNombre() 
@@ -99,6 +99,7 @@ public class VentanaBuscarMensaje extends JDialog {
         panelResultados.revalidate();
         panelResultados.repaint();
     }
+
 
     // Método auxiliar para verificar si un contacto es relevante según móvil o nombre
     private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
