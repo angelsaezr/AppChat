@@ -393,5 +393,10 @@ public class VentanaMain extends JFrame {
         	actualizarChat();
         }
     }
+    
+    public void setContactoSeleccionado(Contacto contacto) {
+    	contactoSeleccionado = contacto;
+    	actualizarChat();
+    }
 
 }

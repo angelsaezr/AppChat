@@ -12,17 +12,21 @@ import umu.tds.appchat.dominio.TipoMensaje;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class VentanaBuscarMensaje extends JDialog {
     private JTextField textFieldTexto, textFieldTelefono, textFieldContacto;
     private JButton btnBuscar;
     private JPanel panelResultados;
-
-    public VentanaBuscarMensaje(JFrame parent) {
-        super(parent, "Buscar Mensajes", true);
+    private VentanaMain ventanaMain;
+    
+    public VentanaBuscarMensaje(VentanaMain ventanaMain) {
+        super(ventanaMain, "Buscar Mensajes", true);
+        this.ventanaMain = ventanaMain;
         setSize(600, 600);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(ventanaMain);
         setLayout(new BorderLayout());
         setResizable(false);
 
@@ -107,8 +111,8 @@ public class VentanaBuscarMensaje extends JDialog {
                 String receptor = (m.getTipo() == TipoMensaje.ENVIADO) 
                     ? Controlador.INSTANCE.getNombreContacto(contacto) 
                     : Controlador.INSTANCE.getUsuarioActual().getNombre();
-
-                return crearPanelMensaje(emisor, receptor, m.getTexto());
+                
+                return crearPanelMensaje(emisor, receptor, m.getTexto(), contacto);
             })
             .toList();
 
@@ -119,7 +123,7 @@ public class VentanaBuscarMensaje extends JDialog {
     }
 
 
-    private JPanel crearPanelMensaje(String emisor, String receptor, String mensaje) {
+    private JPanel crearPanelMensaje(String emisor, String receptor, String mensaje, Contacto contacto) {
         JPanel panelMensaje = new JPanel(new BorderLayout());
         panelMensaje.setBorder(BorderFactory.createLineBorder(new Color(240, 240, 240)));
         panelMensaje.setPreferredSize(new Dimension(500, 80));
@@ -129,14 +133,38 @@ public class VentanaBuscarMensaje extends JDialog {
         panelSuperior.add(new JLabel("  Emisor: " + emisor, JLabel.LEFT), BorderLayout.WEST);
         panelSuperior.add(new JLabel("Receptor: " + receptor + "  ", JLabel.RIGHT), BorderLayout.EAST);
         
+        panelSuperior.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ventanaMain.setContactoSeleccionado(contacto);
+                dispose();
+            }
+        });
+        
         JTextArea textAreaMensaje = new JTextArea(mensaje);
         textAreaMensaje.setEditable(false);
         textAreaMensaje.setWrapStyleWord(true);
         textAreaMensaje.setLineWrap(true);
         textAreaMensaje.setBackground(Color.WHITE);
         
+        textAreaMensaje.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ventanaMain.setContactoSeleccionado(contacto);
+                dispose();
+            }
+        });
+        
         panelMensaje.add(panelSuperior, BorderLayout.NORTH);
         panelMensaje.add(textAreaMensaje, BorderLayout.CENTER);
+        
+        panelMensaje.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                ventanaMain.setContactoSeleccionado(contacto);
+                dispose();
+            }
+        });
         
         return panelMensaje;
     }

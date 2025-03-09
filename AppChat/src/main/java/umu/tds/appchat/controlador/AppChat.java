@@ -34,10 +34,6 @@ public class AppChat {
 		return usuarioActual;
 	}
 
-    public void setUsuarioActual(Usuario usuarioActual) {
-        this.usuarioActual = usuarioActual;
-    }
-
     // Registrar un nuevo usuario
     public boolean registrarUsuario(String nombre, String movil, String contraseña, LocalDate fechaNacimiento, String imagen, String saludo, String email) {
         if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
