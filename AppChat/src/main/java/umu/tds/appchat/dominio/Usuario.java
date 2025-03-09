@@ -23,6 +23,7 @@ public class Usuario {
 	private LocalDate fechaNacimiento;
 	private List<Contacto> contactos;
 	private Descuento descuento;
+	private int codigo;
 
 	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo, String email, LocalDate fechaNacimiento) {
 		this.nombre = nombre;
@@ -92,6 +93,10 @@ public class Usuario {
 	            .mapToInt(mensaje -> 1) // Convierte cada mensaje en un valor 1 para contar
 	            .sum(); // Suma todos los valores
 	}
+	
+	public int getCodigo() {
+		return codigo;
+	}
 
 	// Métodos modificadores
 	public void setImagen(String imagen) {
@@ -109,9 +114,17 @@ public class Usuario {
 	public void setPremium(boolean premium) {
 		this.isPremium = premium;
 	}
+	
+	public void setContactos(List<Contacto> contactos) {
+		contactos.stream().forEach(c -> this.contactos.add(c));	
+	}
 
 	public void setDescuento(Descuento descuento) {
 		this.descuento = descuento;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 
 	// Métodos para gestionar contactos

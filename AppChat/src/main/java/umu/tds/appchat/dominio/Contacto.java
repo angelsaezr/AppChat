@@ -12,7 +12,8 @@ import java.util.List;
 public abstract class Contacto {
 	private String nombre;
 	private List<Mensaje> mensajes;
-	
+	private int codigo;
+
 	public Contacto(String nombre) {
 		this.nombre = nombre;
 		this.mensajes = new LinkedList<Mensaje>();
@@ -28,6 +29,14 @@ public abstract class Contacto {
 
 	public List<Mensaje> getMensajes() {
 		return new LinkedList<Mensaje>(mensajes);
+	}
+	
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
 	}
 	
 	public boolean addMensaje(Mensaje mensaje) {

@@ -13,6 +13,7 @@ public class Mensaje {
     private int emoticono;
     private TipoMensaje tipo;
     private LocalDateTime fechaHoraEnvio;
+    private int codigo;
 
     public Mensaje(String texto, int emoticono, TipoMensaje tipo) {
         this.texto = texto;
@@ -36,5 +37,13 @@ public class Mensaje {
 	public LocalDateTime getFechaHoraEnvio() {
         return fechaHoraEnvio;
     }
+	
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
 }
 

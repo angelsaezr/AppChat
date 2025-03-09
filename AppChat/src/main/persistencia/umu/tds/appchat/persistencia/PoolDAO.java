@@ -15,7 +15,6 @@ public class PoolDAO {
 		if (unicaInstancia == null)
 			unicaInstancia = new PoolDAO();
 		return unicaInstancia;
-		
 	}
 	
 	public Object getObject(int id) {
@@ -28,6 +27,10 @@ public class PoolDAO {
 	
 	public boolean contains(int id){
 		return pool.containsKey(id);
+	}
+	
+	public void removeObject(int id) {
+		pool.remove(id);
 	}
 
 }
