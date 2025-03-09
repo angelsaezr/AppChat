@@ -137,7 +137,7 @@ public class Controlador {
 	    return true; // Si no hay filtros, se considera relevante
 	}
 	
-	// Método auxiliar para obtener el nombre del contacto
+	// Método para obtener el nombre del contacto si está agregado o el móvil si no
     public String getNombreContacto(Contacto c) {
         return c.getNombre().isBlank() && c instanceof ContactoIndividual 
             ? ((ContactoIndividual) c).getMovil() 

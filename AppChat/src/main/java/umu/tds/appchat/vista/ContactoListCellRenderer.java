@@ -86,17 +86,12 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	        e.printStackTrace();
 	    }
 		// Configuración del texto
-		String nombre = contacto.getNombre();
-		lblNombre.setText(nombre);
+		lblNombre.setText(Controlador.INSTANCE.getNombreContacto(contacto));
 		
 		ContactoIndividual c;
 		if (contacto instanceof ContactoIndividual) {
 			c = (ContactoIndividual) contacto;
 			lblTelefono.setText("Tel: " + c.getMovil());
-			
-			if (nombre.equals(""))
-				lblNombre.setText(c.getMovil());
-			
 			lblSaludo.setText(c.getSaludo());
 		} else {
 			Grupo g = (Grupo) contacto;
@@ -108,9 +103,7 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 
 			lblTelefono.setText("Miembros: " + miembrosTexto);
 			lblSaludo.setText("");
-
 		}
-		
 		
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240,242,245,255)));
 		
