@@ -1,8 +1,11 @@
 package umu.tds.appchat.controlador;
 
+import java.text.Normalizer;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.dominio.Contacto;
@@ -32,6 +35,39 @@ public class AppChat {
     
     public Usuario getUsuarioActual() {
 		return usuarioActual;
+	}
+    
+    // Comprobar si el contacto es miembro del grupo
+    public boolean esMiembroGrupo(String contacto, String grupo) {
+		return usuarioActual.esMiembroGrupo(contacto, grupo);
+	}
+    
+    public List<Mensaje> getMensajesDelContacto(Contacto contacto) {
+    	return usuarioActual.getMensajesDeContacto(contacto);
+    }
+    
+    public List<Contacto> getContactosUsuarioActual() {
+    	return usuarioActual.getContactos();
+	}
+    
+    public List<ContactoIndividual> getMiembrosGrupo(Grupo grupo) {
+		return grupo.getMiembros();
+	}
+    
+    public boolean activarPremium() {
+    	if (usuarioActual == null) return false;
+    	
+		this.usuarioActual.setPremium(true);
+		// TODO
+		return true;
+	}
+    
+    public boolean anularPremium() {
+		if (usuarioActual == null) return false;
+		
+		this.usuarioActual.setPremium(false);
+		// TODO
+		return true;
 	}
 
     // Registrar un nuevo usuario
@@ -138,36 +174,45 @@ public class AppChat {
             .allMatch(Boolean::booleanValue); // Devuelve true si TODOS los mensajes se envían con éxito
     }
     
-    // Comprobar si el contacto es miembro del grupo
-    public boolean esMiembroGrupo(String contacto, String grupo) {
-		return usuarioActual.esMiembroGrupo(contacto, grupo);
-	}
-    
-    public List<Mensaje> getMensajesDelContacto(Contacto contacto) {
-    	return usuarioActual.getMensajesDeContacto(contacto);
+    public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
+        // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
+        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("\\p{M}", "")
+                .toLowerCase();
+
+        return getContactosUsuarioActual().stream()
+            .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
+            .flatMap(c -> {
+                List<Mensaje> mensajes = getMensajesDelContacto(c); // Obtiene los mensajes del contacto
+                return mensajes.stream()
+                    .filter(m -> textoNormalizado.isBlank() || 
+                        Normalizer.normalize(m.getTexto(), Normalizer.Form.NFD)
+                            .replaceAll("\\p{M}", "")
+                            .toLowerCase()
+                            .contains(textoNormalizado)) // Búsqueda sin tildes y flexible
+                    .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
+                    .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed()); // Ordena de más reciente a antiguo
+            })
+            .collect(Collectors.toList()); // Recoge los resultados en una lista
     }
-    
-    public List<Contacto> getContactosUsuarioActual() {
-    	return usuarioActual.getContactos();
-	}
-    
-    public boolean activarPremium() {
-    	if (usuarioActual == null) return false;
-    	
-		this.usuarioActual.setPremium(true);
-		// TODO
-		return true;
-	}
 
-	public boolean anularPremium() {
-		if (usuarioActual == null) return false;
-		
-		this.usuarioActual.setPremium(false);
-		// TODO
-		return true;
-	}
-
-	public List<ContactoIndividual> getMiembrosGrupo(Grupo grupo) {
-		return grupo.getMiembros();
+	private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
+	    if (!movil.isBlank()) {
+	        if (c instanceof ContactoIndividual) {
+	            return ((ContactoIndividual) c).getMovil().equals(movil);
+	        } else if (c instanceof Grupo) {
+	            return ((Grupo) c).getMiembros().stream()
+	                .anyMatch(miembro -> miembro.getMovil().equals(movil));
+	        }
+	    }
+	    if (!nombre.isBlank()) {
+	        if (c.getNombre().equals(nombre)) return true;
+	        if (c instanceof Grupo) {
+	            return ((Grupo) c).getMiembros().stream()
+	                .anyMatch(miembro -> miembro.getNombre().equals(nombre));
+	        }
+	        return false;
+	    }
+	    return true; // Si no hay filtros, se considera relevante
 	}
 }
