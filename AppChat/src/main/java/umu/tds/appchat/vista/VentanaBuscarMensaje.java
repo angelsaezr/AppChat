@@ -2,23 +2,16 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.Contacto;
-import umu.tds.appchat.dominio.ContactoIndividual;
-import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.TipoMensaje;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.Normalizer;
 
 @SuppressWarnings("serial")
 public class VentanaBuscarMensaje extends JDialog {
@@ -75,13 +68,7 @@ public class VentanaBuscarMensaje extends JDialog {
         JScrollPane scrollPane = new JScrollPane(panelResultados);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Acción del botón buscar (simulación de mensajes)
-        btnBuscar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostrarResultados(textFieldTexto.getText(), textFieldTelefono.getText(), textFieldContacto.getText());
-            }
-        });
+        btnBuscar.addActionListener(e -> mostrarResultados());
         
         // Agrega KeyListener para detectar la tecla Enter
         KeyAdapter enterKeyListener = new KeyAdapter() {
@@ -99,69 +86,36 @@ public class VentanaBuscarMensaje extends JDialog {
         textFieldContacto.addKeyListener(enterKeyListener);
     }
 
-    private void mostrarResultados(String texto, String movil, String contacto) {
+    private void mostrarResultados() {
         panelResultados.removeAll();
 
-        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .toLowerCase();
+        List<Mensaje> mensajes = Controlador.INSTANCE.buscarMensajes(
+            textFieldTexto.getText(), 
+            textFieldTelefono.getText(), 
+            textFieldContacto.getText()
+        );
 
-        List<JPanel> resultados = Controlador.INSTANCE.getContactosUsuarioActual().stream()
-            .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
-            .flatMap(c -> Controlador.INSTANCE.getMensajes(c).stream()
-                .filter(m -> textoNormalizado.isBlank() || 
-                    Normalizer.normalize(m.getTexto(), Normalizer.Form.NFD)
-                        .replaceAll("\\p{M}", "")
-                        .toLowerCase()
-                        .contains(textoNormalizado)) // Búsqueda flexible y sin tildes
-                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
-                .map(m -> Map.entry(m, c)) // Guarda mensaje y contacto asociado
-            )
-            .sorted(Comparator.comparing((Map.Entry<Mensaje, Contacto> entry) -> entry.getKey().getFechaHoraEnvio())
-                .reversed()) // Ordena de más reciente a más antiguo
-            .map(entry -> crearPanelMensaje(
-                entry.getKey().getTipo() == TipoMensaje.ENVIADO 
+        List<JPanel> resultados = mensajes.stream()
+            .map(m -> {
+                Contacto contacto = Controlador.INSTANCE.getContactosUsuarioActual().stream()
+                    .filter(c -> Controlador.INSTANCE.getMensajes(c).contains(m))
+                    .findFirst().orElse(null);
+
+                String emisor = (m.getTipo() == TipoMensaje.ENVIADO) 
                     ? Controlador.INSTANCE.getUsuarioActual().getNombre() 
-                    : getNombreContacto(entry.getValue()),
-                entry.getKey().getTipo() == TipoMensaje.ENVIADO 
-                    ? getNombreContacto(entry.getValue())
-                    : Controlador.INSTANCE.getUsuarioActual().getNombre(),
-                entry.getKey().getTexto()
-            ))
+                    : Controlador.INSTANCE.getNombreContacto(contacto);
+                String receptor = (m.getTipo() == TipoMensaje.ENVIADO) 
+                    ? Controlador.INSTANCE.getNombreContacto(contacto) 
+                    : Controlador.INSTANCE.getUsuarioActual().getNombre();
+
+                return crearPanelMensaje(emisor, receptor, m.getTexto());
+            })
             .toList();
 
         resultados.forEach(panelResultados::add);
 
         panelResultados.revalidate();
         panelResultados.repaint();
-    }
-
-    // Método auxiliar para verificar si un contacto es relevante según móvil o nombre
-    private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
-        if (!movil.isBlank()) {
-            if (c instanceof ContactoIndividual) {
-                return ((ContactoIndividual) c).getMovil().equals(movil);
-            } else if (c instanceof Grupo) {
-                return ((Grupo) c).getMiembros().stream()
-                    .anyMatch(miembro -> miembro.getMovil().equals(movil));
-            }
-        }
-        if (!nombre.isBlank()) {
-            if (c.getNombre().equals(nombre)) return true;
-            if (c instanceof Grupo) {
-                return ((Grupo) c).getMiembros().stream()
-                    .anyMatch(miembro -> miembro.getNombre().equals(nombre));
-            }
-            return false;
-        }
-        return true; // Si no hay filtros, el contacto es relevante
-    }
-
-    // Método auxiliar para obtener el nombre del contacto
-    private String getNombreContacto(Contacto c) {
-        return c.getNombre().isBlank() && c instanceof ContactoIndividual 
-            ? ((ContactoIndividual) c).getMovil() 
-            : c.getNombre();
     }
 
 

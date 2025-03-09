@@ -1,8 +1,10 @@
 package umu.tds.appchat.controlador;
 
 import java.io.File;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,4 +97,50 @@ public class Controlador {
 	        .map(ContactoIndividual::getNombre) // Obtener el nombre de cada contacto
 	        .collect(Collectors.toList()); // Convertir a lista
 	}
+	
+	public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
+	    String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD)
+	            .replaceAll("\\p{M}", "")
+	            .toLowerCase();
+
+	    return getContactosUsuarioActual().stream()
+	        .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
+	        .flatMap(c -> getMensajes(c).stream()
+	            .filter(m -> textoNormalizado.isBlank() || 
+	                Normalizer.normalize(m.getTexto(), Normalizer.Form.NFD)
+	                    .replaceAll("\\p{M}", "")
+	                    .toLowerCase()
+	                    .contains(textoNormalizado)) // Búsqueda sin tildes y flexible
+	            .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
+	        )
+	        .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed()) // Ordena de más reciente a antiguo
+	        .collect(Collectors.toList());
+	}
+
+	private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
+	    if (!movil.isBlank()) {
+	        if (c instanceof ContactoIndividual) {
+	            return ((ContactoIndividual) c).getMovil().equals(movil);
+	        } else if (c instanceof Grupo) {
+	            return ((Grupo) c).getMiembros().stream()
+	                .anyMatch(miembro -> miembro.getMovil().equals(movil));
+	        }
+	    }
+	    if (!nombre.isBlank()) {
+	        if (c.getNombre().equals(nombre)) return true;
+	        if (c instanceof Grupo) {
+	            return ((Grupo) c).getMiembros().stream()
+	                .anyMatch(miembro -> miembro.getNombre().equals(nombre));
+	        }
+	        return false;
+	    }
+	    return true; // Si no hay filtros, se considera relevante
+	}
+	
+	// Método auxiliar para obtener el nombre del contacto
+    public String getNombreContacto(Contacto c) {
+        return c.getNombre().isBlank() && c instanceof ContactoIndividual 
+            ? ((ContactoIndividual) c).getMovil() 
+            : c.getNombre();
+    }
 }
