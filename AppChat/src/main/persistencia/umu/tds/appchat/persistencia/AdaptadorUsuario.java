@@ -143,7 +143,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	            	.collect(Collectors.toList());
 	}
 
-	public void modificarUsuario() {
+	public void modificarUsuario(Usuario usuario) {
 		// TODO
 	}
 

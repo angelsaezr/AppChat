@@ -16,6 +16,7 @@ public class CargarAppChat {
 	 * @author Francisco Javier
 	 */
 	public static void main(String[] args) {
+		
 		AppChat appChat = AppChat.INSTANCE;
 		appChat.registrarUsuario("Javi", "11", "aa", LocalDate.of(1960, 10, 03),"", "Hola, soy jesus", "email");
 		appChat.registrarUsuario("Lamine Yamal", "22", "bb", LocalDate.of(1995, 12, 28), "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg", "hola, soy lamine", "email");
@@ -63,6 +64,7 @@ public class CargarAppChat {
 		appChat.enviarMensajeContacto(c6, "Soy el mejor", -1);
 		
 	    System.out.println("Fin de la carga de datos");
+	    
 	    
 	    EventQueue.invokeLater(new Runnable() {
             public void run() {

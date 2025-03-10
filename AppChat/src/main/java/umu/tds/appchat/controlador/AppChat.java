@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.persistencia.*;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
@@ -26,12 +27,30 @@ public class AppChat {
     public static final AppChat INSTANCE = new AppChat();
     public static double COSTE_PREMIUM = 100.0;
     
+    private IAdaptadorUsuarioDAO adaptadorUsuario;
+    private IAdaptadorContactoIndividualDAO adaptadorContactoIndividual;
+    private IAdaptadorGrupoDAO adaptadorGrupo;
+    private IAdaptadorMensajeDAO adaptadorMensaje;
+    
     private RepositorioUsuarios repositorioUsuarios;
     private Usuario usuarioActual;
 
     private AppChat() {
         this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
     }
+    
+    private void inicializarAdaptadores() {
+		FactoriaDAO factoria = null;
+		try {
+			factoria = FactoriaDAO.getUnicaInstancia();	
+			adaptadorUsuario = factoria.getUsuarioDAO();
+			adaptadorContactoIndividual = factoria.getContactoIndividualDAO();
+			adaptadorGrupo = factoria.getGrupoDAO();
+			adaptadorMensaje = factoria.getMensajeDAO();
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+	}
     
     public Usuario getUsuarioActual() {
 		return usuarioActual;
@@ -78,6 +97,7 @@ public class AppChat {
         if (imagen == "")
         	imagen = "src/main/resources/profile1.jpg";
         Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
+        //adaptadorUsuario.registrarUsuario(nuevoUsuario);
         return repositorioUsuarios.addUsuario(nuevoUsuario);
     }
 

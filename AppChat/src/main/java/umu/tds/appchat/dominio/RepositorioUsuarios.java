@@ -2,6 +2,8 @@ package umu.tds.appchat.dominio;
 
 import java.util.HashMap;
 import java.util.Map;
+import umu.tds.appchat.persistencia.DAOException;
+import umu.tds.appchat.persistencia.FactoriaDAO;
 
 /**
  * Clase RepositorioUsuarios.
@@ -12,9 +14,22 @@ import java.util.Map;
 public class RepositorioUsuarios {
 	public static final RepositorioUsuarios INSTANCE = new RepositorioUsuarios();
     private Map<String, Usuario> usuarios; // Mapa con clave = móvil, valor = usuario
+    private Map<Integer, Usuario> usuariosCod; // Codigos usuarios
 
     private RepositorioUsuarios() {
         this.usuarios = new HashMap<>();
+        this.usuariosCod = new HashMap<>();
+        /*
+        try {
+			FactoriaDAO.getUnicaInstancia().getUsuarioDAO().recuperarTodosLosUsuarios().stream()
+		    	.forEach(u -> {
+		    		usuarios.put(u.getMovil(), u);
+		    		usuariosCod.put(u.getCodigo(), u);
+		    });
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		*/
     }
 
     // Método para agregar un usuario

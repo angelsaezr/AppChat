@@ -5,7 +5,7 @@ public abstract class FactoriaDAO {
 
 	public static final String DAO_TDS = "umu.tds.appchat.persistencia.TDSFactoriaDAO";
 
-	public static FactoriaDAO getFactoriaDAO(String nombre) throws DAOException {
+	public static FactoriaDAO getUnicaInstancia(String nombre) throws DAOException {
 		if (INSTANCE == null)
 			try {
 				INSTANCE = (FactoriaDAO) Class.forName(nombre).getDeclaredConstructor().newInstance();
@@ -15,8 +15,8 @@ public abstract class FactoriaDAO {
 		return INSTANCE;
 	}
 
-	public static FactoriaDAO getFactoriaDAO() {
-		return INSTANCE;
+	public static FactoriaDAO getUnicaInstancia() throws DAOException {
+		return getUnicaInstancia(FactoriaDAO.DAO_TDS);
 	}
 
 	protected FactoriaDAO() {}
