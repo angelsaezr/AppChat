@@ -200,7 +200,7 @@ public class VentanaRegistro extends JDialog {
             JOptionPane.showMessageDialog(this, "Rellena todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (new String(txtPassword.getPassword()).equals(new String(txtRepitePassword.getPassword()))) {
+        if (!new String(txtPassword.getPassword()).equals(new String(txtRepitePassword.getPassword()))) {
         	JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }

@@ -1,7 +1,10 @@
-package umu.tds.appchat.dominio;
+package umu.tds.appchat.utils;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import umu.tds.appchat.dominio.Mensaje;
+
 import java.io.FileOutputStream;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
