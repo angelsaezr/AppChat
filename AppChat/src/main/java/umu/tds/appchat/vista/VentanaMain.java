@@ -36,9 +36,9 @@ public class VentanaMain extends JFrame {
     private JTextArea areaTexto;
     private JList<Contacto> listaContactos;
     private Contacto contactoSeleccionado;
-    private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar, botonEmoticonos;
-    private JLabel imagenPerfil;
-    private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos;
+    private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar, botonEmoticonos, botonEditarContacto;
+    private JLabel imagenPerfil, imagenContactoSeleccionado, nombreContactoSeleccionado;
+    private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos, panelContactoSeleccionado, panelEditarContacto;
     private DefaultListModel<Contacto> modeloLista;
     
 	public VentanaMain() {
@@ -235,16 +235,15 @@ public class VentanaMain extends JFrame {
 
         contentPane.add(barraSuperior, BorderLayout.NORTH);
 
-        // Panel izquierdo - Lista de contactos con borde sutil
         panelContactos = new JPanel(new BorderLayout());
         panelContactos.setBackground(new Color(245, 245, 245));
-        panelContactos.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
         
         modeloLista = new DefaultListModel<>();
         
         actualizarListaContactos();
         listaContactos = new JList<>(modeloLista);
         listaContactos.setCellRenderer(new ContactoListCellRenderer());
+        listaContactos.setFocusable(false);
         
         listaContactos.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) { // Para evitar eventos múltiples en una sola selección
@@ -252,7 +251,6 @@ public class VentanaMain extends JFrame {
                 actualizarChat(); // Método para mostrar los mensajes del contacto seleccionado
             }
         });
-
         
         panelContactos.add(new JScrollPane(listaContactos), BorderLayout.CENTER);
         panelContactos.setPreferredSize(new Dimension(270, getHeight()));
@@ -262,9 +260,6 @@ public class VentanaMain extends JFrame {
         panelChat = new JPanel(new BorderLayout());
         panelChat.setBackground(Color.WHITE);
         ChatPanel chatPanel = new ChatPanel();
-        //chatPanel.addMessage("Hola, ¿cómo estás?", "Yo", true);
-        //chatPanel.addMessage("Bien, gracias. ¿Y tú?", "Contacto", false);
-        //chatPanel.addEmoticon(3, "Yo", true);
         JScrollPane scrollChat = new JScrollPane(chatPanel);
         scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollChat.setBorder(BorderFactory.createEmptyBorder());
@@ -323,6 +318,30 @@ public class VentanaMain extends JFrame {
         panelEscribir.add(panelEmoticonos, BorderLayout.WEST);
 
         panelChat.add(scrollChat, BorderLayout.CENTER);
+        
+        imagenContactoSeleccionado = new JLabel();
+        
+        nombreContactoSeleccionado = new JLabel();
+        nombreContactoSeleccionado.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        
+        botonEditarContacto = new JButton("➕");
+        botonEditarContacto.setPreferredSize(new Dimension(40, 40));
+        botonEditarContacto.setBackground(new Color(0, 128, 128));
+        botonEditarContacto.setForeground(Color.WHITE);
+        botonEditarContacto.setFocusPainted(false);
+        botonEditarContacto.setBorderPainted(false);
+        
+        panelEditarContacto = new JPanel(new FlowLayout());
+        panelEditarContacto.add(botonEditarContacto);
+        panelEditarContacto.setBackground(Color.WHITE);
+        
+        panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
+        panelContactoSeleccionado.add(imagenContactoSeleccionado, BorderLayout.WEST);
+        panelContactoSeleccionado.add(nombreContactoSeleccionado, BorderLayout.CENTER);
+        panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
+        panelContactoSeleccionado.setBackground(Color.WHITE);
+        panelContactoSeleccionado.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(196,196,196,196)));
+        
         contentPane.add(panelChat, BorderLayout.CENTER);
     }
 
@@ -361,7 +380,33 @@ public class VentanaMain extends JFrame {
             JScrollPane scrollChat = new JScrollPane(chatPanel);
             scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
             scrollChat.setBorder(BorderFactory.createEmptyBorder());
-
+            
+            String fotoUsuario = contactoSeleccionado.getImagen();
+    		try {
+    	        Image imagenOriginal;
+    	        if (fotoUsuario.startsWith("http")) {
+    	            // Cargar imagen desde URL externa
+    				URI uri = URI.create(fotoUsuario);  // Crear un objeto URI a partir del String
+    				URL url = uri.toURL();  // Convertir URI en un objeto URL
+    	            imagenOriginal = ImageIO.read(url);
+    	        } else {
+    	            // Cargar imagen desde recursos locales
+    	            File file = new File(fotoUsuario);
+    	            imagenOriginal = ImageIO.read(file);
+    	        }
+    	        
+    	        if (imagenOriginal != null) {
+    	            Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
+    	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+    	            imagenContactoSeleccionado.setIcon(iconoEscalado);
+    	        }
+    	    } catch (IOException e) {
+    	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
+    	        e.printStackTrace();
+    	    }
+            nombreContactoSeleccionado.setText(Controlador.INSTANCE.getNombreContacto(contactoSeleccionado));
+            
+            panelChat.add(panelContactoSeleccionado, BorderLayout.NORTH);
             panelChat.add(scrollChat, BorderLayout.CENTER);
             panelChat.add(panelEscribir, BorderLayout.SOUTH);
             panelChat.revalidate();

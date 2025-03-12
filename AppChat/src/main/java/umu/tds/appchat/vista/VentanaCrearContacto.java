@@ -112,4 +112,8 @@ public class VentanaCrearContacto extends JDialog {
         nameField.addKeyListener(enterKeyListener);
         phoneField.addKeyListener(enterKeyListener);
     }
+	
+	public void setMovil (String movil) {
+		phoneField.setText(movil);
+	}
 }
