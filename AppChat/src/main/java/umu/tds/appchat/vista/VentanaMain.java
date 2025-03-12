@@ -20,6 +20,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import umu.tds.appchat.controlador.Controlador;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.TipoMensaje;
 import umu.tds.appchat.utils.Utils;
 
@@ -40,6 +41,7 @@ public class VentanaMain extends JFrame {
     private JLabel imagenPerfil, imagenContactoSeleccionado, nombreContactoSeleccionado;
     private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos, panelContactoSeleccionado, panelEditarContacto;
     private DefaultListModel<Contacto> modeloLista;
+    private File imagenSeleccionada;
     
 	public VentanaMain() {
         setTitle("AppChat");
@@ -323,24 +325,7 @@ public class VentanaMain extends JFrame {
         
         nombreContactoSeleccionado = new JLabel();
         nombreContactoSeleccionado.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
-        botonEditarContacto = new JButton("➕");
-        botonEditarContacto.setPreferredSize(new Dimension(40, 40));
-        botonEditarContacto.setBackground(new Color(0, 128, 128));
-        botonEditarContacto.setForeground(Color.WHITE);
-        botonEditarContacto.setFocusPainted(false);
-        botonEditarContacto.setBorderPainted(false);
-        
-        panelEditarContacto = new JPanel(new FlowLayout());
-        panelEditarContacto.add(botonEditarContacto);
-        panelEditarContacto.setBackground(Color.WHITE);
-        
         panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
-        panelContactoSeleccionado.add(imagenContactoSeleccionado, BorderLayout.WEST);
-        panelContactoSeleccionado.add(nombreContactoSeleccionado, BorderLayout.CENTER);
-        panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
-        panelContactoSeleccionado.setBackground(Color.WHITE);
-        panelContactoSeleccionado.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(196,196,196,196)));
         
         contentPane.add(panelChat, BorderLayout.CENTER);
     }
@@ -360,7 +345,9 @@ public class VentanaMain extends JFrame {
     
     public void actualizarChat() {
         if (contactoSeleccionado != null) {
-            panelChat.removeAll(); // Limpiar el panel antes de cargar el nuevo chat
+            panelChat.removeAll();
+            panelContactoSeleccionado.removeAll();
+            
             ChatPanel chatPanel = new ChatPanel();
             
             Controlador.INSTANCE.getMensajes(contactoSeleccionado).stream()
@@ -382,6 +369,7 @@ public class VentanaMain extends JFrame {
             scrollChat.setBorder(BorderFactory.createEmptyBorder());
             
             String fotoUsuario = contactoSeleccionado.getImagen();
+            System.out.println(contactoSeleccionado.getImagen());
     		try {
     	        Image imagenOriginal;
     	        if (fotoUsuario.startsWith("http")) {
@@ -405,6 +393,58 @@ public class VentanaMain extends JFrame {
     	        e.printStackTrace();
     	    }
             nombreContactoSeleccionado.setText(Controlador.INSTANCE.getNombreContacto(contactoSeleccionado));
+            
+            panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
+            panelContactoSeleccionado.setBackground(Color.WHITE);
+            panelContactoSeleccionado.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(196,196,196,196)));
+            panelContactoSeleccionado.add(imagenContactoSeleccionado, BorderLayout.WEST);
+            panelContactoSeleccionado.add(nombreContactoSeleccionado, BorderLayout.CENTER);
+            
+            if (contactoSeleccionado instanceof Grupo) {
+            	botonEditarContacto = new JButton("Cambiar imagen");
+                botonEditarContacto.setPreferredSize(new Dimension(120, 40));
+                botonEditarContacto.setBackground(new Color(0, 128, 128));
+                botonEditarContacto.setForeground(Color.WHITE);
+                botonEditarContacto.setFocusPainted(false);
+                botonEditarContacto.setBorderPainted(false);
+                botonEditarContacto.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                    	List<File> archivos = new PanelArrastraImagen(VentanaMain.this).showDialog();
+                        if (!archivos.isEmpty()) {
+                            imagenSeleccionada = archivos.get(0);
+                            Controlador.INSTANCE.cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
+                            setContactoSeleccionado(contactoSeleccionado);
+                            actualizarListaContactos();
+                        }
+                    }
+                });
+                
+                panelEditarContacto = new JPanel(new FlowLayout());
+                panelEditarContacto.setBackground(Color.WHITE);
+                panelEditarContacto.add(botonEditarContacto);
+                
+            	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
+            	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
+            } else if (contactoSeleccionado instanceof ContactoIndividual && contactoSeleccionado.getNombre().equals("")) {
+            	botonEditarContacto = new JButton("Asignar nombre");
+                botonEditarContacto.setPreferredSize(new Dimension(115, 40));
+                botonEditarContacto.setBackground(new Color(0, 128, 128));
+                botonEditarContacto.setForeground(Color.WHITE);
+                botonEditarContacto.setFocusPainted(false);
+                botonEditarContacto.setBorderPainted(false);
+                botonEditarContacto.addActionListener(e -> {
+                    new VentanaAsignarNombre(this, contactoSeleccionado).setVisible(true);
+                });
+                
+                panelEditarContacto = new JPanel(new FlowLayout());
+                panelEditarContacto.setBackground(Color.WHITE);
+                panelEditarContacto.add(botonEditarContacto);
+                
+            	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
+            	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
+            }
+            
             
             panelChat.add(panelContactoSeleccionado, BorderLayout.NORTH);
             panelChat.add(scrollChat, BorderLayout.CENTER);

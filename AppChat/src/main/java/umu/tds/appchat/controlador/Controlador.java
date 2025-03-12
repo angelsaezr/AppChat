@@ -106,4 +106,16 @@ public class Controlador {
             ? ((ContactoIndividual) c).getMovil() 
             : c.getNombre();
     }
+
+	public boolean asignarNombre(String nombre, Contacto contacto) {
+		return appChat.asignarNombre(nombre, contacto);
+	}
+
+	public boolean cambiarImagenGrupo(Grupo contactoSeleccionado, File imagenGrupo) {
+		String rutaImagen = "";
+    	if (imagenGrupo != null)
+    		rutaImagen = imagenGrupo.getAbsolutePath();
+    	
+		return appChat.cambiarImagenGrupo(contactoSeleccionado, rutaImagen);
+	}
 }

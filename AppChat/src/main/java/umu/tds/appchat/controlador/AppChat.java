@@ -235,4 +235,14 @@ public class AppChat {
 	    }
 	    return true; // Si no hay filtros, se considera relevante
 	}
+
+	public boolean asignarNombre(String nombre, Contacto contacto) {
+		contacto.setNombre(nombre);
+		return true;
+	}
+
+	public boolean cambiarImagenGrupo(Grupo contactoSeleccionado, String rutaImagen) {
+		contactoSeleccionado.setImagen(rutaImagen);
+		return true;
+	}
 }

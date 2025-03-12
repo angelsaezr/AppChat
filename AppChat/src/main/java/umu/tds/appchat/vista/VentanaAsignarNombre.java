@@ -3,6 +3,7 @@ package umu.tds.appchat.vista;
 import javax.swing.*;
 
 import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.dominio.Contacto;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -15,13 +16,12 @@ import java.awt.event.KeyEvent;
  * @author Francisco Javier
  */
 @SuppressWarnings("serial")
-public class VentanaCrearContacto extends JDialog {
+public class VentanaAsignarNombre extends JDialog {
     private JTextField nameField;
-    private JTextField phoneField;
     private JButton btnAceptar, btnCancelar;
 
-	public VentanaCrearContacto(VentanaMain ventanaMain) {
-        super(ventanaMain, "Crear Contacto", true);
+	public VentanaAsignarNombre(VentanaMain ventanaMain, Contacto contacto) {
+        super(ventanaMain, "Asginar nombre", true);
         setSize(400, 180);
         setLocationRelativeTo(ventanaMain);
         setLayout(new GridBagLayout());
@@ -36,7 +36,7 @@ public class VentanaCrearContacto extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Etiqueta y campo de Nombre
-        JLabel lblNombre = new JLabel("Nombre:");
+        JLabel lblNombre = new JLabel("Asignar nombre:");
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -45,17 +45,6 @@ public class VentanaCrearContacto extends JDialog {
         nameField = new JTextField(15);
         gbc.gridx = 1;
         panel.add(nameField, gbc);
-
-        // Etiqueta y campo de Teléfono
-        JLabel lblTelefono = new JLabel("Teléfono:");
-        lblTelefono.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(lblTelefono, gbc);
-
-        phoneField = new JTextField(15);
-        gbc.gridx = 1;
-        panel.add(phoneField, gbc);
 
         // Botones
         JPanel panelBotones = new JPanel();
@@ -75,7 +64,7 @@ public class VentanaCrearContacto extends JDialog {
 
         panelBotones.add(btnAceptar);
         panelBotones.add(btnCancelar);
-        gbc.gridy = 2;
+        gbc.gridy = 1;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(panelBotones, gbc);
@@ -85,14 +74,15 @@ public class VentanaCrearContacto extends JDialog {
         // Acción de los botones
         btnCancelar.addActionListener(e -> dispose());
         btnAceptar.addActionListener(e -> {
-        	if(nameField.getText().isBlank() || phoneField.getText().isBlank())
+        	if(nameField.getText().isBlank())
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         	else {
-        		if(!Controlador.INSTANCE.agregarContacto(nameField.getText(), phoneField.getText()))
+        		if(!Controlador.INSTANCE.asignarNombre(nameField.getText(), contacto))
         			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
-        			JOptionPane.showMessageDialog(this, "Contacto agregado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+        			JOptionPane.showMessageDialog(this, "Nombre asignado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
         			ventanaMain.actualizarListaContactos();
+        			ventanaMain.setContactoSeleccionado(contacto);
         			dispose();
         		}
         	}
@@ -110,6 +100,5 @@ public class VentanaCrearContacto extends JDialog {
         
         // Asigna el KeyListener a los campos de entrada
         nameField.addKeyListener(enterKeyListener);
-        phoneField.addKeyListener(enterKeyListener);
     }
 }
