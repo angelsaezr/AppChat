@@ -21,7 +21,7 @@ public class VentanaAsignarNombre extends JDialog {
     private JButton btnAceptar, btnCancelar;
 
 	public VentanaAsignarNombre(VentanaMain ventanaMain, Contacto contacto) {
-        super(ventanaMain, "Asginar nombre", true);
+        super(ventanaMain, "Asignar nombre", true);
         setSize(400, 180);
         setLocationRelativeTo(ventanaMain);
         setLayout(new GridBagLayout());
