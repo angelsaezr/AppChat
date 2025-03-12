@@ -8,7 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
-import umu.tds.appchat.persistencia.*;
+import umu.tds.appchat.persistencia.DAOException;
+import umu.tds.appchat.persistencia.FactoriaDAO;
+import umu.tds.appchat.persistencia.IAdaptadorContactoIndividualDAO;
+import umu.tds.appchat.persistencia.IAdaptadorGrupoDAO;
+import umu.tds.appchat.persistencia.IAdaptadorMensajeDAO;
+import umu.tds.appchat.persistencia.IAdaptadorUsuarioDAO;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
@@ -37,6 +42,7 @@ public class AppChat {
 
     private AppChat() {
         this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
+        inicializarAdaptadores();
     }
     
     private void inicializarAdaptadores() {
