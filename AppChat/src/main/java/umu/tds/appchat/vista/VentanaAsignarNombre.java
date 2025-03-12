@@ -82,7 +82,7 @@ public class VentanaAsignarNombre extends JDialog {
         		else {
         			JOptionPane.showMessageDialog(this, "Nombre asignado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
         			ventanaMain.actualizarListaContactos();
-        			ventanaMain.setContactoSeleccionado(contacto);
+        			ventanaMain.actualizarChat();
         			dispose();
         		}
         	}

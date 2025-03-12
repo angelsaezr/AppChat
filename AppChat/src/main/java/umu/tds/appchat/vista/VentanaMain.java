@@ -249,8 +249,7 @@ public class VentanaMain extends JFrame {
         
         listaContactos.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) { // Para evitar eventos múltiples en una sola selección
-                contactoSeleccionado = listaContactos.getSelectedValue();
-                actualizarChat(); // Método para mostrar los mensajes del contacto seleccionado
+                setContactoSeleccionado(listaContactos.getSelectedValue());
             }
         });
         
@@ -344,6 +343,7 @@ public class VentanaMain extends JFrame {
 
     
     public void actualizarChat() {
+    	panelChat.setVisible(false);
         if (contactoSeleccionado != null) {
             panelChat.removeAll();
             panelContactoSeleccionado.removeAll();
@@ -369,7 +369,6 @@ public class VentanaMain extends JFrame {
             scrollChat.setBorder(BorderFactory.createEmptyBorder());
             
             String fotoUsuario = contactoSeleccionado.getImagen();
-            System.out.println(contactoSeleccionado.getImagen());
     		try {
     	        Image imagenOriginal;
     	        if (fotoUsuario.startsWith("http")) {
@@ -414,8 +413,8 @@ public class VentanaMain extends JFrame {
                         if (!archivos.isEmpty()) {
                             imagenSeleccionada = archivos.get(0);
                             Controlador.INSTANCE.cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
-                            setContactoSeleccionado(contactoSeleccionado);
                             actualizarListaContactos();
+                            actualizarChat();
                         }
                     }
                 });
@@ -454,7 +453,8 @@ public class VentanaMain extends JFrame {
             
             SwingUtilities.invokeLater(() -> 
             	scrollChat.getVerticalScrollBar().setValue(scrollChat.getVerticalScrollBar().getMaximum())
-        );
+            );
+            panelChat.setVisible(true);
         }
     }
     
