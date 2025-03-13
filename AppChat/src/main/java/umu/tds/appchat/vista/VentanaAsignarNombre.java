@@ -2,7 +2,7 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 
 import java.awt.*;
@@ -77,7 +77,7 @@ public class VentanaAsignarNombre extends JDialog {
         	if(nameField.getText().isBlank())
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         	else {
-        		if(!Controlador.INSTANCE.asignarNombre(nameField.getText(), contacto))
+        		if(!AppChat.INSTANCE.asignarNombre(nameField.getText(), contacto))
         			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Nombre asignado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);

@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import java.util.LinkedList;
 import java.util.List;
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 
@@ -49,7 +49,7 @@ public class VentanaCrearGrupo extends JDialog {
         contactListModel = new DefaultListModel<>();
         groupListModel = new DefaultListModel<>();
 
-        listaContactos = Controlador.INSTANCE.getContactosUsuarioActual();
+        listaContactos = AppChat.INSTANCE.getContactosUsuarioActual();
         for (Contacto c : listaContactos) {
         	if (c instanceof ContactoIndividual)
         		contactListModel.addElement(c.getNombre());
@@ -155,7 +155,7 @@ public class VentanaCrearGrupo extends JDialog {
                 for (int i = 0; i < groupListModel.size(); i++) {
                 	miembros.add(groupListModel.get(i)); // Agregar cada elemento a la lista
                 }
-        		if(!Controlador.INSTANCE.agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada))
+        		if(AppChat.INSTANCE.agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada) != null)
         			JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Grupo creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);

@@ -1,5 +1,6 @@
 package umu.tds.appchat.controlador;
 
+import java.io.File;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -56,6 +57,14 @@ public class AppChat {
 		return usuarioActual;
 	}
     
+    public String getImagenPerfil() {
+		return usuarioActual.getImagen();
+	}
+    
+    public String getNombreUsuarioActual() {
+    	return usuarioActual.getNombre();
+    }
+    
     // Comprobar si el contacto es miembro del grupo
     public boolean esMiembroGrupo(String contacto, String grupo) {
 		return usuarioActual.esMiembroGrupo(contacto, grupo);
@@ -69,8 +78,10 @@ public class AppChat {
     	return usuarioActual.getContactos();
 	}
     
-    public List<ContactoIndividual> getMiembrosGrupo(Grupo grupo) {
-		return grupo.getMiembros();
+    public List<String> getMiembrosGrupo(Grupo grupo) {
+		return grupo.getMiembros().stream()
+		        .map(ContactoIndividual::getNombre) // Obtener el nombre de cada contacto
+		        .collect(Collectors.toList()); // Convertir a lista
 	}
     
     public boolean activarPremium() {
@@ -124,8 +135,12 @@ public class AppChat {
         return null;
     }
     
-    public Grupo agregarGrupo(String nombreGrupo, List<String> miembros, String imagenGrupo) {
+    public Grupo agregarGrupo(String nombreGrupo, List<String> miembros, File imagenGrupo) {
     	if (usuarioActual == null) return null;
+    	
+    	String rutaImagen = "";
+    	if (imagenGrupo != null)
+    		rutaImagen = imagenGrupo.getAbsolutePath();
     	
     	List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
     	for(Contacto c : getContactosUsuarioActual()) {
@@ -141,7 +156,7 @@ public class AppChat {
     		}
     	}
     	
-    	Grupo nuevoGrupo = new Grupo(nombreGrupo, contactos, imagenGrupo);
+    	Grupo nuevoGrupo = new Grupo(nombreGrupo, contactos, rutaImagen);
     	if(usuarioActual.addContacto(nuevoGrupo)) return nuevoGrupo;
     	
     	return null;
@@ -241,8 +256,17 @@ public class AppChat {
 		return true;
 	}
 
-	public boolean cambiarImagenGrupo(Grupo contactoSeleccionado, String rutaImagen) {
+	public boolean cambiarImagenGrupo(Grupo contactoSeleccionado, File imagenGrupo) {
+		String rutaImagen = "";
+    	if (imagenGrupo != null)
+    		rutaImagen = imagenGrupo.getAbsolutePath();
 		contactoSeleccionado.setImagen(rutaImagen);
 		return true;
 	}
+	
+	public String getNombreContacto(Contacto c) {
+        return c.getNombre().isBlank() && c instanceof ContactoIndividual 
+            ? ((ContactoIndividual) c).getMovil() 
+            : c.getNombre();
+    }
 }

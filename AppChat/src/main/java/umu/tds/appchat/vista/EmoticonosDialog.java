@@ -7,7 +7,7 @@ import tds.BubbleText;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 
 @SuppressWarnings("serial")
@@ -32,7 +32,7 @@ public class EmoticonosDialog extends JDialog {
             emojiButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Controlador.INSTANCE.enviarMensajeContacto(contactoReceptor, "", index);
+                    AppChat.INSTANCE.enviarMensajeContacto(contactoReceptor, "", index);
                     setVisible(false);
                     dispose();
                     ventanaMain.actualizarChat();

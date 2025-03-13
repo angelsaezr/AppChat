@@ -7,12 +7,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 
 /**
  * Ventana para registrarse.
@@ -204,7 +206,13 @@ public class VentanaRegistro extends JDialog {
         	JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        Controlador.INSTANCE.registrarUsuario(txtUsuario.getText(), txtMovil.getText(), new String(txtPassword.getPassword()), dateChooser.getDate(), imagenSeleccionada, txtSaludo.getText(), txtEmail.getText());
+        String rutaImagen = "";
+    	if (imagenSeleccionada != null)
+    		rutaImagen = imagenSeleccionada.getAbsolutePath();
+    	LocalDate fechaNacimientoLocal = LocalDate.now();
+    	if (dateChooser.getDate() != null)
+    		fechaNacimientoLocal = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        AppChat.INSTANCE.registrarUsuario(txtUsuario.getText(), txtMovil.getText(), new String(txtPassword.getPassword()), fechaNacimientoLocal, rutaImagen, txtSaludo.getText(), txtEmail.getText());
         JOptionPane.showMessageDialog(this, "Registro exitoso.", "Información", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }

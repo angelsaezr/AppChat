@@ -17,7 +17,7 @@ import javax.imageio.ImageIO;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
@@ -96,7 +96,7 @@ public class VentanaMain extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 VentanaContactos tablaContactos = new VentanaContactos(VentanaMain.this);
-                Controlador.INSTANCE.getContactosUsuarioActual().stream()
+                AppChat.INSTANCE.getContactosUsuarioActual().stream()
                 	.filter(ContactoIndividual.class::isInstance) // Filtrar solo ContactoIndividual
                 	.map(ContactoIndividual.class::cast) // Hacer el casting a ContactoIndividual
                 	.filter(cI -> !cI.getNombre().isBlank()) // Filtrar contactos con nombre no vacío
@@ -190,7 +190,7 @@ public class VentanaMain extends JFrame {
 
         // Cargar imagen de perfil redondeada con tamaño fijo
         imagenPerfil = new JLabel();
-        String fotoUsuario = Controlador.INSTANCE.getImagenPerfil();
+        String fotoUsuario = AppChat.INSTANCE.getImagenPerfil();
         Image imagenOriginal;
         if (fotoUsuario != "") {
         	try {
@@ -350,10 +350,10 @@ public class VentanaMain extends JFrame {
             
             ChatPanel chatPanel = new ChatPanel();
             
-            Controlador.INSTANCE.getMensajes(contactoSeleccionado).stream()
+            AppChat.INSTANCE.getMensajesDelContacto(contactoSeleccionado).stream()
             .forEach(mensaje -> {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
-                String nombre = !esEnviado ? contactoSeleccionado.getNombre() : Controlador.INSTANCE.getUsuarioActual().getNombre();
+                String nombre = !esEnviado ? contactoSeleccionado.getNombre() : AppChat.INSTANCE.getNombreUsuarioActual();
                 
                 if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.equals("")) {
                 	ContactoIndividual c = (ContactoIndividual) contactoSeleccionado;
@@ -391,7 +391,7 @@ public class VentanaMain extends JFrame {
     	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
     	        e.printStackTrace();
     	    }
-            nombreContactoSeleccionado.setText(Controlador.INSTANCE.getNombreContacto(contactoSeleccionado));
+            nombreContactoSeleccionado.setText(AppChat.INSTANCE.getNombreContacto(contactoSeleccionado));
             
             panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
             panelContactoSeleccionado.setBackground(Color.WHITE);
@@ -412,7 +412,7 @@ public class VentanaMain extends JFrame {
                     	List<File> archivos = new PanelArrastraImagen(VentanaMain.this).showDialog();
                         if (!archivos.isEmpty()) {
                             imagenSeleccionada = archivos.get(0);
-                            Controlador.INSTANCE.cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
+                            AppChat.INSTANCE.cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
                             actualizarListaContactos();
                             actualizarChat();
                         }
@@ -460,7 +460,7 @@ public class VentanaMain extends JFrame {
     
     public void actualizarListaContactos() {
         modeloLista.clear();
-        List<Contacto> contactos = Controlador.INSTANCE.getContactosUsuarioActual();
+        List<Contacto> contactos = AppChat.INSTANCE.getContactosUsuarioActual();
         contactos.forEach(modeloLista::addElement);
     }
     
@@ -472,7 +472,7 @@ public class VentanaMain extends JFrame {
             
             // Enviar un mensaje por cada línea
             for (String linea : lineas) {
-                Controlador.INSTANCE.enviarMensajeContacto(contactoSeleccionado, linea.trim(), -1);
+                AppChat.INSTANCE.enviarMensajeContacto(contactoSeleccionado, linea.trim(), -1);
             }
             areaTexto.setText("");
         	actualizarChat();

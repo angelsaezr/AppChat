@@ -22,7 +22,7 @@ public class ChatPanel extends JPanel {
         chatContainer = new JPanel();
         chatContainer.setLayout(new BoxLayout(chatContainer, BoxLayout.Y_AXIS));
         chatContainer.setBackground(new Color(240, 240, 240));
-        chatContainer.setSize(200, 100);
+        chatContainer.setSize(400, 100);
         chatContainer.setPreferredSize(new Dimension(400, 0));
 
         scrollPane = new JScrollPane(chatContainer);

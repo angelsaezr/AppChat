@@ -2,7 +2,7 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -88,7 +88,7 @@ public class VentanaCrearContacto extends JDialog {
         	if(nameField.getText().isBlank() || phoneField.getText().isBlank())
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         	else {
-        		if(!Controlador.INSTANCE.agregarContacto(nameField.getText(), phoneField.getText()))
+        		if(AppChat.INSTANCE.agregarContacto(nameField.getText(), phoneField.getText()) != null)
         			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Contacto agregado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);

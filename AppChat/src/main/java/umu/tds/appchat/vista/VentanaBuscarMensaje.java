@@ -4,7 +4,7 @@ import javax.swing.*;
 
 import java.util.List;
 
-import umu.tds.appchat.controlador.Controlador;
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.TipoMensaje;
@@ -93,7 +93,7 @@ public class VentanaBuscarMensaje extends JDialog {
     private void mostrarResultados() {
         panelResultados.removeAll();
 
-        List<Mensaje> mensajes = Controlador.INSTANCE.buscarMensajes(
+        List<Mensaje> mensajes = AppChat.INSTANCE.buscarMensajes(
             textFieldTexto.getText(), 
             textFieldTelefono.getText(), 
             textFieldContacto.getText()
@@ -101,16 +101,16 @@ public class VentanaBuscarMensaje extends JDialog {
 
         List<JPanel> resultados = mensajes.stream()
             .map(m -> {
-                Contacto contacto = Controlador.INSTANCE.getContactosUsuarioActual().stream()
-                    .filter(c -> Controlador.INSTANCE.getMensajes(c).contains(m))
+                Contacto contacto = AppChat.INSTANCE.getContactosUsuarioActual().stream()
+                    .filter(c -> AppChat.INSTANCE.getMensajesDelContacto(c).contains(m))
                     .findFirst().orElse(null);
 
                 String emisor = (m.getTipo() == TipoMensaje.ENVIADO) 
-                    ? Controlador.INSTANCE.getUsuarioActual().getNombre() 
-                    : Controlador.INSTANCE.getNombreContacto(contacto);
+                    ? AppChat.INSTANCE.getNombreUsuarioActual()
+                    : AppChat.INSTANCE.getNombreContacto(contacto);
                 String receptor = (m.getTipo() == TipoMensaje.ENVIADO) 
-                    ? Controlador.INSTANCE.getNombreContacto(contacto) 
-                    : Controlador.INSTANCE.getUsuarioActual().getNombre();
+                    ? AppChat.INSTANCE.getNombreContacto(contacto) 
+                    : AppChat.INSTANCE.getNombreUsuarioActual();
                 
                 return crearPanelMensaje(emisor, receptor, m.getTexto(), contacto);
             })
