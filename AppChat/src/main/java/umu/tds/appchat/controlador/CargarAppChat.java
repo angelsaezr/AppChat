@@ -7,14 +7,14 @@ import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
 import umu.tds.appchat.vista.VentanaLogin;
 
+/**
+ * Clase para lanzar la aplicacion.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class CargarAppChat {
 	
-	/**
-	 * Clase para lanzar la aplicacion.
-	 * 
-	 * @author Ángel
-	 * @author Francisco Javier
-	 */
 	public static void main(String[] args) {
 		
 		AppChat appChat = AppChat.getInstance();

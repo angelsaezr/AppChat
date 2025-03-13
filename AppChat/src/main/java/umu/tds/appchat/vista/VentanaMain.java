@@ -25,7 +25,7 @@ import umu.tds.appchat.dominio.TipoMensaje;
 import umu.tds.appchat.utils.Utils;
 
 /**
- * Ventana principal de la aplicacion.
+ * Ventana principal de la aplicación.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -64,10 +64,10 @@ public class VentanaMain extends JFrame {
         // Configuración del panel principal
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
-        contentPane.setBackground(new Color(255, 255, 255)); // Colores originales
+        contentPane.setBackground(new Color(255, 255, 255));
         setContentPane(contentPane);
 
-        // Barra superior con diseño moderno y centrado vertical
+        // Barra superior
         barraSuperior = new JPanel(new BorderLayout());
         barraSuperior.setBackground(new Color(240, 248, 255));
         barraSuperior.setPreferredSize(new Dimension(getWidth(), 60));
@@ -228,7 +228,7 @@ public class VentanaMain extends JFrame {
         }
         
 
-        panelDerecha = new JPanel(new GridBagLayout()); // Centrado vertical
+        panelDerecha = new JPanel(new GridBagLayout());
         panelDerecha.setBackground(new Color(240, 248, 255));
         panelDerecha.add(imagenPerfil);
 

@@ -5,7 +5,7 @@ import java.awt.*;
 import tds.BubbleText;
 
 /**
- * Clase del panel donde se intercambian mensajes.
+ * Clase del panel donde se cargan los chats.
  * 
  * @author Ángel
  * @author Francisco Javier

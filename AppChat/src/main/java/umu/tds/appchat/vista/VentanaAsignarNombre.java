@@ -10,7 +10,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Ventana para añadir o crear contactos.
+ * Ventana para asignar un nombre de contacto a un usuaario que nos ha escrito y no tenemos agregado.
  * 
  * @author Ángel
  * @author Francisco Javier

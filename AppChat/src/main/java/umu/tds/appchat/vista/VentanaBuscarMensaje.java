@@ -15,6 +15,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Ventana para buscar mensajes.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaBuscarMensaje extends JDialog {
     private JTextField textFieldTexto, textFieldTelefono, textFieldContacto;

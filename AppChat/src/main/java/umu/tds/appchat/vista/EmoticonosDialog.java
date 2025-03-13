@@ -10,6 +10,12 @@ import java.awt.event.ActionListener;
 import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 
+/**
+ * Ventana para seleccionar y enviar emoticonos.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class EmoticonosDialog extends JDialog {
     private JPanel panelEmojis;

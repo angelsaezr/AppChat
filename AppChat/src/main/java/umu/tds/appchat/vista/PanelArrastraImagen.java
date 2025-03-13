@@ -23,7 +23,7 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
- * Panel para arrastrar la imagen.
+ * Ventana para arrastrar la imagen.
  * 
  * @author Ángel
  * @author Francisco Javier

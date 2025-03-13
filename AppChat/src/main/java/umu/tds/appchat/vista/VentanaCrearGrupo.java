@@ -15,6 +15,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
+/**
+ * Ventana para crear grupos.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaCrearGrupo extends JDialog {
     private JTextField groupNameField;

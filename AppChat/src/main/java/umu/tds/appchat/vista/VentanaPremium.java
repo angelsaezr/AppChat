@@ -6,7 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Ventana para el servicio premium.
+ * Ventana para contratar el servicio premium.
  * 
  * @author Ángel
  * @author Francisco Javier

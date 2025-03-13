@@ -9,7 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Ventana para añadir o crear contactos.
+ * Ventana para añadir contactos.
  * 
  * @author Ángel
  * @author Francisco Javier

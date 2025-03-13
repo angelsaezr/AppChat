@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Ventana con la lista de contactos.
+ * Ventana con la tabla de contactos.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -51,7 +51,6 @@ public class VentanaContactos extends JDialog {
 
         add(panel);
 
-        // Acción del botón
         btnAceptar.addActionListener(e -> dispose());
         
         // Agrega KeyListener a la ventana y la tabla

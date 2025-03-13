@@ -119,7 +119,7 @@ public class VentanaLogin extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    loginButton.doClick(); // Simula el clic en el botón
+                    loginButton.doClick(); // Simula el click en el botón
                 }
             }
         };
