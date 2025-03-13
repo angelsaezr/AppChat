@@ -101,6 +101,18 @@ public class VentanaMain extends JFrame {
                 	.map(ContactoIndividual.class::cast) // Hacer el casting a ContactoIndividual
                 	.filter(cI -> !cI.getNombre().isBlank()) // Filtrar contactos con nombre no vacío
                 	.forEach(cI -> tablaContactos.addContactoIndividual(cI.getNombre(), cI.getMovil(), cI.getSaludo())); // Agregar a la tabla
+                AppChat.getInstance().getContactosUsuarioActual().stream()
+                .filter(Grupo.class::isInstance) // Filtrar solo Grupo
+            	.map(Grupo.class::cast) // Hacer el casting a Grupo
+            	.forEach(g -> {
+            	    // Obtener los nombres de los miembros del grupo
+            	    String miembros = g.getMiembros().stream()
+            	        .map(ContactoIndividual::getNombre)
+            	        .reduce((a, b) -> a + ", " + b) // Unir los nombres con coma
+            	        .orElse("Sin miembros");
+
+            	    tablaContactos.addGrupo(g.getNombre(), miembros);
+            	});
 
                 tablaContactos.setVisible(true);
             }

@@ -43,7 +43,7 @@ public class AppChat {
 
     private AppChat() {
         this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
-        inicializarAdaptadores();
+        //inicializarAdaptadores();
     }
     
     public static AppChat getInstance() {
