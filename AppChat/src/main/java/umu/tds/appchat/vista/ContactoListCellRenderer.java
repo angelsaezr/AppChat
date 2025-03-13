@@ -86,7 +86,7 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	        e.printStackTrace();
 	    }
 		// Configuración del texto
-		lblNombre.setText(AppChat.INSTANCE.getNombreContacto(contacto));
+		lblNombre.setText(AppChat.getInstance().getNombreContacto(contacto));
 		
 		ContactoIndividual c;
 		if (contacto instanceof ContactoIndividual) {
@@ -95,7 +95,7 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 			lblSaludo.setText(c.getSaludo());
 		} else {
 			Grupo g = (Grupo) contacto;
-			List<String> miembros = AppChat.INSTANCE.getMiembrosGrupo(g);
+			List<String> miembros = AppChat.getInstance().getMiembrosGrupo(g);
 
 			// Usamos `joining(", ")` para unir los nombres
 			String miembrosTexto = miembros.stream()

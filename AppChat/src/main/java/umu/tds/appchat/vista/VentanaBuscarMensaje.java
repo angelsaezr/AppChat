@@ -93,7 +93,7 @@ public class VentanaBuscarMensaje extends JDialog {
     private void mostrarResultados() {
         panelResultados.removeAll();
 
-        List<Mensaje> mensajes = AppChat.INSTANCE.buscarMensajes(
+        List<Mensaje> mensajes = AppChat.getInstance().buscarMensajes(
             textFieldTexto.getText(), 
             textFieldTelefono.getText(), 
             textFieldContacto.getText()
@@ -101,16 +101,16 @@ public class VentanaBuscarMensaje extends JDialog {
 
         List<JPanel> resultados = mensajes.stream()
             .map(m -> {
-                Contacto contacto = AppChat.INSTANCE.getContactosUsuarioActual().stream()
-                    .filter(c -> AppChat.INSTANCE.getMensajesDelContacto(c).contains(m))
+                Contacto contacto = AppChat.getInstance().getContactosUsuarioActual().stream()
+                    .filter(c -> AppChat.getInstance().getMensajesDelContacto(c).contains(m))
                     .findFirst().orElse(null);
 
                 String emisor = (m.getTipo() == TipoMensaje.ENVIADO) 
-                    ? AppChat.INSTANCE.getNombreUsuarioActual()
-                    : AppChat.INSTANCE.getNombreContacto(contacto);
+                    ? AppChat.getInstance().getNombreUsuarioActual()
+                    : AppChat.getInstance().getNombreContacto(contacto);
                 String receptor = (m.getTipo() == TipoMensaje.ENVIADO) 
-                    ? AppChat.INSTANCE.getNombreContacto(contacto) 
-                    : AppChat.INSTANCE.getNombreUsuarioActual();
+                    ? AppChat.getInstance().getNombreContacto(contacto) 
+                    : AppChat.getInstance().getNombreUsuarioActual();
                 
                 return crearPanelMensaje(emisor, receptor, m.getTexto(), contacto);
             })

@@ -49,7 +49,7 @@ public class VentanaCrearGrupo extends JDialog {
         contactListModel = new DefaultListModel<>();
         groupListModel = new DefaultListModel<>();
 
-        listaContactos = AppChat.INSTANCE.getContactosUsuarioActual();
+        listaContactos = AppChat.getInstance().getContactosUsuarioActual();
         for (Contacto c : listaContactos) {
         	if (c instanceof ContactoIndividual)
         		contactListModel.addElement(c.getNombre());
@@ -155,7 +155,7 @@ public class VentanaCrearGrupo extends JDialog {
                 for (int i = 0; i < groupListModel.size(); i++) {
                 	miembros.add(groupListModel.get(i)); // Agregar cada elemento a la lista
                 }
-        		if(AppChat.INSTANCE.agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada) != null)
+        		if(AppChat.getInstance().agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada) != null)
         			JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Grupo creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);

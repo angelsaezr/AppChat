@@ -212,7 +212,7 @@ public class VentanaRegistro extends JDialog {
     	LocalDate fechaNacimientoLocal = LocalDate.now();
     	if (dateChooser.getDate() != null)
     		fechaNacimientoLocal = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        AppChat.INSTANCE.registrarUsuario(txtUsuario.getText(), txtMovil.getText(), new String(txtPassword.getPassword()), fechaNacimientoLocal, rutaImagen, txtSaludo.getText(), txtEmail.getText());
+        AppChat.getInstance().registrarUsuario(txtUsuario.getText(), txtMovil.getText(), new String(txtPassword.getPassword()), fechaNacimientoLocal, rutaImagen, txtSaludo.getText(), txtEmail.getText());
         JOptionPane.showMessageDialog(this, "Registro exitoso.", "Información", JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }

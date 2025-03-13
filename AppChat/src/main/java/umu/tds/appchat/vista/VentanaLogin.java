@@ -102,7 +102,7 @@ public class VentanaLogin extends JFrame {
             if (txtPhone.getText().trim().isBlank() || new String(txtPassword.getPassword()).trim().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                boolean exito = AppChat.INSTANCE.login(txtPhone.getText().trim(), new String(txtPassword.getPassword()).trim());
+                boolean exito = AppChat.getInstance().login(txtPhone.getText().trim(), new String(txtPassword.getPassword()).trim());
                 if (exito) {
                 	JOptionPane.showMessageDialog(this, "Sesión iniciada", "Información", JOptionPane.INFORMATION_MESSAGE);
                     dispose();

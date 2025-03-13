@@ -96,7 +96,7 @@ public class VentanaMain extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 VentanaContactos tablaContactos = new VentanaContactos(VentanaMain.this);
-                AppChat.INSTANCE.getContactosUsuarioActual().stream()
+                AppChat.getInstance().getContactosUsuarioActual().stream()
                 	.filter(ContactoIndividual.class::isInstance) // Filtrar solo ContactoIndividual
                 	.map(ContactoIndividual.class::cast) // Hacer el casting a ContactoIndividual
                 	.filter(cI -> !cI.getNombre().isBlank()) // Filtrar contactos con nombre no vacío
@@ -190,7 +190,7 @@ public class VentanaMain extends JFrame {
 
         // Cargar imagen de perfil redondeada con tamaño fijo
         imagenPerfil = new JLabel();
-        String fotoUsuario = AppChat.INSTANCE.getImagenPerfil();
+        String fotoUsuario = AppChat.getInstance().getImagenPerfil();
         Image imagenOriginal;
         if (fotoUsuario != "") {
         	try {
@@ -350,10 +350,10 @@ public class VentanaMain extends JFrame {
             
             ChatPanel chatPanel = new ChatPanel();
             
-            AppChat.INSTANCE.getMensajesDelContacto(contactoSeleccionado).stream()
+            AppChat.getInstance().getMensajesDelContacto(contactoSeleccionado).stream()
             .forEach(mensaje -> {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
-                String nombre = !esEnviado ? contactoSeleccionado.getNombre() : AppChat.INSTANCE.getNombreUsuarioActual();
+                String nombre = !esEnviado ? contactoSeleccionado.getNombre() : AppChat.getInstance().getNombreUsuarioActual();
                 
                 if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.equals("")) {
                 	ContactoIndividual c = (ContactoIndividual) contactoSeleccionado;
@@ -391,7 +391,7 @@ public class VentanaMain extends JFrame {
     	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
     	        e.printStackTrace();
     	    }
-            nombreContactoSeleccionado.setText(AppChat.INSTANCE.getNombreContacto(contactoSeleccionado));
+            nombreContactoSeleccionado.setText(AppChat.getInstance().getNombreContacto(contactoSeleccionado));
             
             panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
             panelContactoSeleccionado.setBackground(Color.WHITE);
@@ -412,7 +412,7 @@ public class VentanaMain extends JFrame {
                     	List<File> archivos = new PanelArrastraImagen(VentanaMain.this).showDialog();
                         if (!archivos.isEmpty()) {
                             imagenSeleccionada = archivos.get(0);
-                            AppChat.INSTANCE.cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
+                            AppChat.getInstance().cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
                             actualizarListaContactos();
                             actualizarChat();
                         }
@@ -460,7 +460,7 @@ public class VentanaMain extends JFrame {
     
     public void actualizarListaContactos() {
         modeloLista.clear();
-        List<Contacto> contactos = AppChat.INSTANCE.getContactosUsuarioActual();
+        List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
         contactos.forEach(modeloLista::addElement);
     }
     
@@ -472,7 +472,7 @@ public class VentanaMain extends JFrame {
             
             // Enviar un mensaje por cada línea
             for (String linea : lineas) {
-                AppChat.INSTANCE.enviarMensajeContacto(contactoSeleccionado, linea.trim(), -1);
+                AppChat.getInstance().enviarMensajeContacto(contactoSeleccionado, linea.trim(), -1);
             }
             areaTexto.setText("");
         	actualizarChat();

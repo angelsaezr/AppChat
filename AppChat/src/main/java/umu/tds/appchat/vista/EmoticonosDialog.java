@@ -32,7 +32,7 @@ public class EmoticonosDialog extends JDialog {
             emojiButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    AppChat.INSTANCE.enviarMensajeContacto(contactoReceptor, "", index);
+                    AppChat.getInstance().enviarMensajeContacto(contactoReceptor, "", index);
                     setVisible(false);
                     dispose();
                     ventanaMain.actualizarChat();

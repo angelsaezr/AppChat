@@ -29,8 +29,8 @@ import umu.tds.appchat.dominio.TipoMensaje;
  * @author Francisco Javier
  */
 public class AppChat {
-
-    public static final AppChat INSTANCE = new AppChat();
+	private static AppChat INSTANCE;
+	
     public static double COSTE_PREMIUM = 100.0;
     
     private IAdaptadorUsuarioDAO adaptadorUsuario;
@@ -44,6 +44,13 @@ public class AppChat {
     private AppChat() {
         this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
         inicializarAdaptadores();
+    }
+    
+    public static AppChat getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new AppChat();
+        }
+        return INSTANCE;
     }
     
     private void inicializarAdaptadores() {
