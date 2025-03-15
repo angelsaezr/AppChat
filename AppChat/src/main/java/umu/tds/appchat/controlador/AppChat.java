@@ -122,7 +122,8 @@ public class AppChat {
         	imagen = "src/main/resources/profile1.jpg";
         Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
         //adaptadorUsuario.registrarUsuario(nuevoUsuario);
-        return repositorioUsuarios.addUsuario(nuevoUsuario);
+        repositorioUsuarios.addUsuario(nuevoUsuario);
+        return true;
     }
 
     // Iniciar sesión con móvil y contraseña

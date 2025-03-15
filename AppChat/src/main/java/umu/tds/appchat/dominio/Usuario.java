@@ -36,6 +36,7 @@ public class Usuario {
 		this.isPremium = false;
 		this.contactos = new LinkedList<>();
 		this.descuento = null; // Por defecto, el usuario no tiene descuento
+		this.codigo = 0;
 	}
 
 	// Métodos Getters

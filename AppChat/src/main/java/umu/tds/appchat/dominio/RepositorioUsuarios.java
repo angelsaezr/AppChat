@@ -30,6 +30,7 @@ public class RepositorioUsuarios {
 			e.printStackTrace();
 		}
 		*/
+		
     }
 
     // Método para agregar un usuario
@@ -38,15 +39,17 @@ public class RepositorioUsuarios {
             return false; // No se permite añadir usuarios duplicados por número de móvil
         }
         usuarios.put(usuario.getMovil(), usuario);
+        usuariosCod.put(usuario.getCodigo(), usuario);
         return true;
     }
 
     // Método para eliminar un usuario
-    public boolean removeUsuario(String movil) {
-        if (movil == null || !usuarios.containsKey(movil)) {
+    public boolean removeUsuario(Usuario usuario) {
+        if (usuario.getMovil() == null || !usuarios.containsKey(usuario.getMovil())) {
             return false;
         }
-        usuarios.remove(movil);
+        usuarios.remove(usuario.getMovil());
+        usuariosCod.remove(usuario.getCodigo());
         return true;
     }
 
