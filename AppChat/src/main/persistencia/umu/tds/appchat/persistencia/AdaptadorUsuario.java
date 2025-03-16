@@ -33,7 +33,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	private static AdaptadorUsuario unicaInstancia = null;
 
 	public AdaptadorUsuario() {
-		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
+		this.servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
 	}
 
 	// Singleton
@@ -44,19 +44,21 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	public void registrarUsuario(Usuario usuario) {
-		
-		Entidad e = new Entidad();
-		servPersistencia.registrarEntidad(e);
-		/*try {
+		try {
 			Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
+			
+			if (eUsuario != null) {
+				return;
+			}
 		} catch (NullPointerException e) {
 			// TODO: handle exception
-		}*/
+		}
+		
 		
 		// objeto cliente ya existe
-		/*Entidad eUsuario2 = new Entidad();
-		eUsuario2.setNombre("usuario"); // setTipo() hubiese sido más apropiado
-		eUsuario2.setPropiedades(
+		Entidad eUsuario = new Entidad();
+		eUsuario.setNombre("usuario"); // setTipo() hubiese sido más apropiado
+		eUsuario.setPropiedades(
 			    new ArrayList<>(
 			        Arrays.asList(
 			            new Propiedad(NOMBRE, usuario.getNombre()),
@@ -64,9 +66,9 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			            new Propiedad(CONTRASEÑA, usuario.getContraseña()))));
 		
 		System.out.println("bbb");
-		eUsuario2 = servPersistencia.registrarEntidad(eUsuario2);
+		eUsuario = servPersistencia.registrarEntidad(eUsuario);
 		System.out.println("aaa");
-		usuario.setCodigo(eUsuario2.getId());*/
+		usuario.setCodigo(eUsuario.getId());
 		
 		// Se comprueba que no está registrada la entidad que corresponde al código del
 		// objeto
