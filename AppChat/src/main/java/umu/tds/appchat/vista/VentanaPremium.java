@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import umu.tds.appchat.controlador.AppChat;
+import umu.tds.appchat.dominio.TipoDescuento;
 
 /**
  * Ventana para contratar el servicio premium.
@@ -13,9 +15,9 @@ import java.awt.event.KeyEvent;
  */
 @SuppressWarnings("serial")
 public class VentanaPremium extends JDialog {
-	private JButton btnAceptar, btnCancelar;
+    private JButton btnAceptar, btnCancelar;
 
-	public VentanaPremium(JFrame parent) {
+    public VentanaPremium(JFrame parent) {
         super(parent, "Seleccionar Descuento Premium", true);
         setSize(400, 160);
         setLocationRelativeTo(parent);
@@ -37,19 +39,10 @@ public class VentanaPremium extends JDialog {
         gbc.gridy = 0;
         panel.add(lblDescuento, gbc);
 
-        JComboBox<String> comboDescuentos = new JComboBox<>(new String[]{"Descuento Mayores", "Descuento Estudiantes", "Descuento Familiar"});
+        JComboBox<String> comboDescuentos = new JComboBox<>(new String[]{"Descuento por Fecha", "Descuento por Mensajes"});
         comboDescuentos.setPreferredSize(new Dimension(180, 25));
         gbc.gridx = 1;
         panel.add(comboDescuentos, gbc);
-
-        // Etiqueta de cantidad a pagar (centrada horizontalmente)
-        JLabel lblCantidad = new JLabel("Cantidad a pagar: 99,75€", SwingConstants.CENTER);
-        lblCantidad.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;  // Ocupar ambas columnas
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel.add(lblCantidad, gbc);
 
         // Botones
         JPanel panelBotones = new JPanel();
@@ -59,7 +52,7 @@ public class VentanaPremium extends JDialog {
         btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
-        
+
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
@@ -69,7 +62,10 @@ public class VentanaPremium extends JDialog {
 
         panelBotones.add(btnAceptar);
         panelBotones.add(btnCancelar);
-        gbc.gridy = 2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;  // Ocupar ambas columnas
+        gbc.anchor = GridBagConstraints.CENTER;
         panel.add(panelBotones, gbc);
 
         add(panel);
@@ -77,10 +73,19 @@ public class VentanaPremium extends JDialog {
         // Acción de los botones
         btnCancelar.addActionListener(e -> dispose());
         btnAceptar.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Descuento aplicado: " + comboDescuentos.getSelectedItem());
+            // Obtener el tipo de descuento seleccionado
+            String tipoDescuento = (String) comboDescuentos.getSelectedItem();
+            TipoDescuento tipo = tipoDescuento.equals("Descuento por Fecha") ? TipoDescuento.FECHA : TipoDescuento.MENSAJE;
+            AppChat.getInstance().activarPremium(tipo);
+            double descuentoAplicado = AppChat.getInstance().getDescuento();
+            double precioFinal = AppChat.COSTE_PREMIUM * (1 - descuentoAplicado);
+            
+            // Mostrar el diálogo con el precio final
+            mostrarDialogoPrecio(precioFinal);
+            
             dispose();
         });
-        
+
         // Agrega KeyListener para detectar la tecla Enter
         KeyAdapter enterKeyListener = new KeyAdapter() {
             @Override
@@ -93,6 +98,34 @@ public class VentanaPremium extends JDialog {
         
         // Asigna el KeyListener a los campos de entrada
         comboDescuentos.addKeyListener(enterKeyListener);
-        
+    }
+
+    /**
+     * Muestra un JDialog con el precio final a pagar después del descuento.
+     * @param precioFinal Cantidad a pagar con descuento aplicado.
+     */
+    private void mostrarDialogoPrecio(double precioFinal) {
+        JDialog dialogo = new JDialog(this, "Confirmación de Pago", true);
+        dialogo.setSize(300, 150);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setLayout(new BorderLayout());
+
+        JLabel mensaje = new JLabel("Cantidad anual a pagar: " + String.format("%.2f", precioFinal) + "€", SwingConstants.CENTER);
+        mensaje.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        dialogo.add(mensaje, BorderLayout.CENTER);
+
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.setBackground(new Color(0, 128, 128));
+        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btnCerrar.setFocusPainted(false);
+        btnCerrar.setBorderPainted(false);
+        btnCerrar.addActionListener(ev -> dialogo.dispose());
+
+        JPanel panelBoton = new JPanel();
+        panelBoton.add(btnCerrar);
+        dialogo.add(panelBoton, BorderLayout.SOUTH);
+
+        dialogo.setVisible(true);
     }
 }

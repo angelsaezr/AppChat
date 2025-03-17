@@ -98,11 +98,11 @@ public class AppChat {
 		        .collect(Collectors.toList()); // Convertir a lista
 	}
     
-    public boolean activarPremium() {
+    public boolean activarPremium(TipoDescuento tipo) {
     	if (usuarioActual == null) return false;
     	
-		this.usuarioActual.setPremium(true);
-		// TODO
+		usuarioActual.setPremium(true);
+		usuarioActual.setDescuento(tipo);
 		return true;
 	}
     
@@ -284,9 +284,8 @@ public class AppChat {
             ? ((ContactoIndividual) c).getMovil() 
             : c.getNombre();
     }
-	
-	public void asignarDescuento(Usuario usuario, TipoDescuento tipo) {
-	    usuario.setDescuento(tipo);
-	}
 
+	public double getDescuento() {
+		return usuarioActual.calDescuento();
+	}
 }

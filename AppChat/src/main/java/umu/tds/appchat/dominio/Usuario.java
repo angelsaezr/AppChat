@@ -76,9 +76,9 @@ public class Usuario {
 		return new LinkedList<>(contactos);
 	} // Devuelve una copia para evitar modificaciones externas
 
-	public double calDescuento(int numMensajes) {
+	public double calDescuento() {
 	    return descuento
-	        .map(d -> d.getDescuento(numMensajes)) // Si hay descuento, aplica la función getDescuento
+	        .map(d -> d.getDescuento(getNumMensajesEnviados())) // Si hay descuento, aplica la función getDescuento
 	        .orElse(0.0); // Si no hay descuento, devuelve 0.0
 	}
 	
@@ -90,7 +90,7 @@ public class Usuario {
 	            .orElseGet(LinkedList::new);
 	}
 	
-	public int getNumMensajesEnviados() {
+	private int getNumMensajesEnviados() {
 	    return contactos.stream()
 	            .flatMap(contacto -> contacto.getMensajes().stream()) // Obtiene todos los mensajes de los contactos
 	            .mapToInt(mensaje -> 1) // Convierte cada mensaje en un valor 1 para contar
@@ -125,7 +125,6 @@ public class Usuario {
 	public void setDescuento(TipoDescuento tipoDescuento) {
 	    this.descuento = Optional.of(DescuentoFactoria.crearDescuento(tipoDescuento));
 	}
-
 
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
