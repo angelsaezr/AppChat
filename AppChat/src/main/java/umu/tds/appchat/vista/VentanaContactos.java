@@ -2,6 +2,10 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+
+import umu.tds.appchat.controlador.AppChat;
+import umu.tds.appchat.dominio.Contacto;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +38,48 @@ public class VentanaContactos extends JDialog {
 		tableModelContactos = new ContactTableModel();
 		tableContactos = new JTable(tableModelContactos);
 		JScrollPane scrollContactos = new JScrollPane(tableContactos);
+		
+		// Agrega evento de clic a la tabla de contactos individuales
+		tableContactos.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int row = tableContactos.getSelectedRow();
+		        if (row != -1) {
+		            String nombre = (String) tableModelContactos.getValueAt(row, 0);
+		            
+		            AppChat.getInstance().getContactosUsuarioActual().stream()
+		                .filter(contacto -> contacto.getNombre().equals(nombre))
+		                .findFirst()
+		                .ifPresent(contacto -> {
+		                    ventanaMain.setContactoSeleccionado(contacto);
+		                    dispose();
+		                });
+		        }
+		    }
+		});
 
 		tableModelGrupos = new GroupTableModel();
 		tableGrupos = new JTable(tableModelGrupos);
 		JScrollPane scrollGrupos = new JScrollPane(tableGrupos);
+		
+		// Agrega evento de clic a la tabla de grupos
+		tableGrupos.addMouseListener(new java.awt.event.MouseAdapter() {
+		    @Override
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		        int row = tableGrupos.getSelectedRow();
+		        if (row != -1) {
+		            String nombre = (String) tableModelGrupos.getValueAt(row, 0);
+		            
+		            AppChat.getInstance().getContactosUsuarioActual().stream()
+		                .filter(contacto -> contacto.getNombre().equals(nombre))
+		                .findFirst()
+		                .ifPresent(contacto -> {
+		                    ventanaMain.setContactoSeleccionado(contacto);
+		                    dispose();
+		                });
+		        }
+		    }
+		});
 
 		// Panel para las tablas
 		JPanel panelTablas = new JPanel(new GridBagLayout());
