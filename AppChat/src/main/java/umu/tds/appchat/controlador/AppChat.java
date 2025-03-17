@@ -20,6 +20,7 @@ import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
+import umu.tds.appchat.dominio.TipoDescuento;
 import umu.tds.appchat.dominio.TipoMensaje;
 
 /**
@@ -283,4 +284,9 @@ public class AppChat {
             ? ((ContactoIndividual) c).getMovil() 
             : c.getNombre();
     }
+	
+	public void asignarDescuento(Usuario usuario, TipoDescuento tipo) {
+	    usuario.setDescuento(tipo);
+	}
+
 }

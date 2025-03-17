@@ -22,7 +22,7 @@ public class Usuario {
 	private String saludo;
 	private LocalDate fechaNacimiento;
 	private List<Contacto> contactos;
-	private Descuento descuento;
+	private Optional<Descuento> descuento;
 	private int codigo;
 
 	public Usuario(String nombre, String movil, String contraseña, String imagen, String saludo, String email, LocalDate fechaNacimiento) {
@@ -76,8 +76,10 @@ public class Usuario {
 		return new LinkedList<>(contactos);
 	} // Devuelve una copia para evitar modificaciones externas
 
-	public Descuento getDescuento() {
-		return descuento;
+	public double calDescuento(int numMensajes) {
+	    return descuento
+	        .map(d -> d.getDescuento(numMensajes)) // Si hay descuento, aplica la función getDescuento
+	        .orElse(0.0); // Si no hay descuento, devuelve 0.0
 	}
 	
 	public List<Mensaje> getMensajesDeContacto(Contacto contacto) {
@@ -120,9 +122,10 @@ public class Usuario {
 		contactos.stream().forEach(c -> this.contactos.add(c));	
 	}
 
-	public void setDescuento(Descuento descuento) {
-		this.descuento = descuento;
+	public void setDescuento(TipoDescuento tipoDescuento) {
+	    this.descuento = Optional.of(DescuentoFactoria.crearDescuento(tipoDescuento));
 	}
+
 
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
@@ -169,14 +172,6 @@ public class Usuario {
 		if (contacto == null)
 			return false;
 		return contactos.remove(contacto);
-	}
-
-	// Método para calcular el descuento aplicado al usuario
-	public double calcularDescuento(int numMensajes) {
-		if (descuento != null) {
-			return descuento.getDescuento(numMensajes);
-		}
-		return 0.0;
 	}
 	
 	public boolean addMensaje(Contacto receptor, String texto, int emoticono, TipoMensaje tipo) {
