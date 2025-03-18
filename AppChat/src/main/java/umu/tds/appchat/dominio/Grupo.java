@@ -38,10 +38,26 @@ public class Grupo extends Contacto {
 	}
 	
 	public boolean addMiembro(ContactoIndividual miembro) {
-		return this.miembros.add(miembro);
+		if (this.miembros.contains(miembro)) {
+			return false;
+		}
+		this.miembros.add(miembro);
+		return true;
 	}
 	
 	public boolean removeMiembro(ContactoIndividual miembro) {
-		return this.miembros.remove(miembro);
+		if (this.miembros.contains(miembro)) {
+			this.miembros.remove(miembro);
+	        return true;
+	    }
+	    return false;
+	}
+	
+	public boolean removeAllMiembros() {
+	    if (this.miembros != null && !this.miembros.isEmpty()) {
+	        this.miembros.clear();
+	        return true;
+	    }
+	    return false;
 	}
 }

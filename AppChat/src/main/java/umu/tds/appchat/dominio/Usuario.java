@@ -191,6 +191,15 @@ public class Usuario {
 		        .orElse(null);
 	}
 	
+	public ContactoIndividual getContactoIndividualPorNombre(String nombre) {
+		return contactos.stream()
+		        .filter(contacto -> contacto instanceof ContactoIndividual)
+		        .map(contacto -> (ContactoIndividual) contacto)
+		        .filter(contactoIndividual -> contactoIndividual.getUsuario().getNombre().equals(nombre))
+		        .findFirst()
+		        .orElse(null);
+	}
+	
 	public Optional<Grupo> obtenerGrupo(String nombreGrupo) {
 		return contactos.stream().filter(c -> c instanceof Grupo).map(c -> (Grupo) c)
 				.filter(c -> c.getNombre().equals(nombreGrupo)).findFirst();

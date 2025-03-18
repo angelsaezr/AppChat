@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 import umu.tds.appchat.controlador.AppChat;
-import umu.tds.appchat.dominio.Contacto;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -479,6 +479,51 @@ public class VentanaMain extends JFrame {
                 
             	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
             	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
+            	
+            	JButton botonEditarMiembros = new JButton("Editar Miembros");
+                botonEditarMiembros.setPreferredSize(new Dimension(120, 40));
+                botonEditarMiembros.setBackground(new Color(0, 128, 128));
+                botonEditarMiembros.setForeground(Color.WHITE);
+                botonEditarMiembros.setFocusPainted(false);
+                botonEditarMiembros.setBorderPainted(false);
+                botonEditarMiembros.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        new VentanaEditarMiembrosGrupo(VentanaMain.this, (Grupo) contactoSeleccionado).setVisible(true);
+                    }
+                });
+                
+                panelEditarContacto.add(botonEditarMiembros);
+            	
+            	JButton botonEliminarGrupo = new JButton("Eliminar Grupo");
+            	   botonEliminarGrupo.setPreferredSize(new Dimension(120, 40));
+            	   botonEliminarGrupo.setBackground(new Color(255, 69, 0));
+            	   botonEliminarGrupo.setForeground(Color.WHITE);
+            	   botonEliminarGrupo.setFocusPainted(false);
+            	   botonEliminarGrupo.setBorderPainted(false);
+            	   botonEliminarGrupo.addMouseListener(new MouseAdapter() {
+            		   @Override
+            	       public void mouseClicked(MouseEvent e) {
+            	           int confirmacion = JOptionPane.showConfirmDialog(
+            	               VentanaMain.this,
+            	               "¿Seguro que quieres eliminar este grupo?",
+            	               "Eliminar Grupo",
+            	               JOptionPane.YES_NO_OPTION,
+            	               JOptionPane.WARNING_MESSAGE
+            	           );
+
+            	           if (confirmacion == JOptionPane.YES_OPTION) {
+            	               AppChat.getInstance().eliminarGrupo((Grupo) contactoSeleccionado);
+            	               actualizarListaContactos();
+            	               panelChat.removeAll();
+            	               panelChat.revalidate();
+            	               panelChat.repaint();
+            	           }
+            	       }
+            	   });
+            	
+            	   panelEditarContacto.add(botonEliminarGrupo);
+            	   
             } else if (contactoSeleccionado instanceof ContactoIndividual && contactoSeleccionado.getNombre().equals("")) {
             	botonEditarContacto = new JButton("Asignar nombre");
                 botonEditarContacto.setPreferredSize(new Dimension(115, 40));

@@ -292,4 +292,47 @@ public class AppChat {
 	public boolean isPremium() {
 		return usuarioActual.isPremium();
 	}
+	
+	public boolean eliminarGrupo(Grupo grupo) {
+		if (usuarioActual.removeContacto(grupo)) {
+			// TODO PERSISTENCIA
+			return true;
+		}
+		return false;
+	}
+		
+	public boolean actualizarMiembrosGrupo(Grupo grupo, List<String> nuevosMiembros) {
+		// TODO PERSISTENCIA
+	    if (grupo == null || nuevosMiembros == null) {
+	        return false;
+	    }
+	    
+	    List<ContactoIndividual> nuevosMiembrosLista = new LinkedList<>();
+	    for (String nombre : nuevosMiembros) {
+	        ContactoIndividual contacto = this.usuarioActual.getContactoIndividualPorNombre(nombre);
+	        if (contacto != null) {
+	            nuevosMiembrosLista.add(contacto);
+	        }
+        	//System.out.println(contacto.getNombre().toString()+ "bbb");
+	    
+	    for (Contacto c : this.usuarioActual.getContactos()) {
+	    	System.out.println(c.getNombre().toString()+ "bbb");
+	    }
+
+	    }
+	    System.out.println(nuevosMiembros.toString());
+	    System.out.println("aaaa");
+	    System.out.println(nuevosMiembrosLista.toString());
+	    
+	    grupo.removeAllMiembros();
+	    for (ContactoIndividual nuevoMiembro : nuevosMiembrosLista) {
+	        grupo.addMiembro(nuevoMiembro);
+	    }
+	    
+	    if (grupo.getMiembros().size() < 1) {
+	    	return false;
+	    }
+	    
+	    return true;
+	}
 }
