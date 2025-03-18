@@ -288,4 +288,8 @@ public class AppChat {
 	public double getDescuento() {
 		return usuarioActual.calDescuento();
 	}
+	
+	public boolean isPremium() {
+		return usuarioActual.isPremium();
+	}
 }

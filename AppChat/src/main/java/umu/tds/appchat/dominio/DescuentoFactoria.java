@@ -11,7 +11,7 @@ public class DescuentoFactoria {
     static {
         // Se registran los tipos de descuento con un Supplier vacío (requieren parámetros al instanciar)
         proveedores.put(TipoDescuento.FECHA, () -> new DescuentoPorFecha(LocalDate.now(), LocalDate.now().plusDays(7), 0.10));
-        proveedores.put(TipoDescuento.MENSAJE, () -> new DescuentoPorMensaje(100, 0.05));
+        proveedores.put(TipoDescuento.MENSAJE, () -> new DescuentoPorMensaje(10, 0.05));
     }
 
     public static Descuento crearDescuento(TipoDescuento tipo) {

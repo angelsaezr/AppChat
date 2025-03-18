@@ -81,8 +81,7 @@ public class VentanaAsignarNombre extends JDialog {
         			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Nombre asignado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
-        			ventanaMain.actualizarListaContactos();
-        			ventanaMain.actualizarChat();
+        			ventanaMain.setContactoSeleccionado(contacto);
         			dispose();
         		}
         	}

@@ -46,7 +46,7 @@ public class VentanaMain extends JFrame {
 	public VentanaMain() {
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 650);
+        setSize(1100, 750);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         
@@ -425,8 +425,7 @@ public class VentanaMain extends JFrame {
                         if (!archivos.isEmpty()) {
                             imagenSeleccionada = archivos.get(0);
                             AppChat.getInstance().cambiarImagenGrupo((Grupo)contactoSeleccionado, imagenSeleccionada);
-                            actualizarListaContactos();
-                            actualizarChat();
+                            setContactoSeleccionado(contactoSeleccionado);
                         }
                     }
                 });
@@ -493,6 +492,7 @@ public class VentanaMain extends JFrame {
     
     public void setContactoSeleccionado(Contacto contacto) {
     	contactoSeleccionado = contacto;
+    	listaContactos.setSelectedValue(contacto, true);
     	actualizarChat();
     }
 
