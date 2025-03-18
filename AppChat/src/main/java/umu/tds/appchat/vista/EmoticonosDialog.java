@@ -24,6 +24,7 @@ public class EmoticonosDialog extends JDialog {
         setLayout(new BorderLayout());
         setBackground(new Color(240, 248, 255));
         setSize(new Dimension(200, 130));
+        setUndecorated(true);
         panelEmojis = new JPanel(new GridLayout(2, 4, 5, 5));
         panelEmojis.setBackground(new Color(240, 248, 255));
         this.setResizable(false);

@@ -5,8 +5,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -42,6 +46,7 @@ public class VentanaMain extends JFrame {
     private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos, panelContactoSeleccionado, panelEditarContacto;
     private DefaultListModel<Contacto> modeloLista;
     private File imagenSeleccionada;
+    private EmoticonosDialog popup;
     
 	public VentanaMain() {
         setTitle("AppChat");
@@ -309,12 +314,47 @@ public class VentanaMain extends JFrame {
         botonEmoticonos.setFocusPainted(false);
         botonEmoticonos.setBorderPainted(false);
         botonEmoticonos.setPreferredSize(new Dimension(30, 30));
-        
+
         botonEmoticonos.addActionListener(e -> {
-            Point location = botonEmoticonos.getLocationOnScreen();
-            EmoticonosDialog popup = new EmoticonosDialog(VentanaMain.this, contactoSeleccionado);
-            popup.setLocation(location.x, location.y - 130);
-            popup.setVisible(true);
+            if (popup != null && popup.isVisible()) {
+                popup.setVisible(false); // Oculta el diálogo si ya está visible
+            } else {
+                Point location = botonEmoticonos.getLocationOnScreen();
+                popup = new EmoticonosDialog(VentanaMain.this, contactoSeleccionado);
+                popup.setLocation(location.x, location.y - 130);
+                popup.setVisible(true);
+                
+                // Agregar MouseListeners para ocultar el popup
+                VentanaMain.this.addComponentListener(new ComponentAdapter() {
+                    @Override
+                    public void componentMoved(ComponentEvent e) {
+                    	if (popup != null && popup.isVisible()) {
+                            popup.setVisible(false);
+                            VentanaMain.this.removeComponentListener(this); // Eliminar el listener después de ocultarlo
+                        }
+                    }
+                    @Override
+                    public void componentResized(ComponentEvent e) {
+                    	if (popup != null && popup.isVisible()) {
+                            popup.setVisible(false);
+                            VentanaMain.this.removeComponentListener(this); // Eliminar el listener después de ocultarlo
+                        }
+                    }
+                });
+                WindowStateListener stateListener = new WindowStateListener() {
+                    @Override
+                    public void windowStateChanged(WindowEvent ev) {
+                        if ((ev.getNewState() & Frame.ICONIFIED) != 0 || (ev.getNewState() & Frame.MAXIMIZED_BOTH) != 0) {
+                            if (popup != null && popup.isVisible()) {
+                                popup.setVisible(false);
+                                VentanaMain.this.removeWindowStateListener(this); // Eliminar el listener después de ocultarlo
+                            }
+                        }
+                    }
+                };
+                VentanaMain.this.addWindowStateListener(stateListener);
+
+            }
         });
         
         panelAreaTexto = new JPanel(new BorderLayout());
@@ -355,6 +395,9 @@ public class VentanaMain extends JFrame {
 
     
     public void actualizarChat() {
+    	if (popup != null && popup.isVisible()) {
+            popup.setVisible(false); // Oculta el diálogo si ya está visible
+        }
     	panelChat.setVisible(false);
         if (contactoSeleccionado != null) {
             panelChat.removeAll();
