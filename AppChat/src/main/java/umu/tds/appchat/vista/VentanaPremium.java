@@ -17,10 +17,10 @@ import umu.tds.appchat.dominio.TipoDescuento;
 public class VentanaPremium extends JDialog {
     private JButton btnAceptar, btnCancelar;
 
-    public VentanaPremium(JFrame parent) {
-        super(parent, "Seleccionar Descuento Premium", true);
+    public VentanaPremium(VentanaMain ventanaMain) {
+        super(ventanaMain, "Seleccionar Descuento Premium", true);
         setSize(400, 160);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(ventanaMain);
         setLayout(new GridBagLayout());
         this.setResizable(false);
 
@@ -84,6 +84,7 @@ public class VentanaPremium extends JDialog {
             mostrarDialogoPrecio(precioFinal);
             
             dispose();
+            ventanaMain.setPremium();
         });
 
         // Agrega KeyListener para detectar la tecla Enter

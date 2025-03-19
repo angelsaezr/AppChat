@@ -531,9 +531,38 @@ public class VentanaMain extends JFrame {
     
     // Edita VentanaMain para que sea la de un usuario premium
     public void setPremium() {
-    	if (!AppChat.getInstance().isPremium()) return;
-    	// TODO
+        if (!AppChat.getInstance().isPremium()) return;
+
+        // Elimina el botón Premium y reemplaza con el nuevo botón
+        panelIzquierda.remove(botonPremium);
+
+        JButton botonNuevoPremium = crearBotonSuperior("⭐  Premium", new Color(204, 153, 0), 525, 15, 100, 30, () -> {
+            new VentanaPremiumAplicado(VentanaMain.this).setVisible(true);
+        });
+
+        panelIzquierda.add(botonNuevoPremium);
+
+        // Carga imagen de estrella junto al icono de usuario (a la izquierda)
+        try {
+            File file = new File("src/main/resources/premium.png");
+            Image starImage = ImageIO.read(file);
+            ImageIcon starIcon = new ImageIcon(starImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+
+            JLabel starLabel = new JLabel(starIcon);
+            starLabel.setToolTipText("Usuario premium"); // Agrega tooltip al pasar el ratón
+
+            panelDerecha.add(starLabel, 0); // Agrega la estrella antes de la imagen del usuario
+        } catch (IOException e) {
+            System.err.println("No se pudo cargar la imagen premium: " + e.getMessage());
+        }
+
+        // Refrescar la interfaz
+        panelIzquierda.revalidate();
+        panelIzquierda.repaint();
+        panelDerecha.revalidate();
+        panelDerecha.repaint();
     }
+
     
     // Edita VentanaMain para que sea la de un usuario NO premium
     public void removePremium() {
