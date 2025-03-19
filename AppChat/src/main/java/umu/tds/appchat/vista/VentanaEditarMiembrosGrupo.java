@@ -118,8 +118,11 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
                 }
                 if (AppChat.getInstance().actualizarMiembrosGrupo(grupo, nuevosMiembros)) {
                     JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "Grupo actualizado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                    ventanaMain.actualizarListaContactos();
+                    ventanaMain.setContactoSeleccionado(grupo);
                     dispose();
+                } else {
+                	JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "Error al editar los miembros del grupo.", "Error", JOptionPane.ERROR_MESSAGE);
+                	dispose();
                 }
             }
         });

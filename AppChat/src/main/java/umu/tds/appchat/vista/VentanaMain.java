@@ -455,7 +455,7 @@ public class VentanaMain extends JFrame {
             panelContactoSeleccionado.add(nombreContactoSeleccionado, BorderLayout.CENTER);
             
             if (contactoSeleccionado instanceof Grupo) {
-            	botonEditarContacto = new JButton("Cambiar imagen");
+            	botonEditarContacto = new JButton("Cambiar Imagen");
                 botonEditarContacto.setPreferredSize(new Dimension(120, 40));
                 botonEditarContacto.setBackground(new Color(0, 128, 128));
                 botonEditarContacto.setForeground(Color.WHITE);

@@ -309,7 +309,7 @@ public class AppChat {
 		
 	public boolean actualizarMiembrosGrupo(Grupo grupo, List<String> nuevosMiembros) {
 		// TODO PERSISTENCIA
-	    if (grupo == null || nuevosMiembros == null)
+	    if (usuarioActual == null || grupo == null || nuevosMiembros == null)
 	        return false;
 	    
 	    if (nuevosMiembros.isEmpty()) return false; // El grupo no puede quedar vacío
