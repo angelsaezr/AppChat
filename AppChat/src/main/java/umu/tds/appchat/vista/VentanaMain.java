@@ -80,118 +80,63 @@ public class VentanaMain extends JFrame {
         panelIzquierda = new JPanel(null); // Usar diseño nulo para centrar manualmente
         panelIzquierda.setBackground(new Color(240, 248, 255));
         
-        botonBuscar = new JButton("🔍 Buscar Mensajes");
-        botonBuscar.setBackground(new Color(0, 128, 128));
-        botonBuscar.setForeground(Color.WHITE);
-        botonBuscar.setBounds(10, 15, 140, 30);
-        botonBuscar.setBorderPainted(false);
-        botonBuscar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new VentanaBuscarMensaje(VentanaMain.this).setVisible(true);
-            }
-        });
+        botonBuscar = crearBotonSuperior("🔍 Buscar Mensajes", new Color(0, 128, 128), 10, 15, 140, 30,
+				() -> new VentanaBuscarMensaje(VentanaMain.this).setVisible(true));
         
-        botonContactos = new JButton("👥  Contactos");
-        botonContactos.setBackground(new Color(0, 128, 128));
-        botonContactos.setForeground(Color.WHITE);
-        botonContactos.setBounds(155, 15, 110, 30);
-        botonContactos.setBorderPainted(false);
-        botonContactos.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                VentanaContactos tablaContactos = new VentanaContactos(VentanaMain.this);
-                AppChat.getInstance().getContactosUsuarioActual().stream()
-                	.filter(ContactoIndividual.class::isInstance) // Filtrar solo ContactoIndividual
-                	.map(ContactoIndividual.class::cast) // Hacer el casting a ContactoIndividual
-                	.filter(cI -> !cI.getNombre().isBlank()) // Filtrar contactos con nombre no vacío
-                	.forEach(cI -> tablaContactos.addContactoIndividual(cI.getNombre(), cI.getMovil(), cI.getSaludo())); // Agregar a la tabla
-                AppChat.getInstance().getContactosUsuarioActual().stream()
-                .filter(Grupo.class::isInstance) // Filtrar solo Grupo
-            	.map(Grupo.class::cast) // Hacer el casting a Grupo
-            	.forEach(g -> {
-            	    // Obtener los nombres de los miembros del grupo
-            	    String miembros = g.getMiembros().stream()
-            	        .map(ContactoIndividual::getNombre)
-            	        .reduce((a, b) -> a + ", " + b) // Unir los nombres con coma
-            	        .orElse("Sin miembros");
-
-            	    tablaContactos.addGrupo(g.getNombre(), miembros);
-            	});
-
-                tablaContactos.setVisible(true);
-            }
+        botonContactos = crearBotonSuperior("👥  Contactos", new Color(0, 128, 128), 155, 15, 110, 30, () -> {
+            VentanaContactos tablaContactos = new VentanaContactos(VentanaMain.this);
+            AppChat.getInstance().getContactosUsuarioActual().stream()
+                .filter(ContactoIndividual.class::isInstance)
+                .map(ContactoIndividual.class::cast)
+                .filter(cI -> !cI.getNombre().isBlank())
+                .forEach(cI -> tablaContactos.addContactoIndividual(cI.getNombre(), cI.getMovil(), cI.getSaludo()));
+            
+            AppChat.getInstance().getContactosUsuarioActual().stream()
+                .filter(Grupo.class::isInstance)
+                .map(Grupo.class::cast)
+                .forEach(g -> {
+                    String miembros = g.getMiembros().stream()
+                        .map(ContactoIndividual::getNombre)
+                        .reduce((a, b) -> a + ", " + b)
+                        .orElse("Sin miembros");
+                    tablaContactos.addGrupo(g.getNombre(), miembros);
+                });
+            
+            tablaContactos.setVisible(true);
         });
 
-        botonCrearContacto = new JButton("➕ Crear Contacto");
-        botonCrearContacto.setBackground(new Color(0, 128, 128));
-        botonCrearContacto.setForeground(Color.WHITE);
-        botonCrearContacto.setBounds(270, 15, 130, 30);
-        botonCrearContacto.setBorderPainted(false);
-        botonCrearContacto.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new VentanaCrearContacto(VentanaMain.this).setVisible(true);
-            }
-        });
+        botonCrearContacto = crearBotonSuperior("➕ Crear Contacto", new Color(0, 128, 128), 270, 15, 130, 30,
+        		() ->  new VentanaCrearContacto(VentanaMain.this).setVisible(true));
         
-        botonCrearGrupo = new JButton("📁 Crear Grupo");
-        botonCrearGrupo.setBackground(new Color(0, 128, 128));
-        botonCrearGrupo.setForeground(Color.WHITE);
-        botonCrearGrupo.setBounds(405, 15, 115, 30);
-        botonCrearGrupo.setBorderPainted(false);
-        botonCrearGrupo.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new VentanaCrearGrupo(VentanaMain.this).setVisible(true);
-            }
-        });
+        botonCrearGrupo = crearBotonSuperior("📁 Crear Grupo", new Color(0, 128, 128), 405, 15, 115, 30,
+        		() -> new VentanaCrearGrupo(VentanaMain.this).setVisible(true));	
         
-        botonPremium = new JButton("⭐  Premium");
-        botonPremium.setBackground(new Color(0, 128, 128));
-        botonPremium.setForeground(Color.WHITE);
-        botonPremium.setBounds(525, 15, 100, 30);
-        botonPremium.setBorderPainted(false);
-        botonPremium.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new VentanaPremium(VentanaMain.this).setVisible(true);
-            }
-        });
+        botonPremium = crearBotonSuperior("⭐  Premium", new Color(0, 128, 128), 525, 15, 100, 30,
+        		() -> new VentanaPremium(VentanaMain.this).setVisible(true));
         
-        botonCerrarSesion = new JButton("🚪 Cerrar Sesión");
-        botonCerrarSesion.setBackground(new Color(255, 69, 0));
-        botonCerrarSesion.setForeground(Color.WHITE);
-        botonCerrarSesion.setBounds(630, 15, 110, 30);
-        botonCerrarSesion.setBorderPainted(false);
-        botonCerrarSesion.addActionListener(e -> {
+        botonCerrarSesion = crearBotonSuperior("🚪 Cerrar Sesión", new Color(255, 69, 0), 630, 15, 110, 30, () -> {
             int confirmacion = JOptionPane.showConfirmDialog(
-                    VentanaMain.this,
-                    "¿Seguro que quieres cerrar sesión?",
-                    "Cerrar sesión",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE
+                VentanaMain.this,
+                "¿Seguro que quieres cerrar sesión?",
+                "Cerrar sesión",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
             );
-
             if (confirmacion == JOptionPane.YES_OPTION) {
-                // Crea un JDialog sin botones
                 JDialog dialogo = new JDialog(VentanaMain.this, "Cerrar sesión", false);
                 JLabel mensaje = new JLabel("Cerrando sesión...", SwingConstants.CENTER);
                 mensaje.setFont(new Font("Segoe UI", Font.BOLD, 14));
                 dialogo.add(mensaje);
-
                 dialogo.setSize(200, 100);
                 dialogo.setLocationRelativeTo(VentanaMain.this);
                 dialogo.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
                 dialogo.setVisible(true);
 
-                // Temporizador para cerrar el mensaje y redirigir a la ventana de login
                 Timer timer = new Timer(2000, event -> {
                     dialogo.dispose();
                     new VentanaLogin().setVisible(true);
-                    dispose(); // Cierra la ventana actual
+                    dispose();
                 });
-
                 timer.setRepeats(false);
                 timer.start();
             }
@@ -583,5 +528,31 @@ public class VentanaMain extends JFrame {
     	listaContactos.setSelectedValue(contacto, true);
     	actualizarChat();
     }
-
+    
+    // Edita VentanaMain para que sea la de un usuario premium
+    public void setPremium() {
+    	if (!AppChat.getInstance().isPremium()) return;
+    	// TODO
+    }
+    
+    // Edita VentanaMain para que sea la de un usuario NO premium
+    public void removePremium() {
+    	if (AppChat.getInstance().isPremium()) return;
+    	// TODO
+    }
+    
+    private JButton crearBotonSuperior(String texto, Color colorFondo, int x, int y, int ancho, int alto, Runnable accion) {
+        JButton boton = new JButton(texto);
+        boton.setBackground(colorFondo);
+        boton.setForeground(Color.WHITE);
+        boton.setBounds(x, y, ancho, alto);
+        boton.setBorderPainted(false);
+        boton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                accion.run();
+            }
+        });
+        return boton;
+    }
 }
