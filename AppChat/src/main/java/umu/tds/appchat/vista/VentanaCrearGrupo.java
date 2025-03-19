@@ -54,11 +54,15 @@ public class VentanaCrearGrupo extends JDialog {
         // Listas
         contactListModel = new DefaultListModel<>();
         groupListModel = new DefaultListModel<>();
-
+        String contactoInfo = null;
         listaContactos = AppChat.getInstance().getContactosUsuarioActual();
         for (Contacto c : listaContactos) {
-        	if (c instanceof ContactoIndividual)
-        		contactListModel.addElement(c.getNombre());
+        	if (c instanceof ContactoIndividual) {
+        		if (AppChat.getInstance().esContactoAgregado(c)) {
+        			contactoInfo = c.getNombre() + " (" + ((ContactoIndividual) c).getMovil() + ")";
+             		contactListModel.addElement(contactoInfo);
+        		}
+        	}
         }
 
         contactList = new JList<>(contactListModel);
@@ -159,7 +163,9 @@ public class VentanaCrearGrupo extends JDialog {
         	else {
         		List<String> miembros = new LinkedList<>();
                 for (int i = 0; i < groupListModel.size(); i++) {
-                	miembros.add(groupListModel.get(i)); // Agregar cada elemento a la lista
+                	String contactoInfo2 = groupListModel.get(i);
+                	String nombre = contactoInfo2.substring(0, contactoInfo2.indexOf(" ("));
+                	miembros.add(nombre); // Agregar cada elemento a la lista
                 }
         		if(AppChat.getInstance().agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada) == null)
         			JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);

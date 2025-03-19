@@ -11,13 +11,6 @@ import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
 
-/**
- * Ventana para editar los miembros de un grupo.
- * 
- * @author Ángel
- * @author Francisco Javier
- */
-
 @SuppressWarnings("serial")
 public class VentanaEditarMiembrosGrupo extends JDialog {
     private JList<String> contactList, groupList;
@@ -44,10 +37,11 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         List<Contacto> listaContactos = AppChat.getInstance().getContactosUsuarioActual();
         for (Contacto c : listaContactos) {
             if (c instanceof ContactoIndividual) {
+                String contactoInfo = c.getNombre() + " (" + ((ContactoIndividual) c).getMovil() + ")";
                 if (grupo.getMiembros().contains(c)) {
-                    groupListModel.addElement(c.getNombre());
-                } else {
-                    contactListModel.addElement(c.getNombre());
+                    groupListModel.addElement(contactoInfo);
+                } else if (AppChat.getInstance().esContactoAgregado(c)){
+                    contactListModel.addElement(contactoInfo);
                 }
             }
         }
@@ -70,7 +64,6 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         btnAdd.setPreferredSize(new Dimension(50, 30));
         btnRemove.setPreferredSize(new Dimension(50, 30));
 
-        // Panel de listas y botones
         JPanel panelListas = new JPanel(new GridBagLayout());
         panelListas.setOpaque(false);
         gbc.gridx = 0;
@@ -103,7 +96,6 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         gbc.gridwidth = 2;
         panel.add(panelListas, gbc);
 
-        // Botones Aceptar y Cancelar
         JPanel panelBotones = new JPanel();
         panelBotones.setOpaque(false);
         btnAceptar = new JButton("Aceptar");
@@ -115,16 +107,19 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         btnAceptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	if(groupListModel.isEmpty()) {
+                	JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "El grupo no puede quedar vacío, ¿quizás quieres eliminarlo?", "Error", JOptionPane.ERROR_MESSAGE);
+                } 
                 List<String> nuevosMiembros = new LinkedList<>();
                 for (int i = 0; i < groupListModel.size(); i++) {
-                    nuevosMiembros.add(groupListModel.get(i));
+                    String contactoInfo = groupListModel.get(i);
+                    String movil = contactoInfo.substring(contactoInfo.indexOf("(") + 1, contactoInfo.indexOf(")"));
+                    nuevosMiembros.add(movil);
                 }
                 if (AppChat.getInstance().actualizarMiembrosGrupo(grupo, nuevosMiembros)) {
-                	JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "Grupo actualizado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
-                	ventanaMain.actualizarListaContactos();
-                	dispose();
-                } else {
-        			JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "El grupo no puede quedar vacío, ¿quizás quieres eliminarlo?", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "Grupo actualizado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    ventanaMain.actualizarListaContactos();
+                    dispose();
                 }
             }
         });

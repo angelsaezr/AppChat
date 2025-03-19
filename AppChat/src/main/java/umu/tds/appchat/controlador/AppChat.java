@@ -284,6 +284,12 @@ public class AppChat {
             ? ((ContactoIndividual) c).getMovil() 
             : c.getNombre();
     }
+	
+	public boolean esContactoAgregado(Contacto contacto) {
+		if (contacto.getNombre() == "")
+			return false;
+		return true;
+	}
 
 	public double getDescuento() {
 		return usuarioActual.calDescuento();
@@ -303,34 +309,22 @@ public class AppChat {
 		
 	public boolean actualizarMiembrosGrupo(Grupo grupo, List<String> nuevosMiembros) {
 		// TODO PERSISTENCIA
-	    if (grupo == null || nuevosMiembros == null) {
+	    if (grupo == null || nuevosMiembros == null)
 	        return false;
-	    }
+	    
+	    if (nuevosMiembros.isEmpty()) return false; // El grupo no puede quedar vacío
 	    
 	    List<ContactoIndividual> nuevosMiembrosLista = new LinkedList<>();
-	    for (String nombre : nuevosMiembros) {
-	        ContactoIndividual contacto = this.usuarioActual.getContactoIndividualPorNombre(nombre);
+	    for (String movil : nuevosMiembros) {
+	        ContactoIndividual contacto = this.usuarioActual.getContactoIndividual(movil);
 	        if (contacto != null) {
 	            nuevosMiembrosLista.add(contacto);
 	        }
-        	//System.out.println(contacto.getNombre().toString()+ "bbb");
-	    
-	    for (Contacto c : this.usuarioActual.getContactos()) {
-	    	System.out.println(c.getNombre().toString()+ "bbb");
 	    }
-
-	    }
-	    System.out.println(nuevosMiembros.toString());
-	    System.out.println("aaaa");
-	    System.out.println(nuevosMiembrosLista.toString());
 	    
 	    grupo.removeAllMiembros();
 	    for (ContactoIndividual nuevoMiembro : nuevosMiembrosLista) {
 	        grupo.addMiembro(nuevoMiembro);
-	    }
-	    
-	    if (grupo.getMiembros().size() < 1) {
-	    	return false;
 	    }
 	    
 	    return true;
