@@ -7,10 +7,13 @@ import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 
 /**
  * Ventana para editar el perfil del usuario (imagen y saludo).
@@ -23,6 +26,7 @@ public class VentanaEditarPerfil extends JDialog {
     private JLabel lblImagenPerfil, lblSaludo;
     private JButton btnSeleccionarImagen, btnGuardar, btnCancelar;
     private JTextField txtSaludo;
+    private File imagenSeleccionada;
 
     public VentanaEditarPerfil(VentanaMain ventanaMain) {
         super(ventanaMain, "Editar Perfil", true);
@@ -94,6 +98,27 @@ public class VentanaEditarPerfil extends JDialog {
         btnSeleccionarImagen.setForeground(Color.WHITE);
         btnSeleccionarImagen.setFocusPainted(false);
         btnSeleccionarImagen.setBorderPainted(false);
+        btnSeleccionarImagen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            	List<File> archivos = new PanelArrastraImagen(ventanaMain).showDialog();
+                if (!archivos.isEmpty()) {
+                    imagenSeleccionada = archivos.get(0);
+                    try {
+						Image imagenOriginal = ImageIO.read(imagenSeleccionada);
+						Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 100);
+	    	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+	    	            lblImagenPerfil.setIcon(iconoEscalado);
+	    	            lblImagenPerfil.revalidate();
+	    	            lblImagenPerfil.repaint();
+					} catch (IOException e1) {
+						System.err.println("No se pudo cargar la imagen: " + imagenSeleccionada.getAbsolutePath());
+						e1.printStackTrace();
+					}
+                }
+            }
+        });
+        
         gbc.gridy = 1;
         panelPrincipal.add(btnSeleccionarImagen, gbc);
 
@@ -117,12 +142,25 @@ public class VentanaEditarPerfil extends JDialog {
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.setFocusPainted(false);
         btnGuardar.setBorderPainted(false);
+        btnGuardar.addActionListener(e -> {
+        	if(!txtSaludo.getText().isBlank()) {
+        		if (imagenSeleccionada != null) AppChat.getInstance().cambiarImagenPerfil(imagenSeleccionada);
+            	AppChat.getInstance().cambiarSaludo(txtSaludo.getText());
+            	JOptionPane.showMessageDialog(this, "Perfil editado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            	ventanaMain.actualizarImagenPerfil();
+            	dispose();
+        	} else
+        		JOptionPane.showMessageDialog(this, "Es obligatorio tener un saludo.", "Error", JOptionPane.ERROR_MESSAGE);
+        });
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
+        btnCancelar.addActionListener(e -> {
+            dispose();
+        });
 
         panelBotones.add(btnGuardar);
         panelBotones.add(btnCancelar);

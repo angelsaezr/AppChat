@@ -153,42 +153,7 @@ public class VentanaMain extends JFrame {
 
         // Cargar imagen de perfil redondeada con tamaño fijo
         imagenPerfil = new JLabel();
-        String fotoUsuario = AppChat.getInstance().getImagenPerfil();
-        Image imagenOriginal;
-        if (fotoUsuario != "") {
-        	try {
-    	        if (fotoUsuario.startsWith("http")) {
-    	            // Cargar imagen desde URL externa
-    				URI uri = URI.create(fotoUsuario);  // Crear un objeto URI a partir del String
-    				URL url = uri.toURL();  // Convertir URI en un objeto URL
-    	            imagenOriginal = ImageIO.read(url);
-    	        } else {
-    	            // Cargar imagen desde recursos locales
-    	            File file = new File(fotoUsuario);
-    	            imagenOriginal = ImageIO.read(file);
-    	        }
-    	        
-    	        if (imagenOriginal != null) {
-    	            Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
-    	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
-    	            imagenPerfil.setIcon(iconoEscalado);
-    	        }
-    	    } catch (IOException e) {
-    	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
-    	        e.printStackTrace();
-    	    }
-        } else {
-        	File file = new File("src/main/resources/profile1.jpg");
-            try {
-				imagenOriginal = ImageIO.read(file);
-				Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
-	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
-	            imagenPerfil.setIcon(iconoEscalado);
-			} catch (IOException e1) {
-				System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
-				e1.printStackTrace();
-			}
-        }
+        actualizarImagenPerfil();
         
         imagenPerfil.addMouseListener(new MouseAdapter() {
             @Override
@@ -511,6 +476,47 @@ public class VentanaMain extends JFrame {
         List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
         contactos.forEach(modeloLista::addElement);
     }
+    
+    public void actualizarImagenPerfil() {
+    	String fotoUsuario = AppChat.getInstance().getImagenPerfil();
+        Image imagenOriginal;
+        if (fotoUsuario != "") {
+        	try {
+    	        if (fotoUsuario.startsWith("http")) {
+    	            // Cargar imagen desde URL externa
+    				URI uri = URI.create(fotoUsuario);  // Crear un objeto URI a partir del String
+    				URL url = uri.toURL();  // Convertir URI en un objeto URL
+    	            imagenOriginal = ImageIO.read(url);
+    	        } else {
+    	            // Cargar imagen desde recursos locales
+    	            File file = new File(fotoUsuario);
+    	            imagenOriginal = ImageIO.read(file);
+    	        }
+    	        
+    	        if (imagenOriginal != null) {
+    	            Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
+    	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+    	            imagenPerfil.setIcon(iconoEscalado);
+    	        }
+    	    } catch (IOException e) {
+    	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
+    	        e.printStackTrace();
+    	    }
+        } else {
+        	File file = new File("src/main/resources/profile1.jpg");
+            try {
+				imagenOriginal = ImageIO.read(file);
+				Image imagenRedondeada = Utils.createRoundedImage(imagenOriginal, 50);
+	            ImageIcon iconoEscalado = new ImageIcon(imagenRedondeada);
+	            imagenPerfil.setIcon(iconoEscalado);
+			} catch (IOException e1) {
+				System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
+				e1.printStackTrace();
+			}
+        }
+        imagenPerfil.revalidate();
+        imagenPerfil.repaint();
+	}
     
     private void enviarMensaje() {
     	String texto = areaTexto.getText().trim();

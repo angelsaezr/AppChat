@@ -283,6 +283,18 @@ public class AppChat {
 		return true;
 	}
 	
+	public boolean cambiarImagenPerfil(File imagen) {
+		String rutaImagen = "";
+    	if (imagen != null)
+    		rutaImagen = imagen.getAbsolutePath();
+		usuarioActual.setImagen(rutaImagen);
+		return true;
+	}
+	
+	public void cambiarSaludo(String text) {
+		usuarioActual.setSaludo(text);
+	}
+	
 	public String getNombreContacto(Contacto c) {
         return c.getNombre().isBlank() && c instanceof ContactoIndividual 
             ? ((ContactoIndividual) c).getMovil() 
