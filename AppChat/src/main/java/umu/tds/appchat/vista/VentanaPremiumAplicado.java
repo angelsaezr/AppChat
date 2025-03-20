@@ -2,10 +2,7 @@ package umu.tds.appchat.vista;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import umu.tds.appchat.controlador.AppChat;
-import umu.tds.appchat.dominio.TipoDescuento;
 
 /**
  * Ventana para gestionar el estado premium del usuario.
@@ -17,10 +14,10 @@ import umu.tds.appchat.dominio.TipoDescuento;
 public class VentanaPremiumAplicado extends JDialog {
     private JButton btnExportarPDF, btnAnularPremium;
 
-    public VentanaPremiumAplicado(JFrame parent) {
-        super(parent, "Gestionar Premium", true);
+    public VentanaPremiumAplicado(VentanaMain ventanaMain) {
+        super(ventanaMain, "Gestionar Premium", true);
         setSize(400, 200);
-        setLocationRelativeTo(parent);
+        setLocationRelativeTo(ventanaMain);
         setLayout(new GridBagLayout());
         this.setResizable(false);
 
@@ -35,8 +32,8 @@ public class VentanaPremiumAplicado extends JDialog {
         // Panel de botones
         JPanel panelBotones = new JPanel();
 
-        btnExportarPDF = crearBoton("Exportar PDF", new Color(70, 130, 180));  // Azul oscuro
-        btnAnularPremium = crearBoton("Anular Premium", new Color(220, 20, 60)); // Rojo oscuro
+        btnExportarPDF = crearBoton("Exportar PDF", new Color(0, 128, 128));
+        btnAnularPremium = crearBoton("Anular Premium", new Color(255, 69, 0));
 
         // Agregar botones al panel
         panelBotones.add(btnExportarPDF);
@@ -51,6 +48,7 @@ public class VentanaPremiumAplicado extends JDialog {
         add(panel);
 
         btnExportarPDF.addActionListener(e -> {
+        	//TODO
             // Abrir la ventana de exportación de PDF
             //VentanaExportarPDF ventanaExportar = new VentanaExportarPDF(VentanaPremiumAplicado.this);
             //ventanaExportar.setVisible(true);
@@ -60,20 +58,9 @@ public class VentanaPremiumAplicado extends JDialog {
             // Anular la suscripción premium del usuario
             AppChat.getInstance().anularPremium();
             JOptionPane.showMessageDialog(this, "Tu suscripción premium ha sido anulada.", "Premium Anulado", JOptionPane.INFORMATION_MESSAGE);
+            ventanaMain.removePremium();
             dispose();
         });
-
-        // Agregar KeyListener para detectar la tecla Enter
-        KeyAdapter enterKeyListener = new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    // TODO btnAceptar.doClick(); // Simula el clic en el botón
-                }
-            }
-        };
-
-     
     }
 
     /**

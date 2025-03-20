@@ -42,7 +42,7 @@ public class VentanaMain extends JFrame {
     private JList<Contacto> listaContactos;
     private Contacto contactoSeleccionado;
     private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar, botonEmoticonos, botonEditarContacto;
-    private JLabel imagenPerfil, imagenContactoSeleccionado, nombreContactoSeleccionado;
+    private JLabel imagenPerfil, imagenContactoSeleccionado, nombreContactoSeleccionado, starLabel;
     private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos, panelContactoSeleccionado, panelEditarContacto;
     private DefaultListModel<Contacto> modeloLista;
     private File imagenSeleccionada;
@@ -79,6 +79,9 @@ public class VentanaMain extends JFrame {
 
         panelIzquierda = new JPanel(null); // Usar diseño nulo para centrar manualmente
         panelIzquierda.setBackground(new Color(240, 248, 255));
+        panelIzquierda.setPreferredSize(new Dimension(800, 60));
+        panelDerecha = new JPanel(new GridBagLayout());
+        panelDerecha.setBackground(new Color(240, 248, 255));
         
         botonBuscar = crearBotonSuperior("🔍 Buscar Mensajes", new Color(0, 128, 128), 10, 15, 140, 30,
 				() -> new VentanaBuscarMensaje(VentanaMain.this).setVisible(true));
@@ -111,9 +114,6 @@ public class VentanaMain extends JFrame {
         botonCrearGrupo = crearBotonSuperior("📁 Crear Grupo", new Color(0, 128, 128), 405, 15, 115, 30,
         		() -> new VentanaCrearGrupo(VentanaMain.this).setVisible(true));	
         
-        botonPremium = crearBotonSuperior("⭐  Premium", new Color(0, 128, 128), 525, 15, 100, 30,
-        		() -> new VentanaPremium(VentanaMain.this).setVisible(true));
-        
         botonCerrarSesion = crearBotonSuperior("🚪 Cerrar Sesión", new Color(255, 69, 0), 630, 15, 110, 30, () -> {
             int confirmacion = JOptionPane.showConfirmDialog(
                 VentanaMain.this,
@@ -141,13 +141,14 @@ public class VentanaMain extends JFrame {
                 timer.start();
             }
         });
-
-        panelIzquierda.setPreferredSize(new Dimension(800, 60));
+        
+        if(AppChat.getInstance().isPremium()) setPremium();
+        else removePremium();
+        
         panelIzquierda.add(botonBuscar);
         panelIzquierda.add(botonContactos);
         panelIzquierda.add(botonCrearContacto);
         panelIzquierda.add(botonCrearGrupo);
-        panelIzquierda.add(botonPremium);
         panelIzquierda.add(botonCerrarSesion);
 
         // Cargar imagen de perfil redondeada con tamaño fijo
@@ -189,9 +190,6 @@ public class VentanaMain extends JFrame {
 			}
         }
         
-
-        panelDerecha = new JPanel(new GridBagLayout());
-        panelDerecha.setBackground(new Color(240, 248, 255));
         panelDerecha.add(imagenPerfil);
 
         barraSuperior.add(panelIzquierda, BorderLayout.WEST);
@@ -531,16 +529,13 @@ public class VentanaMain extends JFrame {
     
     // Edita VentanaMain para que sea la de un usuario premium
     public void setPremium() {
-        if (!AppChat.getInstance().isPremium()) return;
+        if(botonPremium != null) panelIzquierda.remove(botonPremium);
 
-        // Elimina el botón Premium y reemplaza con el nuevo botón
-        panelIzquierda.remove(botonPremium);
-
-        JButton botonNuevoPremium = crearBotonSuperior("⭐  Premium", new Color(204, 153, 0), 525, 15, 100, 30, () -> {
+        botonPremium = crearBotonSuperior("⭐  Premium", new Color(204, 153, 0), 525, 15, 100, 30, () -> {
             new VentanaPremiumAplicado(VentanaMain.this).setVisible(true);
         });
 
-        panelIzquierda.add(botonNuevoPremium);
+        panelIzquierda.add(botonPremium);
 
         // Carga imagen de estrella junto al icono de usuario (a la izquierda)
         try {
@@ -548,7 +543,7 @@ public class VentanaMain extends JFrame {
             Image starImage = ImageIO.read(file);
             ImageIcon starIcon = new ImageIcon(starImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 
-            JLabel starLabel = new JLabel(starIcon);
+            starLabel = new JLabel(starIcon);
             starLabel.setToolTipText("Usuario premium"); // Agrega tooltip al pasar el ratón
 
             panelDerecha.add(starLabel, 0); // Agrega la estrella antes de la imagen del usuario
@@ -566,8 +561,17 @@ public class VentanaMain extends JFrame {
     
     // Edita VentanaMain para que sea la de un usuario NO premium
     public void removePremium() {
-    	if (AppChat.getInstance().isPremium()) return;
-    	// TODO
+    	if(botonPremium != null) panelIzquierda.remove(botonPremium);
+    	if(starLabel != null) panelDerecha.remove(starLabel);
+    	
+    	botonPremium = crearBotonSuperior("⭐  Premium", new Color(0, 128, 128), 525, 15, 100, 30,
+        		() -> new VentanaPremium(VentanaMain.this).setVisible(true));
+    	panelIzquierda.add(botonPremium);
+    	
+    	panelIzquierda.revalidate();
+        panelIzquierda.repaint();
+        panelDerecha.revalidate();
+        panelDerecha.repaint();
     }
     
     private JButton crearBotonSuperior(String texto, Color colorFondo, int x, int y, int ancho, int alto, Runnable accion) {
