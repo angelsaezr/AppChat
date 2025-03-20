@@ -190,6 +190,12 @@ public class VentanaMain extends JFrame {
 			}
         }
         
+        imagenPerfil.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new VentanaEditarPerfil(VentanaMain.this).setVisible(true);
+            }
+        });
         panelDerecha.add(imagenPerfil);
 
         barraSuperior.add(panelIzquierda, BorderLayout.WEST);

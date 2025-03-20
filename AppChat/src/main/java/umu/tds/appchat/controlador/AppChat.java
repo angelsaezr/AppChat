@@ -79,6 +79,10 @@ public class AppChat {
     	return usuarioActual.getNombre();
     }
     
+    public String getSaludo() {
+		return usuarioActual.getSaludo();
+	}
+    
     // Comprobar si el contacto es miembro del grupo
     public boolean esMiembroGrupo(String contacto, String grupo) {
 		return usuarioActual.esMiembroGrupo(contacto, grupo);
