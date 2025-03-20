@@ -160,6 +160,8 @@ public class AppChat {
     	String rutaImagen = "";
     	if (imagenGrupo != null)
     		rutaImagen = imagenGrupo.getAbsolutePath();
+    	else
+    		rutaImagen = "src/main/resources/grupo2.jpg";
     	
     	List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
     	for(Contacto c : getContactosUsuarioActual()) {
@@ -276,9 +278,11 @@ public class AppChat {
 	}
 
 	public boolean cambiarImagenGrupo(Grupo contactoSeleccionado, File imagenGrupo) {
+		if (imagenGrupo == null)
+    		return false;
+		
 		String rutaImagen = "";
-    	if (imagenGrupo != null)
-    		rutaImagen = imagenGrupo.getAbsolutePath();
+    	rutaImagen = imagenGrupo.getAbsolutePath();
 		contactoSeleccionado.setImagen(rutaImagen);
 		return true;
 	}
