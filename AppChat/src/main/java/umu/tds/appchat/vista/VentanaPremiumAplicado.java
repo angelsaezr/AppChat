@@ -48,19 +48,33 @@ public class VentanaPremiumAplicado extends JDialog {
         add(panel);
 
         btnExportarPDF.addActionListener(e -> {
-        	//TODO
-            // Abrir la ventana de exportación de PDF
-            //VentanaExportarPDF ventanaExportar = new VentanaExportarPDF(VentanaPremiumAplicado.this);
-            //ventanaExportar.setVisible(true);
+            VentanaExportarPDF ventanaExportar = new VentanaExportarPDF(ventanaMain);
+            ventanaExportar.setVisible(true);
         });
 
         btnAnularPremium.addActionListener(e -> {
-            // Anular la suscripción premium del usuario
-            AppChat.getInstance().anularPremium();
-            JOptionPane.showMessageDialog(this, "Tu suscripción premium ha sido anulada.", "Premium Anulado", JOptionPane.INFORMATION_MESSAGE);
-            ventanaMain.removePremium();
-            dispose();
+            int confirm = JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que quieres anular tu suscripción premium?",
+                "Confirmar Anulación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                // Anula la suscripción premium del usuario
+                AppChat.getInstance().anularPremium();
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Tu suscripción premium ha sido anulada.",
+                    "Premium Anulado",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+                ventanaMain.removePremium();
+                dispose();
+            }
         });
+
     }
 
     /**

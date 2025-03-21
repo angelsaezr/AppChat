@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ExportPDF {
-    
+
     public static void crearPDF(String contacto, List<Mensaje> historial, String rutaArchivo) {
         try {
             Document pdfDoc = new Document();
@@ -29,28 +29,26 @@ public class ExportPDF {
             Font estiloFecha = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC);
             DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-            // TODO
+            for (Mensaje mensaje : historial) {
+                String autor = contacto; // Se asume que el mensaje tiene un método getAutor() que devuelve un objeto con getNombre()
+                String contenido = mensaje.getTexto();     // Contenido del mensaje
+                String fechaHora = mensaje.getFechaHoraEnvio().format(formatoFecha); // Se asume que el mensaje tiene un atributo LocalDateTime llamado fechaHora
+
+                Paragraph lineaAutor = new Paragraph(autor + ":", estiloMensaje);
+                lineaAutor.setSpacingBefore(5f);
+                pdfDoc.add(lineaAutor);
+
+                Paragraph lineaContenido = new Paragraph(contenido, estiloMensaje);
+                pdfDoc.add(lineaContenido);
+
+                Paragraph lineaFecha = new Paragraph(fechaHora, estiloFecha);
+                pdfDoc.add(lineaFecha);
+            }
 
             pdfDoc.close();
-            
+
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo generar el PDF de la conversación", ex);
         }
     }
-    
-    /*
-    public static void main(String[] args) {
-        Document document = new Document();
-        try {
-            PdfWriter.getInstance(document, new FileOutputStream("mi_primer_pdf.pdf"));
-            document.open();
-            document.add(new Paragraph("¡Hola, este es mi primer PDF generado con iText!"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            document.close();
-        }
-    }
-    */
 }
-
