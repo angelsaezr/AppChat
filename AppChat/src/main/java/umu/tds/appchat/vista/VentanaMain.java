@@ -155,12 +155,29 @@ public class VentanaMain extends JFrame {
         imagenPerfil = new JLabel();
         actualizarImagenPerfil();
         
-        imagenPerfil.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new VentanaEditarPerfil(VentanaMain.this).setVisible(true);
-            }
-        });
+        imagenPerfil.setToolTipText("Perfil");
+	    imagenPerfil.setOpaque(true);
+	    Color colorOriginal = imagenPerfil.getBackground();
+
+	    imagenPerfil.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            new VentanaEditarPerfil(VentanaMain.this).setVisible(true);
+	        }
+	
+	        @Override
+	        public void mouseEntered(MouseEvent e) {
+	            imagenPerfil.setBackground(new Color(220, 220, 220)); // Gris claro
+	            imagenPerfil.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	        }
+	
+	        @Override
+	        public void mouseExited(MouseEvent e) {
+	            imagenPerfil.setBackground(colorOriginal); // Restaura el color original
+	            imagenPerfil.setCursor(Cursor.getDefaultCursor());
+	        }
+	    });
+       
         panelDerecha.add(imagenPerfil);
 
         barraSuperior.add(panelIzquierda, BorderLayout.WEST);

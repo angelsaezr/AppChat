@@ -80,6 +80,7 @@ public class VentanaBuscarMensaje extends JDialog {
 
         btnBuscar.addActionListener(e -> mostrarResultados());
         
+        
         // Agrega KeyListener para detectar la tecla Enter
         KeyAdapter enterKeyListener = new KeyAdapter() {
             @Override
@@ -97,13 +98,26 @@ public class VentanaBuscarMensaje extends JDialog {
     }
 
     private void mostrarResultados() {
+    	panelResultados.revalidate();
+        panelResultados.repaint();
+    	
         panelResultados.removeAll();
+        
+        if (textFieldTexto.getText().isBlank() && textFieldTelefono.getText().isBlank() && textFieldContacto.getText().isBlank()) {
+    	    JOptionPane.showMessageDialog(this, "Debe introducir al menos un criterio de búsqueda.", "Error", JOptionPane.ERROR_MESSAGE);
+    	    return;
+    	}
 
         List<Mensaje> mensajes = AppChat.getInstance().buscarMensajes(
             textFieldTexto.getText(), 
             textFieldTelefono.getText(), 
             textFieldContacto.getText()
         );
+        
+        if (mensajes.size() == 0) {
+            JOptionPane.showMessageDialog(this, "No se encontraron mensajes con los criterios proporcionados.", "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
         List<JPanel> resultados = mensajes.stream()
             .map(m -> {
@@ -123,9 +137,6 @@ public class VentanaBuscarMensaje extends JDialog {
             .toList();
 
         resultados.forEach(panelResultados::add);
-
-        panelResultados.revalidate();
-        panelResultados.repaint();
     }
 
 

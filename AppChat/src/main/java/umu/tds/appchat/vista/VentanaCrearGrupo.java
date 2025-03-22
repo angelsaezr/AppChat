@@ -189,8 +189,11 @@ public class VentanaCrearGrupo extends JDialog {
         
         // Asigna el KeyListener a los campos de entrada
         groupNameField.addKeyListener(enterKeyListener);
+        contactList.addKeyListener(enterKeyListener);
+        groupList.addKeyListener(enterKeyListener);
         btnAdd.addKeyListener(enterKeyListener);
         btnRemove.addKeyListener(enterKeyListener);
+        btnSeleccionarImagen.addKeyListener(enterKeyListener);
         
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));

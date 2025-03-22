@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 import umu.tds.appchat.controlador.AppChat;
@@ -140,6 +142,22 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         gbc.gridy = 2;
         panel.add(panelBotones, gbc);
         add(panel);
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnAceptar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        contactList.addKeyListener(enterKeyListener);
+        groupList.addKeyListener(enterKeyListener);
+        btnAdd.addKeyListener(enterKeyListener);
+        btnRemove.addKeyListener(enterKeyListener);
     }
 
     private void moverSeleccionados(JList<String> origen, DefaultListModel<String> modeloOrigen, DefaultListModel<String> modeloDestino) {

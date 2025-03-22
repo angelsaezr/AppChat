@@ -5,11 +5,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.utils.ExportPDF;
 
@@ -28,22 +32,63 @@ public class VentanaExportarPDF extends JDialog {
         // Panel de selección de contacto
         JPanel panelSeleccion = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         panelSeleccion.add(new JLabel("Seleccionar un contacto para exportar mensajes:"));
-
+        
         List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
-        comboContactos = new JComboBox<>(contactos.toArray(new Contacto[0]));
+        List<Contacto> contactosAgregados = new ArrayList<>();
+
+        for (Contacto c : contactos) {
+            if (c instanceof ContactoIndividual) {
+                if (AppChat.getInstance().esContactoAgregado(c)) {
+                    contactosAgregados.add(c);
+                }
+            } else {
+                contactosAgregados.add(c); // Grupo
+            }
+        }
+
+        comboContactos = new JComboBox<Contacto>(contactosAgregados.toArray(new Contacto[0]));
         comboContactos.setPreferredSize(new Dimension(250, 30));
+        comboContactos.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                                                          boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof Contacto) {
+                    Contacto c = (Contacto) value;
+                    String texto = c.getNombre();
+                    if (c instanceof ContactoIndividual) {
+                        texto += " (" + ((ContactoIndividual) c).getMovil() + ")";
+                    }
+                    setText(texto);
+                }
+                return this;
+            }
+        });
+        
         panelSeleccion.add(comboContactos);
 
         add(panelSeleccion, BorderLayout.CENTER);
 
         // Panel de botones
         JPanel panelBotones = new JPanel();
+        panelBotones.setBorder(BorderFactory.createEmptyBorder(15, 0, 25, 0)); // más separación del borde inferior
+
         btnGuardar = new JButton("Exportar");
+        btnGuardar.setBackground(new Color(0, 128, 128));
+        btnGuardar.setForeground(Color.WHITE);
+        btnGuardar.setFocusPainted(false);
+        btnGuardar.setBorderPainted(false);
+
         btnCancelar = new JButton("Cancelar");
+        btnCancelar.setBackground(new Color(255, 69, 0));
+        btnCancelar.setForeground(Color.WHITE);
+        btnCancelar.setFocusPainted(false);
+        btnCancelar.setBorderPainted(false);
 
         panelBotones.add(btnGuardar);
         panelBotones.add(btnCancelar);
         add(panelBotones, BorderLayout.SOUTH);
+
 
         // Acción al hacer clic en "Exportar"
         btnGuardar.addActionListener(new ActionListener() {
@@ -95,5 +140,18 @@ public class VentanaExportarPDF extends JDialog {
 
         // Acción al hacer clic en "Cancelar"
         btnCancelar.addActionListener(e -> dispose());
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnGuardar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        comboContactos.addKeyListener(enterKeyListener);
     }
 }

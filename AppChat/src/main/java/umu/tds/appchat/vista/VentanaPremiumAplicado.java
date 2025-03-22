@@ -55,7 +55,7 @@ public class VentanaPremiumAplicado extends JDialog {
         btnAnularPremium.addActionListener(e -> {
             int confirm = JOptionPane.showConfirmDialog(
                 this,
-                "¿Estás seguro de que quieres anular tu suscripción premium?",
+                "¿Estás seguro de que quieres anular tu suscripción premium?\nPerderás todas las ventajas.",
                 "Confirmar Anulación",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
@@ -66,7 +66,7 @@ public class VentanaPremiumAplicado extends JDialog {
                 AppChat.getInstance().anularPremium();
                 JOptionPane.showMessageDialog(
                     this,
-                    "Tu suscripción premium ha sido anulada.",
+                    "Tu suscripción premium ha sido anulada con éxito.",
                     "Premium Anulado",
                     JOptionPane.INFORMATION_MESSAGE
                 );
@@ -87,7 +87,6 @@ public class VentanaPremiumAplicado extends JDialog {
         JButton boton = new JButton(texto);
         boton.setBackground(color);
         boton.setForeground(Color.WHITE);
-        boton.setFont(new Font("Segoe UI", Font.BOLD, 12));
         boton.setFocusPainted(false);
         boton.setBorderPainted(false);
         return boton;

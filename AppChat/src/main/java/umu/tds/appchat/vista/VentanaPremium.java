@@ -34,7 +34,6 @@ public class VentanaPremium extends JDialog {
 
         // Etiqueta y ComboBox
         JLabel lblDescuento = new JLabel("Selecciona un descuento:");
-        lblDescuento.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
         panel.add(lblDescuento, gbc);
@@ -49,14 +48,12 @@ public class VentanaPremium extends JDialog {
         btnAceptar = new JButton("Aceptar");
         btnAceptar.setBackground(new Color(0, 128, 128));
         btnAceptar.setForeground(Color.WHITE);
-        btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnAceptar.setFocusPainted(false);
         btnAceptar.setBorderPainted(false);
 
         btnCancelar = new JButton("Cancelar");
         btnCancelar.setBackground(new Color(255, 69, 0));
         btnCancelar.setForeground(Color.WHITE);
-        btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnCancelar.setFocusPainted(false);
         btnCancelar.setBorderPainted(false);
 
@@ -111,14 +108,20 @@ public class VentanaPremium extends JDialog {
         dialogo.setLocationRelativeTo(this);
         dialogo.setLayout(new BorderLayout());
 
-        JLabel mensaje = new JLabel("Cantidad anual a pagar: " + String.format("%.2f", precioFinal) + "€", SwingConstants.CENTER);
-        mensaje.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        JTextArea mensaje = new JTextArea("¡Enhorabuena! Eres usuario premium.\nCantidad anual a pagar: " + String.format("%.2f", precioFinal) + "€");
+        mensaje.setEditable(false);
+        mensaje.setOpaque(false);
+        mensaje.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        mensaje.setLineWrap(true);
+        mensaje.setWrapStyleWord(true);
+        mensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         dialogo.add(mensaje, BorderLayout.CENTER);
+
 
         JButton btnCerrar = new JButton("Cerrar");
         btnCerrar.setBackground(new Color(0, 128, 128));
         btnCerrar.setForeground(Color.WHITE);
-        btnCerrar.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnCerrar.setFocusPainted(false);
         btnCerrar.setBorderPainted(false);
         btnCerrar.addActionListener(ev -> dialogo.dispose());

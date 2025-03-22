@@ -6,6 +6,8 @@ import javax.swing.table.AbstractTableModel;
 import umu.tds.appchat.controlador.AppChat;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +115,6 @@ public class VentanaContactos extends JDialog {
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.setBackground(new Color(0, 128, 128));
 		btnAceptar.setForeground(Color.WHITE);
-		btnAceptar.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		btnAceptar.setFocusPainted(false);
 		btnAceptar.setBorderPainted(false);
 
@@ -123,6 +124,20 @@ public class VentanaContactos extends JDialog {
 		add(panel);
 
 		btnAceptar.addActionListener(e -> dispose());
+		
+		// Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnAceptar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        tableContactos.addKeyListener(enterKeyListener);
+        tableGrupos.addKeyListener(enterKeyListener);
 	}
 
 	// Clase interna para el modelo de la tabla
@@ -210,4 +225,6 @@ public class VentanaContactos extends JDialog {
 	public boolean addGrupo(String nombre, String miembros) {
 		return tableModelGrupos.add(nombre, miembros);
 	}
+	
+	
 }

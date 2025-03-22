@@ -252,25 +252,39 @@ public class AppChat {
             .collect(Collectors.toList()); // Recoge los resultados en una lista
     }
 
-	private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
-	    if (!movil.isBlank()) {
-	        if (c instanceof ContactoIndividual) {
-	            return ((ContactoIndividual) c).getMovil().equals(movil);
-	        } else if (c instanceof Grupo) {
-	            return ((Grupo) c).getMiembros().stream()
-	                .anyMatch(miembro -> miembro.getMovil().equals(movil));
-	        }
-	    }
-	    if (!nombre.isBlank()) {
-	        if (c.getNombre().equals(nombre)) return true;
-	        if (c instanceof Grupo) {
-	            return ((Grupo) c).getMiembros().stream()
-	                .anyMatch(miembro -> miembro.getNombre().equals(nombre));
-	        }
-	        return false;
-	    }
-	    return true; // Si no hay filtros, se considera relevante
-	}
+    private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
+        if (!movil.isBlank()) {
+            if (c instanceof ContactoIndividual) {
+                return ((ContactoIndividual) c).getMovil().equals(movil);
+            } else if (c instanceof Grupo) {
+                return ((Grupo) c).getMiembros().stream()
+                    .anyMatch(miembro -> miembro.getMovil().equals(movil));
+            }
+        }
+        if (!nombre.isBlank()) {
+            String nombreNormalizado = Normalizer.normalize(nombre, Normalizer.Form.NFD)
+                    .replaceAll("\\p{M}", "")
+                    .toLowerCase();
+
+            String nombreContactoNormalizado = Normalizer.normalize(c.getNombre(), Normalizer.Form.NFD)
+                    .replaceAll("\\p{M}", "")
+                    .toLowerCase();
+
+            if (nombreContactoNormalizado.contains(nombreNormalizado)) return true;
+
+            if (c instanceof Grupo) {
+                return ((Grupo) c).getMiembros().stream().anyMatch(miembro -> {
+                    String nombreMiembroNormalizado = Normalizer.normalize(miembro.getNombre(), Normalizer.Form.NFD)
+                            .replaceAll("\\p{M}", "")
+                            .toLowerCase();
+                    return nombreMiembroNormalizado.contains(nombreNormalizado);
+                });
+            }
+            return false;
+        }
+        return true; // Si no hay filtros, se considera relevante
+    }
+
 
 	public boolean asignarNombre(String nombre, Contacto contacto) {
 		contacto.setNombre(nombre);

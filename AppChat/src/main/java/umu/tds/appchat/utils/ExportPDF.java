@@ -1,8 +1,9 @@
 package umu.tds.appchat.utils;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Mensaje;
 
 import java.io.FileOutputStream;
@@ -13,39 +14,78 @@ public class ExportPDF {
 
     public static void crearPDF(String contacto, List<Mensaje> historial, String rutaArchivo) {
         try {
-            Document pdfDoc = new Document();
-            PdfWriter.getInstance(pdfDoc, new FileOutputStream(rutaArchivo));
+            Document pdfDoc = new Document(PageSize.A4, 36, 36, 54, 36);
+            PdfWriter writer = PdfWriter.getInstance(pdfDoc, new FileOutputStream(rutaArchivo));
             pdfDoc.open();
+            
+            // Agrega el logo
+            try {
+                Image logo = Image.getInstance("src/main/resources/logo_login.png");
+                logo.scaleToFit(100, 100);
+                logo.setAlignment(Image.ALIGN_CENTER);
+                pdfDoc.add(logo);
+                pdfDoc.add(Chunk.NEWLINE); // Espacio debajo del logo
+            } catch (Exception e) {
+                System.err.println("No se pudo cargar el logo: " + e.getMessage());
+            }
+
 
             // Título del documento
             Font estiloTitulo = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
-            Paragraph encabezado = new Paragraph("Conversación con " + contacto, estiloTitulo);
+            Paragraph encabezado = new Paragraph("Conversación entre " + contacto + " y " + AppChat.getInstance().getUsuarioActual().getNombre(), estiloTitulo);
             encabezado.setAlignment(Element.ALIGN_CENTER);
+            encabezado.setSpacingAfter(20f);
             pdfDoc.add(encabezado);
-            pdfDoc.add(new Paragraph("\n")); // Espacio extra
 
-            // Estilos de texto
+            // Estilos
             Font estiloMensaje = new Font(Font.FontFamily.HELVETICA, 12);
-            Font estiloFecha = new Font(Font.FontFamily.HELVETICA, 10, Font.ITALIC);
+            Font estiloFecha = new Font(Font.FontFamily.HELVETICA, 9, Font.ITALIC, BaseColor.DARK_GRAY);
             DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
+            String nombreUsuarioActual = AppChat.getInstance().getUsuarioActual().getNombre();
+
             for (Mensaje mensaje : historial) {
-                String autor = contacto; // Se asume que el mensaje tiene un método getAutor() que devuelve un objeto con getNombre()
-                String contenido = mensaje.getTexto();     // Contenido del mensaje
-                String fechaHora = mensaje.getFechaHoraEnvio().format(formatoFecha); // Se asume que el mensaje tiene un atributo LocalDateTime llamado fechaHora
+                boolean esUsuario = /* TODO mensaje.getAutor().getNombre().equals(nombreUsuarioActual)*/ true;
+                String autor = contacto;
+                String contenido = mensaje.getTexto();
+                String fechaHora = mensaje.getFechaHoraEnvio().format(formatoFecha);
 
-                Paragraph lineaAutor = new Paragraph(autor + ":", estiloMensaje);
-                lineaAutor.setSpacingBefore(5f);
-                pdfDoc.add(lineaAutor);
+                // Contenedor con fondo como burbuja
+                PdfPTable contenedor = new PdfPTable(1);
+                contenedor.setWidthPercentage(70);
+                if (esUsuario) {
+                    contenedor.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                } else {
+                    contenedor.setHorizontalAlignment(Element.ALIGN_LEFT);
+                }
 
-                Paragraph lineaContenido = new Paragraph(contenido, estiloMensaje);
-                pdfDoc.add(lineaContenido);
+                // Autor (opcional si quieres mostrarlo en cada mensaje)
+                PdfPCell celdaAutor = new PdfPCell(new Phrase(autor, estiloMensaje));
+                celdaAutor.setBorder(Rectangle.NO_BORDER);
+                celdaAutor.setBackgroundColor(esUsuario ? new BaseColor(220, 248, 198) : new BaseColor(240, 240, 240));
+                contenedor.addCell(celdaAutor);
 
-                Paragraph lineaFecha = new Paragraph(fechaHora, estiloFecha);
-                pdfDoc.add(lineaFecha);
+                // Mensaje
+                PdfPCell celdaMensaje = new PdfPCell(new Phrase(contenido, estiloMensaje));
+                celdaMensaje.setPadding(8f);
+                celdaMensaje.setBackgroundColor(esUsuario ? new BaseColor(220, 248, 198) : new BaseColor(240, 240, 240));
+                celdaMensaje.setBorderColor(BaseColor.LIGHT_GRAY);
+                contenedor.addCell(celdaMensaje);
+
+                // Fecha
+                PdfPCell celdaFecha = new PdfPCell(new Phrase(fechaHora, estiloFecha));
+                celdaFecha.setBorder(Rectangle.NO_BORDER);
+                celdaFecha.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                celdaFecha.setBackgroundColor(esUsuario ? new BaseColor(220, 248, 198) : new BaseColor(240, 240, 240));
+                contenedor.addCell(celdaFecha);
+
+                // Espacio entre mensajes
+                contenedor.setSpacingAfter(10f);
+                pdfDoc.add(contenedor);
             }
 
             pdfDoc.close();
+            writer.close();
 
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo generar el PDF de la conversación", ex);

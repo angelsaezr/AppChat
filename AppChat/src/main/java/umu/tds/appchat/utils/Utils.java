@@ -1,5 +1,7 @@
 package umu.tds.appchat.utils;
 	
+import java.awt.Color;
+import java.awt.Shape;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
