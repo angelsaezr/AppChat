@@ -125,6 +125,19 @@ public class VentanaPremium extends JDialog {
         btnCerrar.setFocusPainted(false);
         btnCerrar.setBorderPainted(false);
         btnCerrar.addActionListener(ev -> dialogo.dispose());
+        
+        // Agrega KeyListener para detectar la tecla Enter
+        KeyAdapter enterKeyListener = new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnCerrar.doClick(); // Simula el clic en el botón
+                }
+            }
+        };
+        
+        // Asigna el KeyListener a los campos de entrada
+        mensaje.addKeyListener(enterKeyListener);
 
         JPanel panelBoton = new JPanel();
         panelBoton.add(btnCerrar);

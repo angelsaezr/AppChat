@@ -4,6 +4,8 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
 import umu.tds.appchat.controlador.AppChat;
+import umu.tds.appchat.dominio.Contacto;
+import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Mensaje;
 
 import java.io.FileOutputStream;
@@ -12,7 +14,7 @@ import java.util.List;
 
 public class ExportPDF {
 
-    public static void crearPDF(String contacto, List<Mensaje> historial, String rutaArchivo) {
+    public static void crearPDF(Contacto contacto, List<Mensaje> historial, String rutaArchivo) {
         try {
             Document pdfDoc = new Document(PageSize.A4, 36, 36, 54, 36);
             PdfWriter writer = PdfWriter.getInstance(pdfDoc, new FileOutputStream(rutaArchivo));
@@ -32,7 +34,12 @@ public class ExportPDF {
 
             // Título del documento
             Font estiloTitulo = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
-            Paragraph encabezado = new Paragraph("Conversación entre " + contacto + " y " + AppChat.getInstance().getUsuarioActual().getNombre(), estiloTitulo);
+            Paragraph encabezado;
+            if (contacto instanceof ContactoIndividual) {
+                encabezado = new Paragraph("Conversación entre " + contacto.getNombre() + " y " + AppChat.getInstance().getUsuarioActual().getNombre(), estiloTitulo);
+            } else {
+                encabezado = new Paragraph("Conversación del grupo \"" + contacto.getNombre() + "\"", estiloTitulo);
+            }
             encabezado.setAlignment(Element.ALIGN_CENTER);
             encabezado.setSpacingAfter(20f);
             pdfDoc.add(encabezado);
@@ -46,7 +53,7 @@ public class ExportPDF {
 
             for (Mensaje mensaje : historial) {
                 boolean esUsuario = /* TODO mensaje.getAutor().getNombre().equals(nombreUsuarioActual)*/ true;
-                String autor = contacto;
+                String autor = contacto.getNombre();
                 String contenido = mensaje.getTexto();
                 String fechaHora = mensaje.getFechaHoraEnvio().format(formatoFecha);
 

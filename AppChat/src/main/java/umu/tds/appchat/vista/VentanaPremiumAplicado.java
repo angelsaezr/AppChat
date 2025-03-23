@@ -64,13 +64,13 @@ public class VentanaPremiumAplicado extends JDialog {
             if (confirm == JOptionPane.YES_OPTION) {
                 // Anula la suscripción premium del usuario
                 AppChat.getInstance().anularPremium();
+                ventanaMain.removePremium();
                 JOptionPane.showMessageDialog(
                     this,
                     "Tu suscripción premium ha sido anulada con éxito.",
                     "Premium Anulado",
                     JOptionPane.INFORMATION_MESSAGE
                 );
-                ventanaMain.removePremium();
                 dispose();
             }
         });

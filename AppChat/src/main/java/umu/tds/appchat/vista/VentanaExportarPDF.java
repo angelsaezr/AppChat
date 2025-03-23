@@ -115,7 +115,7 @@ public class VentanaExportarPDF extends JDialog {
 
                     try {
                         List<Mensaje> mensajes = AppChat.getInstance().getMensajesDelContacto(contacto);
-                        ExportPDF.crearPDF(contacto.getNombre(), mensajes, ruta);
+                        ExportPDF.crearPDF(contacto, mensajes, ruta);
                         
                         JOptionPane.showMessageDialog(
                             VentanaExportarPDF.this,
