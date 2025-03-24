@@ -573,7 +573,7 @@ public class VentanaMain extends JFrame {
             ImageIcon starIcon = new ImageIcon(starImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH));
 
             starLabel = new JLabel(starIcon);
-            starLabel.setToolTipText("Usuario premium"); // Agrega tooltip al pasar el ratón
+            starLabel.setToolTipText("Eres usuario premium"); // Agrega tooltip al pasar el ratón
 
             panelDerecha.add(starLabel, 0); // Agrega la estrella antes de la imagen del usuario
         } catch (IOException e) {
