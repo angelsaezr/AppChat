@@ -449,6 +449,8 @@ public class VentanaMain extends JFrame {
             	               panelChat.removeAll();
             	               panelChat.revalidate();
             	               panelChat.repaint();
+            	               
+            	               JOptionPane.showMessageDialog(VentanaMain.this, "Grupo eliminado correctamente.", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
             	           }
             	       }
             	   });
