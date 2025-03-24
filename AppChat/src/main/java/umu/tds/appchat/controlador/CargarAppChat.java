@@ -19,7 +19,7 @@ public class CargarAppChat {
 		
 		AppChat appChat = AppChat.getInstance();
 		appChat.registrarUsuario("Javi", "11", "aa", LocalDate.of(1960, 10, 03),"", "Hola, soy jesus", "email");
-		appChat.registrarUsuario("Lamine Yamal", "22", "bb", LocalDate.of(1995, 12, 28), "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg", "hola, soy lamine", "email");
+		/*appChat.registrarUsuario("Lamine Yamal", "22", "bb", LocalDate.of(1995, 12, 28), "https://upload.wikimedia.org/wikipedia/commons/8/8d/Lamine_Yamal%2C_S%C3%A1nchez_se_reuni%C3%B3_con_los_futbolistas_de_la_selecci%C3%B3n_espa%C3%B1ola_tras_ganar_la_Eurocopa_2024_%283%29_%28cropped%29.jpg", "hola, soy lamine", "email");
 		appChat.registrarUsuario("Leo Messi", "33", "cc", LocalDate.of(2000, 5, 15), "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg/220px-Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg", "hola, soy messi", "email");
 		//appChat.registrarUsuario("dd", "44", "dd", LocalDate.of(1970, 5, 11), "/usuarios/foto-diego.png", "hola, soy diego", "email");
 		//appChat.registrarUsuario("ee", "55", "ee", LocalDate.of(1990, 3, 28), "/usuarios/annetaylor.jpg", "hola, soy anne", "email");
@@ -61,7 +61,7 @@ public class CargarAppChat {
 		appChat.enviarMensajeContacto(c2, "Adiós", 8);
 		
 		ContactoIndividual c6 = appChat.agregarContacto("Vini", "66");
-		appChat.enviarMensajeContacto(c6, "Soy el mejor", -1);
+		appChat.enviarMensajeContacto(c6, "Soy el mejor", -1);*/
 		
 	    System.out.println("Fin de la carga de datos");
 	    

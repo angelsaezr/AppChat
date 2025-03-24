@@ -44,7 +44,7 @@ public class AppChat {
 
     private AppChat() {
         this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
-        //inicializarAdaptadores();
+        inicializarAdaptadores();
     }
     
     public static AppChat getInstance() {
@@ -126,7 +126,7 @@ public class AppChat {
         if (imagen == "")
         	imagen = "src/main/resources/profile1.jpg";
         Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
-        //adaptadorUsuario.registrarUsuario(nuevoUsuario);
+        adaptadorUsuario.registrarUsuario(nuevoUsuario);
         repositorioUsuarios.addUsuario(nuevoUsuario);
         return true;
     }
