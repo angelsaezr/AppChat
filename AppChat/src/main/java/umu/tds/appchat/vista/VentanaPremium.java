@@ -104,11 +104,11 @@ public class VentanaPremium extends JDialog {
      */
     private void mostrarDialogoPrecio(double precioFinal) {
         JDialog dialogo = new JDialog(this, "Confirmación de Pago", true);
-        dialogo.setSize(300, 150);
+        dialogo.setSize(300, 170);
         dialogo.setLocationRelativeTo(this);
         dialogo.setLayout(new BorderLayout());
 
-        JTextArea mensaje = new JTextArea("¡Enhorabuena! Eres usuario premium.\nCantidad anual a pagar: " + String.format("%.2f", precioFinal) + "€");
+        JTextArea mensaje = new JTextArea("\n¡Enhorabuena! Eres usuario premium.\n\nCantidad anual a pagar: " + String.format("%.2f", precioFinal) + "€\n\n");
         mensaje.setEditable(false);
         mensaje.setOpaque(false);
         mensaje.setFont(new Font("SansSerif", Font.PLAIN, 14));
