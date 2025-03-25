@@ -43,8 +43,8 @@ public class AppChat {
     private Usuario usuarioActual;
 
     private AppChat() {
-        this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
         inicializarAdaptadores();
+        inicializarReposiorios();
     }
     
     public static AppChat getInstance() {
@@ -66,6 +66,10 @@ public class AppChat {
 			e.printStackTrace();
 		}
 	}
+    
+    private void inicializarReposiorios() {
+    	this.repositorioUsuarios = RepositorioUsuarios.INSTANCE;
+    }
     
     public Usuario getUsuarioActual() {
 		return usuarioActual;

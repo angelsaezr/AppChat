@@ -121,6 +121,10 @@ public class Usuario {
 	public void setContactos(List<Contacto> contactos) {
 		contactos.stream().forEach(c -> this.contactos.add(c));	
 	}
+	
+	public Optional<Descuento> getDescuento() {
+		return descuento;
+	}
 
 	public void setDescuento(TipoDescuento tipoDescuento) {
 	    this.descuento = Optional.of(DescuentoFactoria.crearDescuento(tipoDescuento));
