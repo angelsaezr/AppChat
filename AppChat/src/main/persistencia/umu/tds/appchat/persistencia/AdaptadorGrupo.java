@@ -6,11 +6,12 @@ import umu.tds.appchat.dominio.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import beans.Entidad;
 import beans.Propiedad;
-import beans.Mensaje;
 
 public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 
@@ -35,8 +36,14 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		return null;
 		
 	}
+	
+	public List<Grupo> recuperarTodosLosContactosIndividuales() {
+		return servPersistencia.recuperarEntidades("grupo").stream()
+				.map(entidad -> recuperarGrupo(entidad.getId()))
+				.collect(Collectors.toList());
+	}
 
-	public void modificarGrupo() {
+	public void modificarGrupo(Grupo grupo) {
 
 	}
 

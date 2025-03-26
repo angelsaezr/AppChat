@@ -25,7 +25,6 @@ public class VentanaLogin extends JFrame {
     private JPasswordField txtPassword;
 
     public VentanaLogin() {
-    	// TODO QUITAR System.out.println(AppChat.getInstance().getUsuarioActual().getContactoIndividual("22").getMensajes().toString());
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 400, 500);

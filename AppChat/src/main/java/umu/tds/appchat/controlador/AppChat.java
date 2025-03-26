@@ -140,6 +140,7 @@ public class AppChat {
     public boolean login(String movil, String contraseña) {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
+        	adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales();
             this.usuarioActual = usuario;
             return true;
         }
@@ -154,7 +155,11 @@ public class AppChat {
         if (usuarioContacto == null) return null;
 
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
-        if (usuarioActual.addContacto(nuevoContacto)) return nuevoContacto;
+        if (usuarioActual.addContacto(nuevoContacto)) {
+        	adaptadorContactoIndividual.registrarContactoIndividual(nuevoContacto);
+        	return nuevoContacto;
+        }
+      
         
         return null;
     }

@@ -83,8 +83,8 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 						new Propiedad(SALUDO, usuario.getSaludo()),
 						new Propiedad(FECHA_NACIMIENTO,usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))),
 						new Propiedad(DESCUENTO, String.valueOf(usuario.getDescuento())),
-						new Propiedad(CONTACTOS_INDIV, obtenerCodigos(contactosIndiv)),
-						new Propiedad(GRUPOS, obtenerCodigos(grupos)))));
+						new Propiedad(CONTACTOS_INDIV, getCodigos(contactosIndiv)),
+						new Propiedad(GRUPOS, getCodigos(grupos)))));
 
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eUsuario = Optional.ofNullable(servPersistencia.registrarEntidad(eUsuario.get()));
@@ -92,7 +92,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(usuario.getCodigo(), usuario);
-
 	}
 
 	public Usuario recuperarUsuario(int codigo) {
@@ -102,8 +101,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 			return (Usuario) PoolDAO.getUnicaInstancia().getObject(codigo);
 		}
 
-		// Si no lo está se recupera entidad y las propiedades de campos de tipo
-		// primitivo
+		// Si no lo está se recupera entidad y las propiedades de campos de tipo primitivo
 		Entidad eUsuario = servPersistencia.recuperarEntidad(codigo);
 		String nombre = servPersistencia.recuperarPropiedadEntidad(eUsuario, NOMBRE);
 		String movil = servPersistencia.recuperarPropiedadEntidad(eUsuario, MOVIL);
@@ -125,8 +123,8 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
-		List<Contacto> contactos = obtenerContactosIndividualesCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
-		List<Contacto> grupos = obtenerGruposCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
+		List<Contacto> contactos = getContactosIndividualesCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
+		List<Contacto> grupos = getGruposCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
 		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
 		usuario.setContactos(contactos);
 
@@ -167,9 +165,9 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				prop.setValor(usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 				// TODO DESCUENTO
 			} else if (prop.getNombre().equals(CONTACTOS_INDIV)) {
-				prop.setValor(obtenerCodigos(contactosIndiv));
+				prop.setValor(getCodigos(contactosIndiv));
 			} else if (prop.getNombre().equals(GRUPOS)) {
-				prop.setValor(obtenerCodigos(grupos));
+				prop.setValor(getCodigos(grupos));
 			}
 			
 			servPersistencia.modificarEntidad(eUsuario);
@@ -178,8 +176,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 
 	public void borrarUsuario(Usuario usuario) {
 		// Se recupera entidad
-		Entidad eUsuario;
-		eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
 		// Se eliminan sus entidades agregadas
 		for (Contacto contacto : usuario.getContactos()) {
@@ -199,7 +196,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
-	private List<Contacto> obtenerContactosIndividualesCodigos(String codigos) {
+	private List<Contacto> getContactosIndividualesCodigos(String codigos) {
 		return Arrays.stream(codigos.split(" ")) // Dividimos la cadena en un array usando el espacio como separador
 				.filter(codigo -> !codigo.isEmpty()) // Filtramos códigos vacíos
 				.map(Integer::parseInt) // Convertimos los valores de String a Integer
@@ -207,13 +204,17 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				.collect(Collectors.toList());
 	}
 
-	private List<Contacto> obtenerGruposCodigos(String codigos) {
-		return Arrays.stream(codigos.split(" ")).filter(codigo -> !codigo.isEmpty()).map(Integer::parseInt)
-				.map(codigo -> AdaptadorGrupo.getUnicaInstancia().recuperarGrupo(codigo)).collect(Collectors.toList());
+	private List<Contacto> getGruposCodigos(String codigos) {
+		return Arrays.stream(codigos.split(" "))
+				.filter(codigo -> !codigo.isEmpty())
+				.map(Integer::parseInt)
+				.map(codigo -> AdaptadorGrupo.getUnicaInstancia().recuperarGrupo(codigo))
+				.collect(Collectors.toList());
 	}
 
-	private String obtenerCodigos(List<Contacto> contactos) {
-		return contactos.stream().map(c -> String.valueOf(c.getCodigo())) // Convertimos el código a String
+	private String getCodigos(List<Contacto> contactos) {
+		return contactos.stream()
+				.map(c -> String.valueOf(c.getCodigo())) // Convertimos el código a String
 				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
 													// práctica en rendimiento
 	}
