@@ -208,6 +208,7 @@ public class VentanaMain extends JFrame {
         // Panel derecho - Chat
         panelChat = new JPanel(new BorderLayout());
         panelChat.setBackground(Color.WHITE);
+        
         ChatPanel chatPanel = new ChatPanel();
         JScrollPane scrollChat = new JScrollPane(chatPanel);
         scrollChat.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -310,6 +311,15 @@ public class VentanaMain extends JFrame {
         panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
         
         contentPane.add(panelChat, BorderLayout.CENTER);
+        
+        // Muestra un mensaje inicial
+        if (contactoSeleccionado == null) {
+            JLabel mensajeInicial = new JLabel("Esto está un poco vacío, ¡selecciona o crea un contacto para comenzar!", SwingConstants.CENTER);
+            mensajeInicial.setFont(new Font("Segoe UI", Font.ITALIC, 14));
+            mensajeInicial.setForeground(Color.GRAY);
+            panelChat.add(mensajeInicial, BorderLayout.CENTER);
+        }
+
     }
 
     // Método para ajustar el tamaño del JTextArea dinámicamente

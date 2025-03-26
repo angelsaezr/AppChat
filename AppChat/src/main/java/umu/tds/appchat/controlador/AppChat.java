@@ -111,6 +111,7 @@ public class AppChat {
     	
 		usuarioActual.setPremium(true);
 		usuarioActual.setDescuento(tipo);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
     
@@ -118,7 +119,7 @@ public class AppChat {
 		if (usuarioActual == null) return false;
 		
 		this.usuarioActual.setPremium(false);
-		// TODO
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
 
@@ -310,11 +311,13 @@ public class AppChat {
     	if (imagen != null)
     		rutaImagen = imagen.getAbsolutePath();
 		usuarioActual.setImagen(rutaImagen);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
 	
 	public void cambiarSaludo(String text) {
 		usuarioActual.setSaludo(text);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 	}
 	
 	public String getNombreContacto(Contacto c) {

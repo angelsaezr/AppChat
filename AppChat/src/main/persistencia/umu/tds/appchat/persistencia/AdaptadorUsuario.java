@@ -44,25 +44,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	public void registrarUsuario(Usuario usuario) {
-		/*
-		 * try { Entidad eUsuario =
-		 * servPersistencia.recuperarEntidad(usuario.getCodigo());
-		 * 
-		 * if (eUsuario != null) { return; } } catch (NullPointerException e) { // TODO:
-		 * handle exception }
-		 * 
-		 * // objeto cliente ya existe Entidad eUsuario = new Entidad();
-		 * eUsuario.setNombre("usuario"); // setTipo() hubiese sido más apropiado
-		 * eUsuario.setPropiedades(new ArrayList<>(Arrays.asList(new Propiedad(NOMBRE,
-		 * usuario.getNombre()), new Propiedad(MOVIL, usuario.getMovil()), new
-		 * Propiedad(CONTRASEÑA, usuario.getContraseña()))));
-		 * 
-		 * eUsuario = servPersistencia.registrarEntidad(eUsuario);
-		 * usuario.setCodigo(eUsuario.getId());
-		 */
-
-		// Se comprueba que no está registrada la entidad que corresponde al código del
-		// objeto
+		// Se comprueba que no está registrada la entidad que corresponde al código del objeto
 
 		Optional<Entidad> eUsuario = Optional.ofNullable(servPersistencia.recuperarEntidad(usuario.getCodigo()));
 		if (eUsuario.isPresent()) {
@@ -72,8 +54,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		// Se registran sus objetos referenciados
 		for (Contacto contacto : usuario.getContactos()) {
 			if (contacto instanceof ContactoIndividual) {
-				AdaptadorContactoIndividual.getUnicaInstancia()
-						.registrarContactoIndividual((ContactoIndividual) contacto);
+				AdaptadorContactoIndividual.getUnicaInstancia().registrarContactoIndividual((ContactoIndividual) contacto);
 			} else if (contacto instanceof Grupo) {
 				AdaptadorGrupo.getUnicaInstancia().registrarGrupo((Grupo) contacto);
 			}
@@ -84,20 +65,23 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		eUsuario.get().setNombre("usuario");
 
 		// Cogemos la lista de contactos y grupos
-		List<Contacto> contactosIndiv = usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual)
+		List<Contacto> contactosIndiv = usuario.getContactos().stream()
+				.filter(c -> c instanceof ContactoIndividual)
 				.collect(Collectors.toList());
-		List<Contacto> grupos = usuario.getContactos().stream().filter(c -> c instanceof Grupo)
+		List<Contacto> grupos = usuario.getContactos().stream()
+				.filter(c -> c instanceof Grupo)
 				.collect(Collectors.toList());
 
 		// Se crean y añaden las propiedades a la entidad creada
-		eUsuario.get()
-				.setPropiedades(new ArrayList<>(Arrays.asList(new Propiedad(NOMBRE, usuario.getNombre()),
-						new Propiedad(MOVIL, usuario.getMovil()), new Propiedad(CONTRASEÑA, usuario.getContraseña()),
-						new Propiedad(EMAIL, usuario.getEmail()), new Propiedad(IMAGEN, usuario.getImagen()),
+		eUsuario.get().setPropiedades(new ArrayList<>(Arrays.asList(
+						new Propiedad(NOMBRE, usuario.getNombre()),
+						new Propiedad(MOVIL, usuario.getMovil()),
+						new Propiedad(CONTRASEÑA, usuario.getContraseña()),
+						new Propiedad(EMAIL, usuario.getEmail()),
+						new Propiedad(IMAGEN, usuario.getImagen()),
 						new Propiedad(IS_PREMIUM, String.valueOf(usuario.isPremium())),
 						new Propiedad(SALUDO, usuario.getSaludo()),
-						new Propiedad(FECHA_NACIMIENTO,
-								usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))),
+						new Propiedad(FECHA_NACIMIENTO,usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))),
 						new Propiedad(DESCUENTO, String.valueOf(usuario.getDescuento())),
 						new Propiedad(CONTACTOS_INDIV, obtenerCodigos(contactosIndiv)),
 						new Propiedad(GRUPOS, obtenerCodigos(grupos)))));
@@ -128,28 +112,22 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		String imagen = servPersistencia.recuperarPropiedadEntidad(eUsuario, IMAGEN);
 		boolean isPremium = Boolean.parseBoolean(servPersistencia.recuperarPropiedadEntidad(eUsuario, IS_PREMIUM));
 		String saludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, SALUDO);
-		LocalDate fechaNacimiento = LocalDate.parse(
-				servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO),
-				DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-		// String descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario,
-		// DESCUENTO);
+		LocalDate fechaNacimiento = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		// String descuento = servPersistencia.recuperarPropiedadEntidad(eUsuario, DESCUENTO);
 
-		// Se crea el objeto, se inicializa con propiedades anteriores y se añade al
-		// pool si es necesario
+		// Se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
 		Usuario usuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
 		usuario.setPremium(isPremium);
-		usuario.setDescuento(null); // TODO
+		//usuario.setDescuento(null); // TODO
 		usuario.setCodigo(codigo);
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
-		List<Contacto> contactos = obtenerContactosIndividualesCodigos(
-				servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
+		List<Contacto> contactos = obtenerContactosIndividualesCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
 		List<Contacto> grupos = obtenerGruposCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
-		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos
-									// todos
+		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
 		usuario.setContactos(contactos);
 
 		// Se retorna el objeto
@@ -157,13 +135,45 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	public List<Usuario> recuperarTodosLosUsuarios() {
-
-		return servPersistencia.recuperarEntidades("usuario").stream().map(entidad -> recuperarUsuario(entidad.getId()))
+		return servPersistencia.recuperarEntidades("usuario").stream()
+				.map(entidad -> recuperarUsuario(entidad.getId()))
 				.collect(Collectors.toList());
 	}
 
 	public void modificarUsuario(Usuario usuario) {
-		// TODO
+		//Se recupera entidad
+		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
+				
+		List<Contacto> contactosIndiv = usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual).collect(Collectors.toList());
+		List<Contacto> grupos = usuario.getContactos().stream().filter(c -> c instanceof Grupo).collect(Collectors.toList());
+				
+		//Se recorren sus propiedades y se actualiza su valor
+		for (Propiedad prop : eUsuario.getPropiedades()) {
+			if (prop.getNombre().equals(NOMBRE)) {
+				prop.setValor(usuario.getNombre());
+			} else if (prop.getNombre().equals(MOVIL)) {
+				prop.setValor(usuario.getMovil());
+			} else if (prop.getNombre().equals(CONTRASEÑA)) {
+				prop.setValor(usuario.getContraseña());
+			} else if (prop.getNombre().equals(EMAIL)) {
+				prop.setValor(usuario.getEmail());
+			} else if (prop.getNombre().equals(IMAGEN)) {
+				prop.setValor(usuario.getImagen());
+			} else if (prop.getNombre().equals(IS_PREMIUM)) {
+				prop.setValor(String.valueOf(usuario.isPremium()));
+			} else if (prop.getNombre().equals(SALUDO)) {
+				prop.setValor(usuario.getSaludo());
+			} else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
+				prop.setValor(usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+				// TODO DESCUENTO
+			} else if (prop.getNombre().equals(CONTACTOS_INDIV)) {
+				prop.setValor(obtenerCodigos(contactosIndiv));
+			} else if (prop.getNombre().equals(GRUPOS)) {
+				prop.setValor(obtenerCodigos(grupos));
+			}
+			
+			servPersistencia.modificarEntidad(eUsuario);
+		}
 	}
 
 	public void borrarUsuario(Usuario usuario) {

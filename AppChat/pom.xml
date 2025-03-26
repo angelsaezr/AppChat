@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
 			<artifactId>eclipselink</artifactId>
-			<version>3.0.2</version> <!-- O la última versión disponible -->
+			<version>2.7.7</version> <!-- O la última versión disponible -->
 		</dependency>
 
 	</dependencies>
