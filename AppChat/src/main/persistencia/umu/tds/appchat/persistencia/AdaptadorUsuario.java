@@ -126,7 +126,11 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		List<Contacto> contactos = getContactosIndividualesCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
 		List<Contacto> grupos = getGruposCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
 		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
-		usuario.setContactos(contactos);
+		for (Contacto c: contactos) {
+			usuario.addContacto(c); // TODO CON ADD Y NO SET?
+		}
+		
+		// usuario.setContactos(contactos);
 
 		// Se retorna el objeto
 		return usuario;

@@ -319,7 +319,6 @@ public class VentanaMain extends JFrame {
             mensajeInicial.setForeground(Color.GRAY);
             panelChat.add(mensajeInicial, BorderLayout.CENTER);
         }
-
     }
 
     // Método para ajustar el tamaño del JTextArea dinámicamente

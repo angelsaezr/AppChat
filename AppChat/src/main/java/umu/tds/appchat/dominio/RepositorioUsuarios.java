@@ -3,7 +3,6 @@ package umu.tds.appchat.dominio;
 import java.util.HashMap;
 import java.util.Map;
 
-import umu.tds.appchat.persistencia.AdaptadorUsuario;
 import umu.tds.appchat.persistencia.DAOException;
 import umu.tds.appchat.persistencia.FactoriaDAO;
 

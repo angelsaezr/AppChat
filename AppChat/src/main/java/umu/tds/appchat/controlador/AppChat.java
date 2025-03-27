@@ -140,8 +140,15 @@ public class AppChat {
     public boolean login(String movil, String contraseña) {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
-        	adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales();
+        	/*for (ContactoIndividual c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
+        		System.out.println(c.getNombre());
+        	} TODO*/ 
             this.usuarioActual = usuario;
+            for (Contacto c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
+            	this.usuarioActual.addContacto(c); // TODO PODRÍA ESTAR MAL
+            }
+        	System.out.println(this.usuarioActual.getContactos().size());
+        	//System.out.println(this.usuarioActual.getContactos().get(0).getNombre());
             return true;
         }
         return false;
@@ -159,8 +166,6 @@ public class AppChat {
         	adaptadorContactoIndividual.registrarContactoIndividual(nuevoContacto);
         	return nuevoContacto;
         }
-      
-        
         return null;
     }
     
