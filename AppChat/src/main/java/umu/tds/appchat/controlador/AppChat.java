@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
+import umu.tds.appchat.persistencia.AdaptadorMensaje;
 import umu.tds.appchat.persistencia.DAOException;
 import umu.tds.appchat.persistencia.FactoriaDAO;
 import umu.tds.appchat.persistencia.IAdaptadorContactoIndividualDAO;
@@ -145,8 +146,9 @@ public class AppChat {
         	} TODO*/ 
             this.usuarioActual = usuario;
             for (Contacto c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
-            	this.usuarioActual.addContacto(c); // TODO PODRÍA ESTAR MAL
+            	this.usuarioActual.addContacto(c); // TODO PODRÍA ESTAR MAL, SE COGE TODOS LOS CONTACTOS O SOLO LOS DE ESTE USUARIO?
             }
+            adaptadorMensaje.recuperarTodosLosMensajes(); // TODO CREO QUE ESTÁ MAL
         	System.out.println(this.usuarioActual.getContactos().size());
         	//System.out.println(this.usuarioActual.getContactos().get(0).getNombre());
             return true;
@@ -205,6 +207,9 @@ public class AppChat {
         // Intentar enviar el mensaje desde el usuario actual
         if (!usuarioActual.addMensaje(receptor, texto, emoticono, TipoMensaje.ENVIADO)) {
             return false;
+        } else {
+        	Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO);
+        	adaptadorMensaje.registrarMensaje(mensaje);
         }
 
         if (receptor instanceof ContactoIndividual) {
@@ -226,7 +231,11 @@ public class AppChat {
         	usuarioReceptor.addContacto(contactoSender); // Si no lo tiene agregado, lo agrega sin nombre
         }
 
-        return usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+        usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+        Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.RECIBIDO);
+        adaptadorMensaje.registrarMensaje(mensaje);
+        
+        return true;
     }
 
     // Método auxiliar para enviar mensaje a un grupo
@@ -240,7 +249,10 @@ public class AppChat {
                 	contactoSender = new ContactoIndividual("", usuarioActual);
                     usuarioReceptor.addContacto(contactoSender); // Si no lo tiene agregado, lo agrega sin nombre
                 }
-                return usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+                usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+                Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.RECIBIDO);
+                adaptadorMensaje.registrarMensaje(mensaje);
+                return true;
             })
             .allMatch(Boolean::booleanValue); // Devuelve true si TODOS los mensajes se envían con éxito
     }
