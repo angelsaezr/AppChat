@@ -1,6 +1,13 @@
 package umu.tds.appchat.persistencia;
 
-public interface IAdaptadorGrupoDAO {
+import java.util.List;
 
-	// TODO
+import umu.tds.appchat.dominio.Grupo;
+
+public interface IAdaptadorGrupoDAO {
+	public void registrarGrupo(Grupo grupo);
+	public Grupo recuperarGrupo(int codigo);
+	public List<Grupo> recuperarTodosLosContactosIndividuales();
+	public void modificarGrupo(Grupo grupo);
+	public void borrarGrupo(Grupo grupo);
 }

@@ -94,24 +94,6 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 
 		// Se retorna el objeto
 		return contactoIndividual;
-		
-		/*
-				if (PoolDAO.getUnicaInstancia().contains(codigo)) return (ContactoIndividual) PoolDAO.getUnicaInstancia().getObject(codigo);
-				Usuario usuarioAsociado = null;	
-				
-				Entidad eContactoIndividual = servPersistencia.recuperarEntidad(codigo);
-				String nombre = servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, NOMBRE);	
-				ContactoIndividual contactoIndividual = new ContactoIndividual(nombre, usuarioAsociado);
-				contactoIndividual.setCodigo(codigo);
-				PoolDAO.getUnicaInstancia().addObject(codigo, contactoIndividual);
-
-				usuarioAsociado = AdaptadorUsuario.getUnicaInstancia().recuperarUsuario(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, USUARIO)));
-				contactoIndividual.setUsuario(usuarioAsociado);
-				
-				getMensajesCodigos(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES))
-					.forEach(contactoIndividual::addMensaje);
-
-				return contactoIndividual;*/
 	}	
 	
 	public List<ContactoIndividual> recuperarTodosLosContactosIndividuales() {
