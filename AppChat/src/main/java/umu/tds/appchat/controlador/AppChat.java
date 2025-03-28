@@ -145,12 +145,11 @@ public class AppChat {
         		System.out.println(c.getNombre());
         	} TODO*/ 
             this.usuarioActual = usuario;
-            for (Contacto c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
+            /*for (Contacto c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
             	this.usuarioActual.addContacto(c); // TODO PODRÍA ESTAR MAL, SE COGE TODOS LOS CONTACTOS O SOLO LOS DE ESTE USUARIO?
             }
-            adaptadorMensaje.recuperarTodosLosMensajes(); // TODO CREO QUE ESTÁ MAL
+            adaptadorMensaje.recuperarTodosLosMensajes(); // TODO CREO QUE ESTÁ MAL*/
         	System.out.println(this.usuarioActual.getContactos().size());
-        	//System.out.println(this.usuarioActual.getContactos().get(0).getNombre());
             return true;
         }
         return false;
@@ -162,14 +161,6 @@ public class AppChat {
 
         Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuarioContacto == null) return null;
-        
-        for (Contacto c: usuarioActual.getContactos()) {
-        	if (c instanceof ContactoIndividual) {
-        		if (((ContactoIndividual) c).getMovil().equals(movil)) {
-        			return null;
-        		}
-        	}
-        }
 
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
         if (usuarioActual.addContacto(nuevoContacto)) {

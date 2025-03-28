@@ -137,6 +137,14 @@ public class Usuario {
 	// Métodos para gestionar contactos
 	public boolean addContacto(Contacto contacto) {
 	    if (contacto == null || contactos.contains(contacto)) return false;
+	    
+	    for (Contacto c: contactos) {
+        	if (c instanceof ContactoIndividual) {
+        		if (((ContactoIndividual) c).getMovil().equals(((ContactoIndividual) contacto).getMovil())) {
+        			return false;
+        		}
+        	}
+        }
 
 	    boolean esMismoMovil;
 
