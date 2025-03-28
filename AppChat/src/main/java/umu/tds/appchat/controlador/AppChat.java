@@ -385,4 +385,8 @@ public class AppChat {
 	    
 	    return true;
 	}
+	
+	public boolean existeUsuario(String movil) {
+		return repositorioUsuarios.existeUsuario(movil);
+	}
 }

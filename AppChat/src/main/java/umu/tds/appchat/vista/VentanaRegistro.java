@@ -206,6 +206,10 @@ public class VentanaRegistro extends JDialog {
         	JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (AppChat.getInstance().existeUsuario(txtMovil.getText())) {
+        	JOptionPane.showMessageDialog(this, "Ya existe un usuario registrado con este móvil.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String rutaImagen = "";
     	if (imagenSeleccionada != null)
     		rutaImagen = imagenSeleccionada.getAbsolutePath();
