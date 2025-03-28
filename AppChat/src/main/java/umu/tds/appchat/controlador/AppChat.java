@@ -162,6 +162,14 @@ public class AppChat {
 
         Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuarioContacto == null) return null;
+        
+        for (Contacto c: usuarioActual.getContactos()) {
+        	if (c instanceof ContactoIndividual) {
+        		if (((ContactoIndividual) c).getMovil().equals(movil)) {
+        			return null;
+        		}
+        	}
+        }
 
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
         if (usuarioActual.addContacto(nuevoContacto)) {

@@ -85,7 +85,7 @@ public class VentanaCrearContacto extends JDialog {
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         	else {
         		if(AppChat.getInstance().agregarContacto(nameField.getText(), phoneField.getText()) == null)
-        			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema", "Error", JOptionPane.ERROR_MESSAGE);
+        			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema o ya existe", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Contacto agregado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
         			ventanaMain.actualizarListaContactos();
