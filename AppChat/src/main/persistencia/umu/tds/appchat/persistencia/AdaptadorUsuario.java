@@ -82,7 +82,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 						new Propiedad(IS_PREMIUM, String.valueOf(usuario.isPremium())),
 						new Propiedad(SALUDO, usuario.getSaludo()),
 						new Propiedad(FECHA_NACIMIENTO,usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))),
-						new Propiedad(DESCUENTO, String.valueOf(usuario.getDescuento())),
+						/*new Propiedad(DESCUENTO, String.valueOf(usuario.getDescuento())),*/
 						new Propiedad(CONTACTOS_INDIV, getCodigos(contactosIndiv)),
 						new Propiedad(GRUPOS, getCodigos(grupos)))));
 
@@ -95,7 +95,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	public Usuario recuperarUsuario(int codigo) {
-
 		// Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contains(codigo)) {
 			return (Usuario) PoolDAO.getUnicaInstancia().getObject(codigo);
@@ -118,24 +117,32 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		usuario.setPremium(isPremium);
 		//usuario.setDescuento(null); // TODO
 		usuario.setCodigo(codigo);
-
+		
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		List<Contacto> contactos = getContactosIndividualesCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
+		System.out.println("Total de contactos del usuario recuperado: " + contactos.size());
 		List<Contacto> grupos = getGruposCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
 		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
 		usuario.setContactos(contactos);
-
 		// Se retorna el objeto
 		return usuario;
 	}
 
 	public List<Usuario> recuperarTodosLosUsuarios() {
-		return servPersistencia.recuperarEntidades("usuario").stream()
+		/*return servPersistencia.recuperarEntidades("usuario").stream()
+				.map(entidad -> recuperarUsuario(entidad.getId()))
+				.collect(Collectors.toList());*/
+		
+		List<Usuario> usuarios = servPersistencia.recuperarEntidades("usuario").stream()
 				.map(entidad -> recuperarUsuario(entidad.getId()))
 				.collect(Collectors.toList());
+
+		System.out.println("Número de usuarios recuperados: " + usuarios.size());
+		
+		return usuarios;
 	}
 
 	public void modificarUsuario(Usuario usuario) {
@@ -144,6 +151,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				
 		List<Contacto> contactosIndiv = usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual).collect(Collectors.toList());
 		List<Contacto> grupos = usuario.getContactos().stream().filter(c -> c instanceof Grupo).collect(Collectors.toList());
+		System.out.println(contactosIndiv + "wwww");
 				
 		//Se recorren sus propiedades y se actualiza su valor
 		for (Propiedad prop : eUsuario.getPropiedades()) {
@@ -197,6 +205,8 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	private List<Contacto> getContactosIndividualesCodigos(String codigos) {
+		System.out.println("Codigos recibidos: '" + codigos + "'");
+		System.out.println("ppppp");
 		return Arrays.stream(codigos.split(" ")) // Dividimos la cadena en un array usando el espacio como separador
 				.filter(codigo -> !codigo.isEmpty()) // Filtramos códigos vacíos
 				.map(Integer::parseInt) // Convertimos los valores de String a Integer

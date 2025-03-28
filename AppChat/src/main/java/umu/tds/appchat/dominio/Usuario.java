@@ -73,7 +73,8 @@ public class Usuario {
 	}
 
 	public List<Contacto> getContactos() {
-		return new LinkedList<>(contactos);
+		System.out.println(this.contactos + "ytytytytyt");
+		return new LinkedList<Contacto>(contactos);
 	} // Devuelve una copia para evitar modificaciones externas
 
 	public double calDescuento() {

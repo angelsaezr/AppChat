@@ -43,8 +43,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		for (Mensaje m: contacto.getMensajes()) {
 			AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m);
 		}
-		AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
-		
+		// TODO NO DEBERIA AÑADIRSE EL USUARIO OTRA VEZ AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
 
 		// Se crea la entidad
 		eContactoIndividual = Optional.of(new Entidad());
@@ -62,10 +61,11 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(contacto.getCodigo(), contacto);
+		System.out.println("llll");
 	}
 
 	public ContactoIndividual recuperarContactoIndividual(int codigo) {
-
+		System.out.println("nfdjjs");
 		// Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contains(codigo)) {
 			return (ContactoIndividual) PoolDAO.getUnicaInstancia().getObject(codigo);
@@ -77,6 +77,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 
 		// Se recuperan los objetos referenciados, se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
 		Usuario usuario = AdaptadorUsuario.getUnicaInstancia().recuperarUsuario(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, USUARIO)));
+		System.out.println("Nombre del contacto recuperado: " + usuario.getNombre());
 		ContactoIndividual contactoIndividual = new ContactoIndividual(nombre, usuario);
 		contactoIndividual.setCodigo(codigo);
 

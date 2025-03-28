@@ -141,15 +141,8 @@ public class AppChat {
     public boolean login(String movil, String contraseña) {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
-        	/*for (ContactoIndividual c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
-        		System.out.println(c.getNombre());
-        	} TODO*/ 
             this.usuarioActual = usuario;
-            /*for (Contacto c: adaptadorContactoIndividual.recuperarTodosLosContactosIndividuales()) {
-            	this.usuarioActual.addContacto(c); // TODO PODRÍA ESTAR MAL, SE COGE TODOS LOS CONTACTOS O SOLO LOS DE ESTE USUARIO?
-            }
-            adaptadorMensaje.recuperarTodosLosMensajes(); // TODO CREO QUE ESTÁ MAL*/
-        	System.out.println(this.usuarioActual.getContactos().size());
+       
             return true;
         }
         return false;
@@ -165,6 +158,7 @@ public class AppChat {
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
         if (usuarioActual.addContacto(nuevoContacto)) {
         	adaptadorContactoIndividual.registrarContactoIndividual(nuevoContacto);
+        	adaptadorUsuario.modificarUsuario(usuarioActual);
         	return nuevoContacto;
         }
         return null;
