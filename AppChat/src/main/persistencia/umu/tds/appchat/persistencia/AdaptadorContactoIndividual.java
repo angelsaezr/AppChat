@@ -40,20 +40,28 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 
 		// Se registran sus objetos referenciados
-		for (Mensaje m: contacto.getMensajes()) {
+		/*for (Mensaje m: contacto.getMensajes()) {
 			AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m);
-		}
+		}*/
 		// TODO NO DEBERIA AÑADIRSE EL USUARIO OTRA VEZ AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
 
+		List<Mensaje> mensajesRegistrados = new ArrayList<>();
+
+		for (Mensaje m : contacto.getMensajes()) {
+		    AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m);
+		    mensajesRegistrados.add(m);
+		}
+		
 		// Se crea la entidad
 		eContactoIndividual = Optional.of(new Entidad());
 		eContactoIndividual.get().setNombre("contactoIndividual");
 
 		// Se crean y añaden las propiedades a la entidad creada
 		eContactoIndividual.get().setPropiedades(new ArrayList<>(Arrays.asList(
-						new Propiedad(NOMBRE, contacto.getNombre()),
-						new Propiedad(MENSAJES, getCodigos(contacto.getMensajes())),
-						new Propiedad(USUARIO, String.valueOf(contacto.getUsuario().getCodigo())))));
+			    new Propiedad(NOMBRE, contacto.getNombre()),
+			    new Propiedad(MENSAJES, getCodigos(mensajesRegistrados)),
+			    new Propiedad(USUARIO, String.valueOf(contacto.getUsuario().getCodigo()))
+			)));
 
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eContactoIndividual = Optional.ofNullable(servPersistencia.registrarEntidad(eContactoIndividual.get()));
@@ -86,7 +94,10 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 
 		// Se actualiza el objeto		
 		List<Mensaje> mensajes = getMensajesCodigos(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
-
+		for (Mensaje m: mensajes) {
+			System.out.println("Texto de los mensajes recuperados: " + m.getTexto());
+		}
+		
 		for (Mensaje mensaje : mensajes) {
 			contactoIndividual.addMensaje(mensaje);
 		}
@@ -137,17 +148,53 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 	}
 	
-	private List<Mensaje> getMensajesCodigos(String codigos) {
+	/*private List<Mensaje> getMensajesCodigos(String codigos) {
 		return Arrays.stream(codigos.split(" "))
 				.filter(codigo -> !codigo.isEmpty())
 				.map(Integer::parseInt)
 				.map(codigo -> AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo))
 				.collect(Collectors.toList());
+	}*/
+	
+	private List<Mensaje> getMensajesCodigos(String codigos) {
+	    return Arrays.stream(codigos.split(" "))
+	            .filter(codigo -> !codigo.isEmpty())
+	            .map(codigo -> {
+	                try {
+	                    return AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(Integer.parseInt(codigo));
+	                } catch (Exception e) {
+	                    System.err.println("❌ Error recuperando mensaje con código " + codigo + ": " + e.getMessage());
+	                    return null;
+	                }
+	            })
+	            .filter(m -> m != null)
+	            .collect(Collectors.toList());
 	}
 
-	private String getCodigos(List<Mensaje> mensajes) {
+
+	/*private String getCodigos(List<Mensaje> mensajes) {
+		for (Mensaje m: mensajes) {
+			System.out.println("Mensajeeee: " + m.getTexto());
+		}
 		return mensajes.stream().map(m -> String.valueOf(m.getCodigo())) // Convertimos el código a String
 				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
 													// práctica en rendimiento
+	}*/
+	
+	private String getCodigos(List<Mensaje> mensajes) {
+	    StringBuilder codigos = new StringBuilder();
+
+	    for (Mensaje m : mensajes) {
+	        System.out.println("Mensajeeee: " + m.getTexto() + "Y su codigo: " + m.getCodigo());
+	        codigos.append(m.getCodigo()).append(" ");
+	    }
+
+	    // Elimina el último espacio si hay elementos
+	    if (codigos.length() > 0) {
+	        codigos.setLength(codigos.length() - 1);
+	    }
+
+	    return codigos.toString();
 	}
+
 }

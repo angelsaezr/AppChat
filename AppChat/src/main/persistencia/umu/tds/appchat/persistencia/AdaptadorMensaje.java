@@ -62,6 +62,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eMensaje = Optional.ofNullable(servPersistencia.registrarEntidad(eMensaje.get()));		
 		mensaje.setCodigo(eMensaje.get().getId());
+		System.out.println("codigo que se guarda en mensaje: " + mensaje.getCodigo());
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(mensaje.getCodigo(), mensaje);
@@ -76,10 +77,23 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Si no lo está se recupera entidad y las propiedades de campos de tipo primitivo
 		Entidad eMensaje = servPersistencia.recuperarEntidad(codigo);
 		String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, TEXTO);
-		int emoticono = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO));
-		TipoMensaje tipo = TipoMensaje.valueOf(servPersistencia.recuperarPropiedadEntidad(eMensaje, TIPO));
-		LocalDateTime fechaHoraEnvio = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO));
+		System.out.println("EL TEXTO DEL MENSAJE RECUPERADO ES: " + texto);
+		
+		//int emoticono = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO));
+		String emoticonoStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO);
+		int emoticono = (emoticonoStr != null && !emoticonoStr.isEmpty()) ? Integer.parseInt(emoticonoStr) : 0;
 
+		//TipoMensaje tipo = TipoMensaje.valueOf(servPersistencia.recuperarPropiedadEntidad(eMensaje, TIPO));
+		String tipoStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, TIPO);
+		TipoMensaje tipo = (tipoStr != null) ? TipoMensaje.valueOf(tipoStr) : TipoMensaje.RECIBIDO; // TODO NO ES RECIBIDO
+
+		//LocalDateTime fechaHoraEnvio = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO));
+		String fechaStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO);
+		LocalDateTime fechaHoraEnvio = (fechaStr != null && !fechaStr.isEmpty())
+		    ? LocalDateTime.parse(fechaStr)
+		    : LocalDateTime.now();
+		
+		
 		// Se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
 		Mensaje mensaje = new Mensaje(texto, emoticono, tipo);
 		mensaje.setCodigo(codigo);
@@ -89,7 +103,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		
-
+		System.out.println("El mensaje recuperado essssssssssssss: " + mensaje.getTexto());
 		// Se retorna el objeto
 		return mensaje;
 		
