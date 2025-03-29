@@ -496,6 +496,7 @@ public class VentanaMain extends JFrame {
             	scrollChat.getVerticalScrollBar().setValue(scrollChat.getVerticalScrollBar().getMaximum())
             );
             panelChat.setVisible(true);
+            areaTexto.requestFocusInWindow(); // Cursor se coloca automáticamente en el campo de escritura al abrir un chat
         }
     }
     
