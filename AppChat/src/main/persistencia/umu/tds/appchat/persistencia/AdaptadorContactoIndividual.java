@@ -69,11 +69,9 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(contacto.getCodigo(), contacto);
-		System.out.println("llll");
 	}
 
 	public ContactoIndividual recuperarContactoIndividual(int codigo) {
-		System.out.println("nfdjjs");
 		// Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contains(codigo)) {
 			return (ContactoIndividual) PoolDAO.getUnicaInstancia().getObject(codigo);
@@ -85,7 +83,6 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 
 		// Se recuperan los objetos referenciados, se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
 		Usuario usuario = AdaptadorUsuario.getUnicaInstancia().recuperarUsuario(Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, USUARIO)));
-		System.out.println("Nombre del contacto recuperado: " + usuario.getNombre());
 		ContactoIndividual contactoIndividual = new ContactoIndividual(nombre, usuario);
 		contactoIndividual.setCodigo(codigo);
 
@@ -93,10 +90,8 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		PoolDAO.getUnicaInstancia().addObject(codigo, contactoIndividual);
 
 		// Se actualiza el objeto		
+		System.out.println(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
 		List<Mensaje> mensajes = getMensajesCodigos(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
-		for (Mensaje m: mensajes) {
-			System.out.println("Texto de los mensajes recuperados: " + m.getTexto());
-		}
 		
 		for (Mensaje mensaje : mensajes) {
 			contactoIndividual.addMensaje(mensaje);
@@ -117,7 +112,11 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 	public void modificarContactoIndividual(ContactoIndividual contacto) {
 		//Se recupera entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(contacto.getCodigo());
-						
+		
+		for (Mensaje m: contacto.getMensajes()) {
+			System.out.println(m.getTexto() + m.getCodigo());
+		}
+		
 		//Se recorren sus propiedades y se actualiza su valor
 		for (Propiedad prop : eContactoIndividual.getPropiedades()) {
 			if (prop.getNombre().equals(NOMBRE)) {
@@ -155,22 +154,22 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 				.map(codigo -> AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo))
 				.collect(Collectors.toList());
 	}*/
-	
 	private List<Mensaje> getMensajesCodigos(String codigos) {
-	    return Arrays.stream(codigos.split(" "))
-	            .filter(codigo -> !codigo.isEmpty())
-	            .map(codigo -> {
-	                try {
-	                    return AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(Integer.parseInt(codigo));
-	                } catch (Exception e) {
-	                    System.err.println("❌ Error recuperando mensaje con código " + codigo + ": " + e.getMessage());
-	                    return null;
-	                }
-	            })
-	            .filter(m -> m != null)
-	            .collect(Collectors.toList());
+		System.out.println(codigos);
+	    List<Mensaje> mensajes = new ArrayList<>();
+	    String[] partes = codigos.split(" ");
+	    
+	    for (String parte : partes) {
+	        if (!parte.isEmpty()) {
+	            int codigo = Integer.parseInt(parte);
+	            Mensaje mensaje = AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo);
+	            mensajes.add(mensaje);
+	        }
+	    }
+	    
+	    return mensajes;
 	}
-
+	
 
 	/*private String getCodigos(List<Mensaje> mensajes) {
 		for (Mensaje m: mensajes) {
@@ -182,10 +181,12 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 	}*/
 	
 	private String getCodigos(List<Mensaje> mensajes) {
+		for (Mensaje m: mensajes) {
+			System.out.println(m.getCodigo());
+		}
 	    StringBuilder codigos = new StringBuilder();
 
 	    for (Mensaje m : mensajes) {
-	        System.out.println("Mensajeeee: " + m.getTexto() + "Y su codigo: " + m.getCodigo());
 	        codigos.append(m.getCodigo()).append(" ");
 	    }
 

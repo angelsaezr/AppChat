@@ -62,7 +62,6 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eMensaje = Optional.ofNullable(servPersistencia.registrarEntidad(eMensaje.get()));		
 		mensaje.setCodigo(eMensaje.get().getId());
-		System.out.println("codigo que se guarda en mensaje: " + mensaje.getCodigo());
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(mensaje.getCodigo(), mensaje);
@@ -77,7 +76,6 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Si no lo está se recupera entidad y las propiedades de campos de tipo primitivo
 		Entidad eMensaje = servPersistencia.recuperarEntidad(codigo);
 		String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, TEXTO);
-		System.out.println("EL TEXTO DEL MENSAJE RECUPERADO ES: " + texto);
 		
 		//int emoticono = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO));
 		String emoticonoStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO);
@@ -103,7 +101,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		
-		System.out.println("El mensaje recuperado essssssssssssss: " + mensaje.getTexto());
+		System.out.println("El mensaje recuperado es: " + mensaje.getTexto() + " con código: " + mensaje.getCodigo());
 		// Se retorna el objeto
 		return mensaje;
 		

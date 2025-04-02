@@ -123,7 +123,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		List<Contacto> contactos = getContactosIndividualesCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
-		System.out.println("Total de contactos del usuario recuperado: " + contactos.size());
 		List<Contacto> grupos = getGruposCodigos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
 		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
 		usuario.setContactos(contactos);
@@ -139,9 +138,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		List<Usuario> usuarios = servPersistencia.recuperarEntidades("usuario").stream()
 				.map(entidad -> recuperarUsuario(entidad.getId()))
 				.collect(Collectors.toList());
-
-		System.out.println("Número de usuarios recuperados: " + usuarios.size());
-		
 		return usuarios;
 	}
 
@@ -151,7 +147,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				
 		List<Contacto> contactosIndiv = usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual).collect(Collectors.toList());
 		List<Contacto> grupos = usuario.getContactos().stream().filter(c -> c instanceof Grupo).collect(Collectors.toList());
-		System.out.println(contactosIndiv + "wwww");
 				
 		//Se recorren sus propiedades y se actualiza su valor
 		for (Propiedad prop : eUsuario.getPropiedades()) {
@@ -205,8 +200,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	private List<Contacto> getContactosIndividualesCodigos(String codigos) {
-		System.out.println("Codigos recibidos: '" + codigos + "'");
-		System.out.println("ppppp");
 		return Arrays.stream(codigos.split(" ")) // Dividimos la cadena en un array usando el espacio como separador
 				.filter(codigo -> !codigo.isEmpty()) // Filtramos códigos vacíos
 				.map(Integer::parseInt) // Convertimos los valores de String a Integer

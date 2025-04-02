@@ -223,11 +223,8 @@ public class AppChat {
 
         usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
         Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.RECIBIDO);
-        System.out.println("CODIGO 1: " + mensaje.getCodigo());
         adaptadorMensaje.registrarMensaje(mensaje);
-        System.out.println("CODIGO 2: " + mensaje.getCodigo());
         adaptadorContactoIndividual.modificarContactoIndividual(contactoReceptor);
-        System.out.println("CODIGO 3: " + mensaje.getCodigo());
         
         return true;
     }

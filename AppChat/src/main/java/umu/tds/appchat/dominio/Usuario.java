@@ -73,7 +73,6 @@ public class Usuario {
 	}
 
 	public List<Contacto> getContactos() {
-		System.out.println(this.contactos + "ytytytytyt");
 		return new LinkedList<Contacto>(contactos);
 	} // Devuelve una copia para evitar modificaciones externas
 
