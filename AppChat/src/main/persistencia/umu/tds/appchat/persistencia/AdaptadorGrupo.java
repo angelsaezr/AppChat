@@ -136,7 +136,21 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 	}
 
 	public void borrarGrupo(Grupo grupo) {
-		
+		// Se recupera entidad
+		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getCodigo());
+
+		// Se eliminan sus entidades agregadas
+		for (Mensaje mensaje : grupo.getMensajes()) {
+		    AdaptadorMensaje.getUnicaInstancia().borrarMensaje(mensaje);
+		}
+
+		// Se elimina la entidad
+		servPersistencia.borrarEntidad(eGrupo);
+
+		// Si esta en el pool de objetos se elimina
+		if (PoolDAO.getUnicaInstancia().contains(grupo.getCodigo())) {
+			PoolDAO.getUnicaInstancia().removeObject(grupo.getCodigo());
+		}		
 	}
 	
 	

@@ -327,6 +327,7 @@ public class AppChat {
 		String rutaImagen = "";
     	rutaImagen = imagenGrupo.getAbsolutePath();
 		contactoSeleccionado.setImagen(rutaImagen);
+		adaptadorGrupo.modificarGrupo(contactoSeleccionado);
 		return true;
 	}
 	
@@ -366,14 +367,14 @@ public class AppChat {
 	
 	public boolean eliminarGrupo(Grupo grupo) {
 		if (usuarioActual.removeContacto(grupo)) {
-			// TODO PERSISTENCIA
+			adaptadorGrupo.borrarGrupo(grupo);
+			adaptadorUsuario.modificarUsuario(usuarioActual);
 			return true;
 		}
 		return false;
 	}
 		
 	public boolean actualizarMiembrosGrupo(Grupo grupo, List<String> nuevosMiembros) {
-		// TODO PERSISTENCIA
 	    if (usuarioActual == null || grupo == null || nuevosMiembros == null)
 	        return false;
 	    
@@ -391,6 +392,9 @@ public class AppChat {
 	    for (ContactoIndividual nuevoMiembro : nuevosMiembrosLista) {
 	        grupo.addMiembro(nuevoMiembro);
 	    }
+	    
+	    adaptadorGrupo.modificarGrupo(grupo);
+	    adaptadorUsuario.modificarUsuario(usuarioActual);
 	    
 	    return true;
 	}
