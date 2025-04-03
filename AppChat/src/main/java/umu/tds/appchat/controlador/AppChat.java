@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
-import umu.tds.appchat.persistencia.AdaptadorMensaje;
 import umu.tds.appchat.persistencia.DAOException;
 import umu.tds.appchat.persistencia.FactoriaDAO;
 import umu.tds.appchat.persistencia.IAdaptadorContactoIndividualDAO;
@@ -317,6 +316,8 @@ public class AppChat {
 
 	public boolean asignarNombre(String nombre, Contacto contacto) {
 		contacto.setNombre(nombre);
+		adaptadorContactoIndividual.modificarContactoIndividual((ContactoIndividual) contacto);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
 
@@ -328,6 +329,7 @@ public class AppChat {
     	rutaImagen = imagenGrupo.getAbsolutePath();
 		contactoSeleccionado.setImagen(rutaImagen);
 		adaptadorGrupo.modificarGrupo(contactoSeleccionado);
+		adaptadorUsuario.modificarUsuario(usuarioActual);
 		return true;
 	}
 	

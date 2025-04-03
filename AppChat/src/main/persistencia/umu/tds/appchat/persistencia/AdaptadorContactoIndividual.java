@@ -126,6 +126,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 	}
 
+	// TODO ES POSIBLE ELIMINAR UN CONTACTO INDIVIDUAL EN LA APP? CREO QUE NO
 	public void borrarContactoIndividual(ContactoIndividual contacto) {
 		// Se recupera entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(contacto.getCodigo());

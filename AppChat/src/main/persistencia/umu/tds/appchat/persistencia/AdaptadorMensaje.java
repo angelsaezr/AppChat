@@ -1,12 +1,11 @@
 package umu.tds.appchat.persistencia;
 
 import tds.driver.FactoriaServicioPersistencia;
+
 import tds.driver.ServicioPersistencia;
 import umu.tds.appchat.dominio.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -87,6 +86,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 
 		//LocalDateTime fechaHoraEnvio = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO));
 		String fechaStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO);
+		// TODO REVISAR ESTO
 		LocalDateTime fechaHoraEnvio = (fechaStr != null && !fechaStr.isEmpty())
 		    ? LocalDateTime.parse(fechaStr)
 		    : LocalDateTime.now();
@@ -113,12 +113,16 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 				.collect(Collectors.toList());
 	}
 
-	// TODO QUITAR LOS MÉTODOS QUE NO TENGAN SENTIDO, DE ESTA CLASE Y DE OTRAS, POR EJEMPLO, UN MENSAJE NO SE PUEDE MODIFICAR
-	public void modificarMensaje(Mensaje mensaje) {
-
-	}
-
 	public void borrarMensaje(Mensaje mensaje) {
-		
+		// Se recupera entidad
+		Entidad eMensaje = servPersistencia.recuperarEntidad(mensaje.getCodigo());
+
+		// Se elimina la entidad
+		servPersistencia.borrarEntidad(eMensaje);
+
+		// Si esta en el pool de objetos se elimina
+		if (PoolDAO.getUnicaInstancia().contains(mensaje.getCodigo())) {
+			PoolDAO.getUnicaInstancia().removeObject(mensaje.getCodigo());
+		}
 	}
 }

@@ -131,14 +131,9 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	public List<Usuario> recuperarTodosLosUsuarios() {
-		/*return servPersistencia.recuperarEntidades("usuario").stream()
-				.map(entidad -> recuperarUsuario(entidad.getId()))
-				.collect(Collectors.toList());*/
-		
-		List<Usuario> usuarios = servPersistencia.recuperarEntidades("usuario").stream()
+		return servPersistencia.recuperarEntidades("usuario").stream()
 				.map(entidad -> recuperarUsuario(entidad.getId()))
 				.collect(Collectors.toList());
-		return usuarios;
 	}
 
 	public void modificarUsuario(Usuario usuario) {
@@ -177,6 +172,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
+	// TODO ES POSIBLE ELIMINAR UN USUARIO EN LA APP? CREO QUE NO
 	public void borrarUsuario(Usuario usuario) {
 		// Se recupera entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
