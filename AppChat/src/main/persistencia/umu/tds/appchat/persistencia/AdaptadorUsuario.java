@@ -82,7 +82,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 						new Propiedad(IS_PREMIUM, String.valueOf(usuario.isPremium())),
 						new Propiedad(SALUDO, usuario.getSaludo()),
 						new Propiedad(FECHA_NACIMIENTO,usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))),
-						/*new Propiedad(DESCUENTO, String.valueOf(usuario.getDescuento())),*/
+						/*new Propiedad(DESCUENTO, String.valueOf(usuario.getDescuento())),TODO	*/
 						new Propiedad(CONTACTOS_INDIV, getCodigos(contactosIndiv)),
 						new Propiedad(GRUPOS, getCodigos(grupos)))));
 

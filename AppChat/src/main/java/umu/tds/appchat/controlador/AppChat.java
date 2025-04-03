@@ -188,9 +188,12 @@ public class AppChat {
     	}
     	
     	Grupo nuevoGrupo = new Grupo(nombreGrupo, contactos, rutaImagen);
-    	if(usuarioActual.addContacto(nuevoGrupo)) return nuevoGrupo;
+    	adaptadorGrupo.registrarGrupo(nuevoGrupo);
+    	usuarioActual.addContacto(nuevoGrupo);
+    	adaptadorUsuario.modificarUsuario(usuarioActual);
+    	return nuevoGrupo;
     	
-    	return null;
+    	// TODO return null;
     }
 
     // Enviar mensaje a un contacto individual
@@ -199,7 +202,6 @@ public class AppChat {
 
         // Crea y registrar mensaje
         Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO);
-        adaptadorMensaje.registrarMensaje(mensaje);
 
         // Intenta enviarlo desde el usuario actual
         if (!usuarioActual.addMensaje(receptor, mensaje)) {
@@ -248,9 +250,9 @@ public class AppChat {
 
                 // Crea una copia del mensaje para cada usuario
                 Mensaje copiaMensaje = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
-                adaptadorMensaje.registrarMensaje(copiaMensaje);
-
                 usuarioReceptor.addMensaje(contactoSender, copiaMensaje);
+                adaptadorMensaje.registrarMensaje(mensajeOriginal);
+                adaptadorGrupo.modificarGrupo(grupo);
                 return true;
             })
             .allMatch(Boolean::booleanValue);
