@@ -195,58 +195,67 @@ public class AppChat {
 
     // Enviar mensaje a un contacto individual
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
-    	if (usuarioActual == null) return false;
-    	
-        // Intentar enviar el mensaje desde el usuario actual
-        if (!usuarioActual.addMensaje(receptor, texto, emoticono, TipoMensaje.ENVIADO)) {
+        if (usuarioActual == null) return false;
+
+        // Crea y registrar mensaje
+        Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO);
+        adaptadorMensaje.registrarMensaje(mensaje);
+
+        // Intenta enviarlo desde el usuario actual
+        if (!usuarioActual.addMensaje(receptor, mensaje)) {
             return false;
         }
 
         if (receptor instanceof ContactoIndividual) {
-            return enviarMensajeAContactoIndividual((ContactoIndividual) receptor, texto, emoticono);
+            return enviarMensajeAContactoIndividual((ContactoIndividual) receptor, mensaje);
         } else if (receptor instanceof Grupo) {
-            return enviarMensajeAGrupo((Grupo) receptor, texto, emoticono);
+            return enviarMensajeAGrupo((Grupo) receptor, mensaje);
         }
 
         return true;
     }
 
+
     // Método auxiliar para enviar mensaje a un usuario individual
-    private boolean enviarMensajeAContactoIndividual(ContactoIndividual contactoReceptor, String texto, int emoticono) {
+    private boolean enviarMensajeAContactoIndividual(ContactoIndividual contactoReceptor, Mensaje mensaje) {
         Usuario usuarioReceptor = contactoReceptor.getUsuario();
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
 
-        if (usuarioReceptor.getContactoIndividual(usuarioActual.getMovil()) == null) { 
-        	contactoSender = new ContactoIndividual("", usuarioActual);
-        	usuarioReceptor.addContacto(contactoSender); // Si no lo tiene agregado, lo agrega sin nombre
+        if (contactoSender == null) {
+            contactoSender = new ContactoIndividual("", usuarioActual);
+            usuarioReceptor.addContacto(contactoSender);
         }
 
-        usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
-        Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.RECIBIDO);
+        usuarioReceptor.addMensaje(contactoSender, mensaje);
         adaptadorMensaje.registrarMensaje(mensaje);
         adaptadorContactoIndividual.modificarContactoIndividual(contactoReceptor);
-        
+
         return true;
     }
 
+
     // Método auxiliar para enviar mensaje a un grupo
-    private boolean enviarMensajeAGrupo(Grupo grupo, String texto, int emoticono) {
+    private boolean enviarMensajeAGrupo(Grupo grupo, Mensaje mensajeOriginal) {
         return grupo.getMiembros().stream()
             .map(ContactoIndividual::getUsuario)
             .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
             .map(usuarioReceptor -> {
                 ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
                 if (contactoSender == null) {
-                	contactoSender = new ContactoIndividual("", usuarioActual);
-                    usuarioReceptor.addContacto(contactoSender); // Si no lo tiene agregado, lo agrega sin nombre
+                    contactoSender = new ContactoIndividual("", usuarioActual);
+                    usuarioReceptor.addContacto(contactoSender);
                 }
-                usuarioReceptor.addMensaje(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
-                Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.RECIBIDO);
-                adaptadorMensaje.registrarMensaje(mensaje);
+
+                // Crea una copia del mensaje para cada usuario
+                Mensaje copiaMensaje = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
+                adaptadorMensaje.registrarMensaje(copiaMensaje);
+
+                usuarioReceptor.addMensaje(contactoSender, copiaMensaje);
                 return true;
             })
-            .allMatch(Boolean::booleanValue); // Devuelve true si TODOS los mensajes se envían con éxito
+            .allMatch(Boolean::booleanValue);
     }
+
     
     public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
         // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas

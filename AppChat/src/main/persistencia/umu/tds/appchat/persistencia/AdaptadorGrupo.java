@@ -50,4 +50,35 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 	public void borrarGrupo(Grupo grupo) {
 		
 	}
+	
+	
+	private List<Mensaje> getMensajes(String codigos) {
+		return Arrays.stream(codigos.split(" "))
+				.filter(codigo -> !codigo.isEmpty())
+				.map(Integer::parseInt)
+				.map(codigo -> AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo))
+				.collect(Collectors.toList());
+	}
+	
+	private String getCodigosMensajes(List<Mensaje> mensajes) {
+		return mensajes.stream()
+				.map(m -> String.valueOf(m.getCodigo())) // Convertimos el código a String
+				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
+													// práctica en rendimiento
+	}
+	
+	private List<ContactoIndividual> getMiembros(String codigos) {
+		return Arrays.stream(codigos.split(" "))
+				.filter(codigo -> !codigo.isEmpty())
+				.map(Integer::parseInt)
+				.map(codigo -> AdaptadorContactoIndividual.getUnicaInstancia().recuperarContactoIndividual(codigo))
+				.collect(Collectors.toList());
+	}
+	
+	private String getCodigosContactosIndiv(List<Contacto> contactos) {
+		return contactos.stream()
+				.map(c -> String.valueOf(c.getCodigo())) // Convertimos el código a String
+				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
+													// práctica en rendimiento
+	}
 }

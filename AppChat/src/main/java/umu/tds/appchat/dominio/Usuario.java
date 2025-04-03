@@ -137,14 +137,18 @@ public class Usuario {
 	// Métodos para gestionar contactos
 	public boolean addContacto(Contacto contacto) {
 	    if (contacto == null || contactos.contains(contacto)) return false;
-	    
-	    for (Contacto c: contactos) {
-        	if (c instanceof ContactoIndividual) {
-        		if (((ContactoIndividual) c).getMovil().equals(((ContactoIndividual) contacto).getMovil())) {
-        			return false;
-        		}
-        	}
-        }
+
+	    // Solo comprobar móviles duplicados si el contacto es individual
+	    if (contacto instanceof ContactoIndividual) {
+	        ContactoIndividual nuevoCI = (ContactoIndividual) contacto;
+	        for (Contacto c : contactos) {
+	            if (c instanceof ContactoIndividual) {
+	                if (((ContactoIndividual) c).getMovil().equals(nuevoCI.getMovil())) {
+	                    return false;
+	                }
+	            }
+	        }
+	    }
 
 	    boolean esMismoMovil;
 
@@ -154,29 +158,34 @@ public class Usuario {
 	    } else if (contacto instanceof Grupo) {
 	        Grupo g = (Grupo) contacto;
 	        esMismoMovil = g.getMiembros().stream()
-	                        .map(ContactoIndividual::getUsuario)
-	                        .map(Usuario::getMovil)
-	                        .anyMatch(movil -> movil.equals(this.movil));
+	                .map(ContactoIndividual::getUsuario)
+	                .map(Usuario::getMovil)
+	                .anyMatch(movil -> movil.equals(this.movil));
 	    } else {
 	        esMismoMovil = false;
 	    }
-	    
+
+	    // Si no es el mismo móvil y es un contacto individual, actualiza si ya existe
 	    if (!esMismoMovil && contacto instanceof ContactoIndividual) {
 	        ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
+
 	        // Buscar y actualizar el contacto si ya existe
 	        boolean contactoActualizado = contactos.stream()
-	            .filter(c -> c instanceof ContactoIndividual)  // Solo los ContactoIndividual
+	            .filter(c -> c instanceof ContactoIndividual) // Solo los ContactoIndividual
 	            .map(c -> (ContactoIndividual) c)
-	            .filter(cI -> cI.getUsuario().getMovil().equals(contactoIndividual.getMovil()))  // Comparamos los números de móvil
-	            .peek(cI -> cI.setNombre(contacto.getNombre()))  // Actualizamos el nombre
+	            .filter(cI -> cI.getUsuario().getMovil().equals(contactoIndividual.getMovil())) // Comparamos los móviles
+	            .peek(cI -> cI.setNombre(contacto.getNombre())) // Actualizamos el nombre
 	            .findFirst()
 	            .isPresent();
+
 	        if (contactoActualizado) {
 	            return true;
 	        }
 	    }
+
 	    return !esMismoMovil && contactos.add(contacto);
 	}
+
 
 
 	public boolean removeContacto(Contacto contacto) {
@@ -185,13 +194,12 @@ public class Usuario {
 		return contactos.remove(contacto);
 	}
 	
-	public boolean addMensaje(Contacto receptor, String texto, int emoticono, TipoMensaje tipo) {
-		Mensaje mensaje = new Mensaje(texto, emoticono, tipo);
-		return contactos.stream()
-				.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
-				.findFirst()
-				.map(contacto -> contacto.addMensaje(mensaje))
-				.orElse(false);
+	public boolean addMensaje(Contacto receptor, Mensaje mensaje) {
+	    return contactos.stream()
+	            .filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
+	            .findFirst()
+	            .map(contacto -> contacto.addMensaje(mensaje))
+	            .orElse(false);
 	}
 	
 	public ContactoIndividual getContactoIndividual(String movil) {

@@ -89,9 +89,8 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(codigo, contactoIndividual);
 
-		// Se actualiza el objeto		
-		System.out.println(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
-		List<Mensaje> mensajes = getMensajesCodigos(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
+		// Se actualiza el objeto
+		List<Mensaje> mensajes = getMensajes(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
 		
 		for (Mensaje mensaje : mensajes) {
 			contactoIndividual.addMensaje(mensaje);
@@ -112,10 +111,6 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 	public void modificarContactoIndividual(ContactoIndividual contacto) {
 		//Se recupera entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(contacto.getCodigo());
-		
-		for (Mensaje m: contacto.getMensajes()) {
-			System.out.println(m.getTexto() + m.getCodigo());
-		}
 		
 		//Se recorren sus propiedades y se actualiza su valor
 		for (Propiedad prop : eContactoIndividual.getPropiedades()) {
@@ -147,55 +142,17 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 	}
 	
-	/*private List<Mensaje> getMensajesCodigos(String codigos) {
+	private List<Mensaje> getMensajes(String codigos) {
 		return Arrays.stream(codigos.split(" "))
 				.filter(codigo -> !codigo.isEmpty())
 				.map(Integer::parseInt)
 				.map(codigo -> AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo))
 				.collect(Collectors.toList());
-	}*/
-	private List<Mensaje> getMensajesCodigos(String codigos) {
-		System.out.println(codigos);
-	    List<Mensaje> mensajes = new ArrayList<>();
-	    String[] partes = codigos.split(" ");
-	    
-	    for (String parte : partes) {
-	        if (!parte.isEmpty()) {
-	            int codigo = Integer.parseInt(parte);
-	            Mensaje mensaje = AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo);
-	            mensajes.add(mensaje);
-	        }
-	    }
-	    
-	    return mensajes;
 	}
 	
-
-	/*private String getCodigos(List<Mensaje> mensajes) {
-		for (Mensaje m: mensajes) {
-			System.out.println("Mensajeeee: " + m.getTexto());
-		}
+	private String getCodigos(List<Mensaje> mensajes) {
 		return mensajes.stream().map(m -> String.valueOf(m.getCodigo())) // Convertimos el código a String
 				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
 													// práctica en rendimiento
-	}*/
-	
-	private String getCodigos(List<Mensaje> mensajes) {
-		for (Mensaje m: mensajes) {
-			System.out.println(m.getCodigo());
-		}
-	    StringBuilder codigos = new StringBuilder();
-
-	    for (Mensaje m : mensajes) {
-	        codigos.append(m.getCodigo()).append(" ");
-	    }
-
-	    // Elimina el último espacio si hay elementos
-	    if (codigos.length() > 0) {
-	        codigos.setLength(codigos.length() - 1);
-	    }
-
-	    return codigos.toString();
 	}
-
 }

@@ -101,7 +101,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		
-		System.out.println("El mensaje recuperado es: " + mensaje.getTexto() + " con código: " + mensaje.getCodigo());
+		
 		// Se retorna el objeto
 		return mensaje;
 		
@@ -113,6 +113,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 				.collect(Collectors.toList());
 	}
 
+	// TODO QUITAR LOS MÉTODOS QUE NO TENGAN SENTIDO, DE ESTA CLASE Y DE OTRAS, POR EJEMPLO, UN MENSAJE NO SE PUEDE MODIFICAR
 	public void modificarMensaje(Mensaje mensaje) {
 
 	}
