@@ -30,7 +30,7 @@ public class VentanaEditarPerfil extends JDialog {
 
     public VentanaEditarPerfil(VentanaMain ventanaMain) {
         super(ventanaMain, "Editar Perfil", true);
-        setSize(400, 300);
+        setSize(450, 350);
         setLocationRelativeTo(ventanaMain);
         setLayout(new BorderLayout());
         setResizable(false);
@@ -41,8 +41,11 @@ public class VentanaEditarPerfil extends JDialog {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        JLabel lblNombreUsuario = new JLabel(AppChat.getInstance().getUsuarioActual().getNombre());
+        lblNombreUsuario.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        lblNombreUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        
         // Imagen de perfil
-     // Imagen de perfil
         lblImagenPerfil = new JLabel();
         lblImagenPerfil.setPreferredSize(new Dimension(100, 100));
         lblImagenPerfil.setHorizontalAlignment(SwingConstants.CENTER);
@@ -91,6 +94,12 @@ public class VentanaEditarPerfil extends JDialog {
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
+        panelPrincipal.add(lblNombreUsuario, gbc);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
         panelPrincipal.add(lblImagenPerfil, gbc);
 
         btnSeleccionarImagen = new JButton("Cambiar Imagen");
@@ -119,14 +128,14 @@ public class VentanaEditarPerfil extends JDialog {
             }
         });
         
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         panelPrincipal.add(btnSeleccionarImagen, gbc);
 
         // Saludo
         lblSaludo = new JLabel("Saludo:");
         lblSaludo.setFont(new Font("Segoe UI", Font.BOLD, 12));
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         panelPrincipal.add(lblSaludo, gbc);
 
