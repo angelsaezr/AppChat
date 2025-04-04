@@ -141,11 +141,54 @@ public class AppChat {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
             this.usuarioActual = usuario;
-       
+            //cargarMensajesNoAgregados();
             return true;
         }
         return false;
     }
+    
+    public void cargarMensajesNoAgregados() {
+        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
+        List<Usuario> emisoresNoAgregados = new LinkedList<>();
+
+        for (Mensaje mensaje : todosLosMensajes) {
+            if (mensaje.getTipo() == TipoMensaje.RECIBIDO) {
+                
+            }
+        }
+    }
+    
+    /*public void cargarMensajesNoAgregados() {
+        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
+        List<Usuario> emisoresNoAgregados = new LinkedList<>();
+
+        for (Mensaje mensaje : todosLosMensajes) {
+            if (mensaje.getTipo() == TipoMensaje.RECIBIDO) {
+                for (Contacto c : usuarioActual.getContactos()) {
+                    if (c instanceof ContactoIndividual) {
+                        ContactoIndividual contacto = (ContactoIndividual) c;
+
+                        // Si este contacto tiene el mensaje recibido
+                        if (contacto.getMensajes().contains(mensaje)) {
+                            Usuario emisor = contacto.getUsuario();
+
+                            // ¿Este emisor ya está agregado por el usuario actual?
+                            boolean yaAgregado = usuarioActual.getContactos().stream()
+                                .filter(ci -> ci instanceof ContactoIndividual)
+                                .map(ci -> ((ContactoIndividual) ci).getMovil())
+                                .anyMatch(movil -> movil.equals(emisor.getMovil()));
+
+                            if (!yaAgregado && !emisoresNoAgregados.contains(emisor)) {
+                                emisoresNoAgregados.add(emisor);
+                                adaptadorUsuario.modificarUsuario(usuarioActual);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }*/
+
 
     // Agregar un contacto individual al usuario actual
     public ContactoIndividual agregarContacto(String nombre, String movil) {
