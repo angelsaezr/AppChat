@@ -141,22 +141,68 @@ public class AppChat {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
             this.usuarioActual = usuario;
-            //cargarMensajesNoAgregados();
+            cargarMensajesNoAgregados();
             return true;
         }
         return false;
     }
     
     public void cargarMensajesNoAgregados() {
-        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
-        List<Usuario> emisoresNoAgregados = new LinkedList<>();
+        List<Usuario> todosLosUsuarios = adaptadorUsuario.recuperarTodosLosUsuarios();
 
-        for (Mensaje mensaje : todosLosMensajes) {
-            if (mensaje.getTipo() == TipoMensaje.RECIBIDO) {
-                
+        for (Usuario u : todosLosUsuarios) {
+            if (u.equals(usuarioActual)) continue;
+
+            for (Contacto contacto : u.getContactos()) {
+                if (!(contacto instanceof ContactoIndividual)) continue;
+
+                ContactoIndividual cInd = (ContactoIndividual) contacto;
+
+                // Si este contacto apunta al usuario actual
+                if (cInd.getMovil().equals(usuarioActual.getMovil())) {
+
+                    // Verificamos si ya está agregado en la lista de contactos del usuario actual
+                    boolean yaAgregado = usuarioActual.getContactos().stream()
+                            .filter(c -> c instanceof ContactoIndividual)
+                            .map(c -> ((ContactoIndividual) c).getMovil())
+                            .anyMatch(movil -> movil.equals(u.getMovil()));
+
+                    if (!yaAgregado && !cInd.getMensajes().isEmpty()) {
+                        // Agregar al usuario actual un contacto para este emisor
+                        agregarContacto("", u.getMovil());
+                        System.out.println("📩 Agregado contacto no registrado con móvil: " + u.getMovil());
+                    }
+                }
             }
         }
+
+        adaptadorUsuario.modificarUsuario(usuarioActual);
     }
+
+    
+    /*public void cargarMensajesNoAgregados() {
+        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
+        List<Usuario> todosLosUsuarios = adaptadorUsuario.recuperarTodosLosUsuarios();
+
+        for (Usuario u: todosLosUsuarios) {
+        	System.out.println("aaa");
+        	if (u.equals(usuarioActual)) return;
+        	for (Contacto contacto : u.getContactos()) {
+        		if (usuarioActual.getContactos().contains(contacto)) return;
+        		if (((ContactoIndividual) contacto).getMovil().equals(this.usuarioActual.getMovil()) && !contacto.getMensajes().isEmpty()){
+        			//break;
+        			agregarContacto("", u.getMovil());
+        			System.out.println("agregado con movil: " + u.getMovil());
+        		}
+        	}
+        	//&& !esContactoAgregado(contacto)
+        
+       
+        	
+        }
+        adaptadorUsuario.modificarUsuario(usuarioActual);
+        
+    }*/
     
     /*public void cargarMensajesNoAgregados() {
         List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
