@@ -41,9 +41,10 @@ public class VentanaEditarPerfil extends JDialog {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel lblNombreUsuario = new JLabel(AppChat.getInstance().getUsuarioActual().getNombre());
-        lblNombreUsuario.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        lblNombreUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel lblNombreUsuarioMovil = new JLabel(AppChat.getInstance().getUsuarioActual().getNombre() + 
+        	    " (" + AppChat.getInstance().getUsuarioActual().getMovil() + ")");
+        lblNombreUsuarioMovil.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        lblNombreUsuarioMovil.setHorizontalAlignment(SwingConstants.CENTER);
         
         // Imagen de perfil
         lblImagenPerfil = new JLabel();
@@ -94,7 +95,7 @@ public class VentanaEditarPerfil extends JDialog {
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
-        panelPrincipal.add(lblNombreUsuario, gbc);
+        panelPrincipal.add(lblNombreUsuarioMovil, gbc);
         
         gbc.gridx = 0;
         gbc.gridy = 1;
