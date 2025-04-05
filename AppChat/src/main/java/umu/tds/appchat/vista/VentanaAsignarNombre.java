@@ -10,7 +10,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Ventana para asignar un nombre de contacto a un usuaario que nos ha escrito y no tenemos agregado.
+ * Diálogo que permite asignar un nombre personalizado a un contacto.
+ * Proporciona una interfaz sencilla con un campo de texto y botones de confirmación/cancelación.
+ * 
+ * Valida que el campo no esté vacío y notifica si la operación fue exitosa o fallida.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -20,6 +23,12 @@ public class VentanaAsignarNombre extends JDialog {
     private JTextField nameField;
     private JButton btnAceptar, btnCancelar;
 
+    /**
+     * Crea e inicializa el diálogo para asignar un nombre a un contacto dado.
+     *
+     * @param ventanaMain la ventana principal que invoca el diálogo
+     * @param contacto el contacto al que se le asignará un nuevo nombre
+     */
 	public VentanaAsignarNombre(VentanaMain ventanaMain, Contacto contacto) {
         super(ventanaMain, "Asignar nombre", true);
         setSize(400, 180);

@@ -23,7 +23,9 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
- * Ventana para arrastrar la imagen.
+ * Diálogo personalizado para seleccionar o arrastrar una imagen desde el sistema de archivos.
+ * Permite previsualizar la imagen cargada y confirmar o cancelar la acción.
+ * Está pensado para usarse en contextos como la personalización de perfiles o grupos.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -38,7 +40,9 @@ public class PanelArrastraImagen extends JDialog {
     private JButton btnCancelar;
 
     /**
-     * Create the dialog.
+     * Crea e inicializa el diálogo de arrastre de imagen, asociado a una ventana principal.
+     *
+     * @param owner la ventana principal sobre la cual se mostrará el diálogo
      */
     @SuppressWarnings({ "serial" })
     public PanelArrastraImagen(JFrame owner) {
@@ -152,6 +156,11 @@ public class PanelArrastraImagen extends JDialog {
         setLocationRelativeTo(owner);
     }
     
+    /**
+     * Muestra el diálogo y devuelve la lista de archivos que el usuario ha cargado o seleccionado.
+     *
+     * @return lista de archivos seleccionados por el usuario
+     */
     public List<File> showDialog() {
         this.setVisible(true);
         return archivosSubidos;

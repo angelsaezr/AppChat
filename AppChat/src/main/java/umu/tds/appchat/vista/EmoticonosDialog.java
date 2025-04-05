@@ -11,7 +11,10 @@ import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 
 /**
- * Ventana para seleccionar y enviar emoticonos.
+ * Diálogo flotante que muestra una selección de emoticonos para enviar en el chat.
+ * Al seleccionar uno, se envía automáticamente al contacto receptor y se actualiza la vista.
+ * 
+ * Se muestra sin decoraciones y con disposición de 2 filas y 4 columnas de emojis.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -20,6 +23,12 @@ import umu.tds.appchat.dominio.Contacto;
 public class EmoticonosDialog extends JDialog {
     private JPanel panelEmojis;
 
+    /**
+     * Crea un nuevo diálogo de emoticonos asociado a una ventana principal y a un contacto receptor.
+     *
+     * @param ventanaMain la ventana principal que invoca el diálogo
+     * @param contactoReceptor el contacto al que se le enviará el emoticono seleccionado
+     */
     public EmoticonosDialog(VentanaMain ventanaMain, Contacto contactoReceptor) {
         setLayout(new BorderLayout());
         setBackground(new Color(240, 248, 255));

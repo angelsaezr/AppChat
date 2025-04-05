@@ -5,7 +5,8 @@ import java.awt.*;
 import umu.tds.appchat.controlador.AppChat;
 
 /**
- * Ventana para gestionar el estado premium del usuario.
+ * Ventana que permite gestionar la suscripción premium del usuario.
+ * El usuario puede exportar sus conversaciones a PDF o anular su suscripción premium.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -14,6 +15,12 @@ import umu.tds.appchat.controlador.AppChat;
 public class VentanaPremiumAplicado extends JDialog {
     private JButton btnExportarPDF, btnAnularPremium;
 
+    /**
+     * Crea la ventana para gestionar la suscripción premium.
+     * Permite al usuario exportar su conversación a PDF o anular su suscripción premium.
+     * 
+     * @param ventanaMain La ventana principal desde la cual se abre esta ventana de gestión.
+     */
     public VentanaPremiumAplicado(VentanaMain ventanaMain) {
         super(ventanaMain, "Gestionar Premium", true);
         setSize(400, 200);

@@ -9,7 +9,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Ventana para añadir contactos.
+ * Diálogo para crear un nuevo contacto en la aplicación.
+ * Permite al usuario ingresar el nombre y el teléfono del nuevo contacto.
+ * Incluye botones para confirmar o cancelar la creación del contacto.
+ * 
+ * El diálogo valida que ambos campos estén llenos antes de agregar el contacto.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -20,6 +24,11 @@ public class VentanaCrearContacto extends JDialog {
     private JTextField phoneField;
     private JButton btnAceptar, btnCancelar;
 
+    /**
+     * Crea e inicializa el diálogo para la creación de un nuevo contacto.
+     * 
+     * @param ventanaMain la ventana principal que invoca este diálogo
+     */
 	public VentanaCrearContacto(VentanaMain ventanaMain) {
         super(ventanaMain, "Crear Contacto", true);
         setSize(400, 180);

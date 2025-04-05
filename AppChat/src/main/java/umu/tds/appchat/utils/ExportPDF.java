@@ -14,8 +14,26 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import tds.BubbleText;
 
+/**
+ * Clase encargada de generar un documento PDF con el historial de conversación de un contacto.
+ * Utiliza la biblioteca iText para crear un diseño estructurado, con burbujas de mensaje,
+ * autor, fecha y emoticonos en caso de existir.
+ * 
+ * Incluye logo, título, y formato diferenciado entre mensajes enviados y recibidos.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class ExportPDF {
 
+	 /**
+     * Crea un archivo PDF con el historial de conversación del contacto especificado.
+     *
+     * @param contacto el contacto del que se mostrará la conversación (individual o grupo)
+     * @param historial lista de mensajes del contacto
+     * @param rutaArchivo ruta del archivo PDF a generar
+     * @throws RuntimeException si ocurre algún error durante la creación del PDF
+     */
     public static void crearPDF(Contacto contacto, List<Mensaje> historial, String rutaArchivo) {
         try {
             Document pdfDoc = new Document(PageSize.A4, 36, 36, 54, 36);

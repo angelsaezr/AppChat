@@ -13,7 +13,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 import umu.tds.appchat.controlador.AppChat;
 
 /**
- * Ventana de inicio de sesion.
+ * Ventana de inicio de sesión de la aplicación.
+ * Permite al usuario ingresar su número de teléfono y contraseña para iniciar sesión.
+ * Además, proporciona un enlace para que los nuevos usuarios se registren en la aplicación.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -24,6 +26,13 @@ public class VentanaLogin extends JFrame {
     private JTextField txtPhone;
     private JPasswordField txtPassword;
 
+    /**
+     * Crea e inicializa la ventana de inicio de sesión para la aplicación.
+     * Proporciona campos de texto para ingresar el número de teléfono y la contraseña,
+     * un botón para iniciar sesión, y un enlace para el registro de nuevos usuarios.
+     * 
+     * @param parent la ventana principal desde la cual se abre esta ventana de inicio de sesión
+     */
     public VentanaLogin() {
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

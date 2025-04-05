@@ -13,12 +13,27 @@ import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
 
+/**
+ * Diálogo para editar los miembros de un grupo existente.
+ * Permite agregar o quitar contactos de un grupo y actualiza la lista de miembros.
+ * También valida que el grupo no quede vacío antes de proceder con la modificación.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 @SuppressWarnings("serial")
 public class VentanaEditarMiembrosGrupo extends JDialog {
     private JList<String> contactList, groupList;
     private DefaultListModel<String> contactListModel, groupListModel;
     private JButton btnAceptar, btnCancelar, btnAdd, btnRemove;
 
+    /**
+     * Crea e inicializa el diálogo para editar los miembros de un grupo.
+     * Permite al usuario mover contactos entre las listas de contactos disponibles y miembros del grupo.
+     * 
+     * @param ventanaMain la ventana principal que invoca este diálogo
+     * @param grupo el grupo cuyas membresías serán editadas
+     */
     public VentanaEditarMiembrosGrupo(VentanaMain ventanaMain, Grupo grupo) {
         super(ventanaMain, "Editar Miembros", true);
         setSize(500, 300);

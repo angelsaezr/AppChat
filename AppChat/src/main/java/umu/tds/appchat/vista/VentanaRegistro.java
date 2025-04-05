@@ -18,7 +18,9 @@ import com.toedter.calendar.JDateChooser;
 import umu.tds.appchat.controlador.AppChat;
 
 /**
- * Ventana para registrarse.
+ * Ventana de registro de un nuevo usuario en la aplicación.
+ * Permite ingresar los datos necesarios como el nombre de usuario, teléfono, email, contraseña, etc.
+ * También permite elegir una imagen de perfil y un saludo inicial.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -34,6 +36,14 @@ public class VentanaRegistro extends JDialog {
     private JLabel lblImagenSeleccionada;
     private File imagenSeleccionada;
 
+    /**
+     * Crea una ventana para registrar un nuevo usuario.
+     * Esta ventana contiene campos para ingresar los datos del usuario, como el nombre de usuario,
+     * el teléfono, el email, la contraseña, la fecha de nacimiento, entre otros.
+     * Además, permite seleccionar una imagen de perfil.
+     * 
+     * @param parent La ventana principal desde la cual se abre el diálogo de registro.
+     */
 	public VentanaRegistro(JFrame parent) {
         super(parent, "Registro de Usuario", true);
         setSize(400, 650);
@@ -198,6 +208,13 @@ public class VentanaRegistro extends JDialog {
         return passwordField;
     }
     
+    /**
+     * Valida los campos de registro ingresados por el usuario.
+     * Si algún campo es incorrecto o falta, muestra un mensaje de error.
+     * Si todos los campos son válidos, se registra el usuario.
+     * 
+     * @param e El evento generado por el clic en el botón de registro.
+     */
     private void validarCampos(ActionEvent e) {
     	/*
     	// TODO QUITAR COMENTARIO CUANDO SE ACABE LA APP DEL TODO

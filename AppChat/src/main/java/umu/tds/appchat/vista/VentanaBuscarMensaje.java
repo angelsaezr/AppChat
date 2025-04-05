@@ -16,7 +16,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Ventana para buscar mensajes.
+ * Diálogo de búsqueda de mensajes dentro del historial de conversaciones.
+ * Permite filtrar por texto, teléfono o nombre de contacto y muestra los resultados en una lista interactiva.
+ * 
+ * Los resultados permiten seleccionar rápidamente el contacto relacionado con el mensaje encontrado.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -28,6 +31,11 @@ public class VentanaBuscarMensaje extends JDialog {
     private JPanel panelResultados;
     private VentanaMain ventanaMain;
     
+    /**
+     * Crea e inicializa la ventana de búsqueda de mensajes.
+     *
+     * @param ventanaMain la ventana principal que lanza este diálogo
+     */
     public VentanaBuscarMensaje(VentanaMain ventanaMain) {
         super(ventanaMain, "Buscar Mensajes", true);
         this.ventanaMain = ventanaMain;
@@ -138,7 +146,6 @@ public class VentanaBuscarMensaje extends JDialog {
 
         resultados.forEach(panelResultados::add);
     }
-
 
     private JPanel crearPanelMensaje(String emisor, String receptor, String mensaje, Contacto contacto) {
         JPanel panelMensaje = new JPanel(new BorderLayout());

@@ -29,7 +29,9 @@ import umu.tds.appchat.dominio.TipoMensaje;
 import umu.tds.appchat.utils.Utils;
 
 /**
- * Ventana principal de la aplicación.
+ * La clase `VentanaMain` representa la ventana principal de la aplicación, donde el usuario puede interactuar
+ * con sus contactos, enviar mensajes y gestionar su perfil.
+ * Se encarga de mostrar la interfaz gráfica, manejar la lógica de los mensajes, contactos, y la actualización de la interfaz.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -48,6 +50,10 @@ public class VentanaMain extends JFrame {
     private File imagenSeleccionada;
     private EmoticonosDialog popup;
     
+    /**
+     * Constructor que inicializa la ventana principal de la aplicación.
+     * Configura los componentes visuales y las acciones para cada botón en la interfaz.
+     */
 	public VentanaMain() {
         setTitle("AppChat");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -321,7 +327,11 @@ public class VentanaMain extends JFrame {
         }
     }
 
-    // Método para ajustar el tamaño del JTextArea dinámicamente
+	/**
+     * Método que ajusta el tamaño del área de texto de forma dinámica en función de la cantidad de líneas.
+     * Esto asegura que el área de texto crezca a medida que el usuario escribe más líneas de texto.
+     * La altura máxima se limita a 550 píxeles.
+     */
 	private void ajustarTamañoAreaTexto() {
     	int lineas = areaTexto.getLineCount();
     	FontMetrics fm = areaTexto.getFontMetrics(areaTexto.getFont());
@@ -333,7 +343,10 @@ public class VentanaMain extends JFrame {
     	areaTexto.revalidate();
     }
 
-    
+	 /**
+     * Actualiza la interfaz del chat con los mensajes del contacto seleccionado.
+     * Si no hay un contacto seleccionado, muestra un mensaje indicando que el usuario debe seleccionar uno.
+     */
     public void actualizarChat() {
     	if (popup != null && popup.isVisible()) {
             popup.setVisible(false); // Oculta el diálogo si ya está visible
@@ -500,12 +513,20 @@ public class VentanaMain extends JFrame {
         }
     }
     
+    /**
+     * Actualiza la lista de contactos en la interfaz.
+     * Elimina todos los contactos anteriores y carga los nuevos.
+     */
     public void actualizarListaContactos() {
         modeloLista.clear();
         List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
         contactos.forEach(modeloLista::addElement);
     }
     
+    /**
+     * Método que actualiza la imagen de perfil en la interfaz.
+     * Carga la imagen desde la ubicación almacenada en la base de datos o un valor predeterminado si no existe.
+     */
     public void actualizarImagenPerfil() {
     	String fotoUsuario = AppChat.getInstance().getImagenPerfil();
         Image imagenOriginal;
@@ -547,6 +568,10 @@ public class VentanaMain extends JFrame {
         imagenPerfil.repaint();
 	}
     
+    /**
+     * Envia el mensaje escrito en el área de texto al contacto seleccionado.
+     * Si el mensaje contiene saltos de línea, se enviará cada línea como un mensaje separado.
+     */
     private void enviarMensaje() {
     	String texto = areaTexto.getText().trim();
         if (!texto.isEmpty()) {
@@ -562,13 +587,22 @@ public class VentanaMain extends JFrame {
         }
     }
     
+    /**
+     * Establece el contacto seleccionado en la interfaz.
+     * Actualiza la lista de contactos para reflejar el contacto seleccionado y actualiza el chat.
+     * 
+     * @param contacto El contacto que se va a seleccionar
+     */
     public void setContactoSeleccionado(Contacto contacto) {
     	contactoSeleccionado = contacto;
     	listaContactos.setSelectedValue(contacto, true);
     	actualizarChat();
     }
     
-    // Edita VentanaMain para que sea la de un usuario premium
+    /**
+     * Método que se ejecuta cuando el usuario decide actualizar su estado a premium.
+     * Muestra la información correspondiente y agrega los elementos necesarios para un usuario premium.
+     */
     public void setPremium() {
         if(botonPremium != null) panelIzquierda.remove(botonPremium);
 
@@ -599,8 +633,10 @@ public class VentanaMain extends JFrame {
         panelDerecha.repaint();
     }
 
-    
-    // Edita VentanaMain para que sea la de un usuario NO premium
+    /**
+     * Método que elimina el estado premium del usuario.
+     * Restablece la interfaz a su estado original para usuarios no premium.
+     */
     public void removePremium() {
     	if(botonPremium != null) panelIzquierda.remove(botonPremium);
     	if(starLabel != null) panelDerecha.remove(starLabel);
@@ -615,6 +651,18 @@ public class VentanaMain extends JFrame {
         panelDerecha.repaint();
     }
     
+    /**
+     * Crea un botón personalizado para la interfaz, con un fondo y texto especificados.
+     * 
+     * @param texto El texto que aparecerá en el botón
+     * @param colorFondo El color de fondo del botón
+     * @param x La posición X del botón
+     * @param y La posición Y del botón
+     * @param ancho El ancho del botón
+     * @param alto El alto del botón
+     * @param accion La acción que se ejecutará cuando se haga clic en el botón
+     * @return El botón creado
+     */
     private JButton crearBotonSuperior(String texto, Color colorFondo, int x, int y, int ancho, int alto, Runnable accion) {
         JButton boton = new JButton(texto);
         boton.setBackground(colorFondo);

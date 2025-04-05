@@ -8,7 +8,9 @@ import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.TipoDescuento;
 
 /**
- * Ventana para contratar el servicio premium.
+ * Ventana para seleccionar el tipo de descuento para la suscripción Premium.
+ * Permite al usuario elegir entre un descuento por fecha o por mensajes,
+ * y muestra el precio final a pagar después de aplicar el descuento.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -17,6 +19,13 @@ import umu.tds.appchat.dominio.TipoDescuento;
 public class VentanaPremium extends JDialog {
     private JButton btnAceptar, btnCancelar;
 
+    /**
+     * Crea la ventana de selección de descuento para el usuario.
+     * Permite seleccionar entre un descuento por fecha o por mensajes y calcula
+     * el precio final a pagar después de aplicar el descuento.
+     * 
+     * @param ventanaMain La ventana principal desde la cual se abre esta ventana de selección de descuento.
+     */
     public VentanaPremium(VentanaMain ventanaMain) {
         super(ventanaMain, "Seleccionar Descuento Premium", true);
         setSize(400, 160);

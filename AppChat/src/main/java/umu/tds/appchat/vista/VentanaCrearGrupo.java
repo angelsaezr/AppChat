@@ -16,7 +16,12 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 /**
- * Ventana para crear grupos.
+ * Diálogo para crear un nuevo grupo de contactos. 
+ * Permite al usuario seleccionar contactos para agregar al grupo, 
+ * asignar un nombre y una imagen al grupo.
+ * 
+ * Los contactos se pueden mover entre las listas disponibles y seleccionados, 
+ * y se valida que todos los campos estén correctamente rellenados antes de crear el grupo.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -31,6 +36,12 @@ public class VentanaCrearGrupo extends JDialog {
     private JLabel lblImagenSeleccionada;
     private File imagenSeleccionada;
 
+    /**
+     * Crea e inicializa el diálogo para crear un nuevo grupo.
+     * Permite al usuario seleccionar contactos y asignarles un nombre y una imagen.
+     * 
+     * @param ventanaMain la ventana principal que invoca este diálogo
+     */
     public VentanaCrearGrupo(VentanaMain ventanaMain) {
         super(ventanaMain, "Crear Grupo", true);
         setSize(500, 500);

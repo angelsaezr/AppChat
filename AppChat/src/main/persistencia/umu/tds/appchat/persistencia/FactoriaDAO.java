@@ -1,28 +1,84 @@
 package umu.tds.appchat.persistencia;
 
+/**
+ * Fábrica abstracta de objetos DAO (Data Access Object).
+ * Utiliza el patrón Factory y Singleton para proporcionar acceso a las implementaciones de persistencia.
+ * Esta clase define métodos abstractos para obtener adaptadores DAO específicos.
+ * 
+ * La implementación concreta se determina dinámicamente a través de reflexión.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public abstract class FactoriaDAO {
-	private static FactoriaDAO INSTANCE;
 
-	public static final String DAO_TDS = "umu.tds.appchat.persistencia.TDSFactoriaDAO";
+    /**
+     * Instancia única de la factoría (patrón Singleton).
+     */
+    private static FactoriaDAO INSTANCE;
 
-	public static FactoriaDAO getUnicaInstancia(String nombre) throws DAOException {
-		if (INSTANCE == null)
-			try {
-				INSTANCE = (FactoriaDAO) Class.forName(nombre).getDeclaredConstructor().newInstance();
-			} catch (Exception e) {
-				throw new DAOException(e.getMessage());
-			}
-		return INSTANCE;
-	}
+    /**
+     * Ruta por defecto de la implementación DAO basada en TDS.
+     */
+    public static final String DAO_TDS = "umu.tds.appchat.persistencia.TDSFactoriaDAO";
 
-	public static FactoriaDAO getUnicaInstancia() throws DAOException {
-		return getUnicaInstancia(FactoriaDAO.DAO_TDS);
-	}
+    /**
+     * Devuelve la instancia única de la factoría, instanciada a partir del nombre de clase indicado.
+     * 
+     * @param nombre nombre completo de la clase que implementa {@code FactoriaDAO}
+     * @return instancia única de {@code FactoriaDAO}
+     * @throws DAOException si ocurre un error al crear la instancia
+     */
+    public static FactoriaDAO getUnicaInstancia(String nombre) throws DAOException {
+        if (INSTANCE == null)
+            try {
+                INSTANCE = (FactoriaDAO) Class.forName(nombre).getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                throw new DAOException(e.getMessage());
+            }
+        return INSTANCE;
+    }
 
-	protected FactoriaDAO() {}
-	
-	public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
-	public abstract IAdaptadorMensajeDAO getMensajeDAO();
-	public abstract IAdaptadorContactoIndividualDAO getContactoIndividualDAO();
-	public abstract IAdaptadorGrupoDAO getGrupoDAO();
+    /**
+     * Devuelve la instancia única de la factoría utilizando la implementación por defecto.
+     * 
+     * @return instancia única de {@code FactoriaDAO}
+     * @throws DAOException si ocurre un error al crear la instancia
+     */
+    public static FactoriaDAO getUnicaInstancia() throws DAOException {
+        return getUnicaInstancia(FactoriaDAO.DAO_TDS);
+    }
+
+    /**
+     * Constructor protegido para evitar instanciación externa.
+     */
+    protected FactoriaDAO() {}
+
+    /**
+     * Devuelve el adaptador DAO para usuarios.
+     *
+     * @return instancia de {@link IAdaptadorUsuarioDAO}
+     */
+    public abstract IAdaptadorUsuarioDAO getUsuarioDAO();
+
+    /**
+     * Devuelve el adaptador DAO para mensajes.
+     *
+     * @return instancia de {@link IAdaptadorMensajeDAO}
+     */
+    public abstract IAdaptadorMensajeDAO getMensajeDAO();
+
+    /**
+     * Devuelve el adaptador DAO para contactos individuales.
+     *
+     * @return instancia de {@link IAdaptadorContactoIndividualDAO}
+     */
+    public abstract IAdaptadorContactoIndividualDAO getContactoIndividualDAO();
+
+    /**
+     * Devuelve el adaptador DAO para grupos.
+     *
+     * @return instancia de {@link IAdaptadorGrupoDAO}
+     */
+    public abstract IAdaptadorGrupoDAO getGrupoDAO();
 }

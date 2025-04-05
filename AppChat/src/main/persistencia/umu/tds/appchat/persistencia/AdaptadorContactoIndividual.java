@@ -13,25 +13,66 @@ import java.util.stream.Collectors;
 import beans.Entidad;
 import beans.Propiedad;
 
+/**
+ * Adaptador para la persistencia de objetos {@link ContactoIndividual} usando el patrón DAO.
+ * Utiliza un servicio de persistencia abstracto para registrar y recuperar entidades.
+ * Aplica patrón Singleton para asegurar una única instancia del adaptador.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividualDAO {
 
-	private static final String NOMBRE = "nombre";
-	private static final String MENSAJES = "mensajes";
-	private static final String USUARIO = "usuario";
+    /**
+     * Nombre de la propiedad "nombre" usada en persistencia.
+     */
+    private static final String NOMBRE = "nombre";
 
-	private ServicioPersistencia servPersistencia;
-	private static AdaptadorContactoIndividual unicaInstancia = null;
+    /**
+     * Nombre de la propiedad "mensajes" usada en persistencia.
+     */
+    private static final String MENSAJES = "mensajes";
 
-	public AdaptadorContactoIndividual() {
-		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
-	}
+    /**
+     * Nombre de la propiedad "usuario" usada en persistencia.
+     */
+    private static final String USUARIO = "usuario";
 
-	public static AdaptadorContactoIndividual getUnicaInstancia() {
-		if (unicaInstancia == null)
-			unicaInstancia = new AdaptadorContactoIndividual();
-		return unicaInstancia;
-	}
+    /**
+     * Servicio de persistencia que se encarga de interactuar con la capa de almacenamiento.
+     */
+    private ServicioPersistencia servPersistencia;
 
+    /**
+     * Instancia única del adaptador (Singleton).
+     */
+    private static AdaptadorContactoIndividual unicaInstancia = null;
+
+    /**
+     * Constructor que inicializa el servicio de persistencia desde la factoría.
+     */
+    public AdaptadorContactoIndividual() {
+        servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
+    }
+
+    /**
+     * Devuelve la instancia única del adaptador (Singleton).
+     *
+     * @return instancia única de {@code AdaptadorContactoIndividual}
+     */
+    public static AdaptadorContactoIndividual getUnicaInstancia() {
+        if (unicaInstancia == null)
+            unicaInstancia = new AdaptadorContactoIndividual();
+        return unicaInstancia;
+    }
+
+    /**
+     * Registra un {@link ContactoIndividual} en el sistema de persistencia.
+     * Se encarga de crear una entidad, registrar sus mensajes y asociarla con su usuario.
+     * Si ya está registrado por código, no realiza ninguna acción.
+     *
+     * @param contacto el contacto individual a registrar
+     */
 	public void registrarContactoIndividual(ContactoIndividual contacto) {
 		// Se comprueba que no está registrada la entidad que corresponde al código del objeto
 		Optional<Entidad> eContactoIndividual = Optional.ofNullable(servPersistencia.recuperarEntidad(contacto.getCodigo()));
@@ -67,6 +108,14 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		PoolDAO.getUnicaInstancia().addObject(contacto.getCodigo(), contacto);
 	}
 
+	/**
+     * Recupera un {@link ContactoIndividual} desde la capa de persistencia usando su código.
+     * Si el objeto ya está en el {@link PoolDAO}, lo devuelve directamente.
+     * Si no está, lo reconstruye con sus propiedades y lo añade al pool.
+     *
+     * @param codigo código identificador del contacto individual
+     * @return el objeto {@link ContactoIndividual} correspondiente
+     */
 	public ContactoIndividual recuperarContactoIndividual(int codigo) {
 		// Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contains(codigo)) {
@@ -98,12 +147,24 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		return contactoIndividual;
 	}	
 	
+	/**
+     * Recupera todos los contactos individuales almacenados en la capa de persistencia.
+     * Cada entidad se reconstruye utilizando {@code recuperarContactoIndividual}.
+     *
+     * @return lista de todos los {@link ContactoIndividual} registrados
+     */
 	public List<ContactoIndividual> recuperarTodosLosContactosIndividuales() {
 		return servPersistencia.recuperarEntidades("contactoIndividual").stream()
 				.map(entidad -> recuperarContactoIndividual(entidad.getId()))
 				.collect(Collectors.toList());
 	}
 
+	/**
+     * Modifica los datos persistidos de un {@link ContactoIndividual}.
+     * Actualiza las propiedades de nombre, mensajes y usuario en la entidad correspondiente.
+     *
+     * @param contacto el contacto individual con la información actualizada
+     */
 	public void modificarContactoIndividual(ContactoIndividual contacto) {
 		//Se recupera entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(contacto.getCodigo());
@@ -122,8 +183,14 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 	}
 
-	// TODO ES POSIBLE ELIMINAR UN CONTACTO INDIVIDUAL EN LA APP? CREO QUE NO
+	/**
+     * Elimina completamente un {@link ContactoIndividual} del sistema de persistencia.
+     * Borra primero los mensajes asociados, luego la entidad, y finalmente lo quita del pool.
+     *
+     * @param contacto el contacto individual a eliminar
+     */
 	public void borrarContactoIndividual(ContactoIndividual contacto) {
+		// TODO ES POSIBLE ELIMINAR UN CONTACTO INDIVIDUAL EN LA APP? CREO QUE NO
 		// Se recupera entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(contacto.getCodigo());
 
@@ -139,6 +206,12 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 	}
 	
+	/**
+     * Recupera una lista de objetos {@link Mensaje} a partir de un string con sus códigos separados por espacios.
+     *
+     * @param codigos cadena con los códigos de los mensajes
+     * @return lista de mensajes recuperados
+     */
 	private List<Mensaje> getMensajes(String codigos) {
 		return Arrays.stream(codigos.split(" "))
 				.filter(codigo -> !codigo.isEmpty())
@@ -147,6 +220,13 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 				.collect(Collectors.toList());
 	}
 	
+	/**
+     * Convierte una lista de mensajes a una cadena con sus códigos separados por espacios.
+     * Este formato es compatible con la forma en que se almacenan en la capa de persistencia.
+     *
+     * @param mensajes lista de mensajes
+     * @return string con los códigos separados por espacios
+     */
 	private String getCodigos(List<Mensaje> mensajes) {
 		return mensajes.stream().map(m -> String.valueOf(m.getCodigo())) // Convertimos el código a String
 				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena

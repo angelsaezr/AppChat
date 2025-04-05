@@ -23,7 +23,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Panel donde se seleccionan los chats.
+ * Renderizador personalizado para objetos {@link Contacto} en listas.
+ * Muestra la imagen, nombre, número de teléfono y saludo de cada contacto en formato visual.
+ * Soporta tanto contactos individuales como grupos.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -36,6 +38,10 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	private JLabel lblTelefono;
 	private JLabel lblSaludo;
 
+	/**
+     * Crea un nuevo renderizador de celdas para una lista de contactos.
+     * Inicializa los componentes visuales como etiquetas e imagen.
+     */
 	public ContactoListCellRenderer() {
 		setLayout(new BorderLayout(10, 10)); // Espaciado entre imagen y texto
 
@@ -58,6 +64,16 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 		add(panelTexto, BorderLayout.CENTER);  // Texto a la derecha
 	}
 
+	 /**
+     * Devuelve el componente visual que representa cada celda de la lista.
+     *
+     * @param listacontactos la lista donde se renderiza el componente
+     * @param contacto el contacto a representar
+     * @param index índice del elemento en la lista
+     * @param isSelected indica si la celda está seleccionada
+     * @param cellHasFocus indica si la celda tiene el foco
+     * @return componente visual configurado para representar al contacto
+     */
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Contacto> listacontactos, Contacto contacto, int index,
 			boolean isSelected, boolean cellHasFocus) {

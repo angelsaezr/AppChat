@@ -15,34 +15,83 @@ import java.util.stream.Collectors;
 import beans.Entidad;
 import beans.Propiedad;
 
+/**
+ * Adaptador para la persistencia de objetos {@link Usuario} mediante el patrón DAO.
+ * Utiliza un {@link ServicioPersistencia} para registrar, recuperar, modificar y eliminar usuarios.
+ * Implementa el patrón Singleton para garantizar una única instancia del adaptador.
+ * 
+ * Maneja propiedades como nombre, móvil, contraseña, email, imagen, estado premium,
+ * saludo, fecha de nacimiento, descuento, y contactos (individuales y grupos).
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 
-	private static final String NOMBRE = "nombre";
-	private static final String MOVIL = "movil";
-	private static final String CONTRASEÑA = "contraseña";
-	private static final String EMAIL = "email";
-	private static final String IMAGEN = "imagen";
-	private static final String IS_PREMIUM = "isPremium";
-	private static final String SALUDO = "saludo";
-	private static final String FECHA_NACIMIENTO = "fechaNacimiento";
-	private static final String DESCUENTO = "descuento";
-	private static final String CONTACTOS_INDIV = "contactosIndv";
-	private static final String GRUPOS = "grupos";
+    /** Propiedad del nombre del usuario. */
+    private static final String NOMBRE = "nombre";
 
-	private ServicioPersistencia servPersistencia;
-	private static AdaptadorUsuario unicaInstancia = null;
+    /** Propiedad del número de móvil. */
+    private static final String MOVIL = "movil";
 
-	public AdaptadorUsuario() {
-		this.servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
-	}
+    /** Propiedad de la contraseña. */
+    private static final String CONTRASEÑA = "contraseña";
 
-	// Singleton
-	public static AdaptadorUsuario getUnicaInstancia() {
-		if (unicaInstancia == null)
-			unicaInstancia = new AdaptadorUsuario();
-		return unicaInstancia;
-	}
+    /** Propiedad del correo electrónico. */
+    private static final String EMAIL = "email";
 
+    /** Propiedad de la imagen de perfil. */
+    private static final String IMAGEN = "imagen";
+
+    /** Propiedad que indica si el usuario es premium. */
+    private static final String IS_PREMIUM = "isPremium";
+
+    /** Propiedad del saludo personalizado. */
+    private static final String SALUDO = "saludo";
+
+    /** Propiedad de la fecha de nacimiento. */
+    private static final String FECHA_NACIMIENTO = "fechaNacimiento";
+
+    /** Propiedad del tipo de descuento aplicado. */
+    private static final String DESCUENTO = "descuento";
+
+    /** Propiedad que representa los contactos individuales del usuario. */
+    private static final String CONTACTOS_INDIV = "contactosIndv";
+
+    /** Propiedad que representa los grupos a los que pertenece el usuario. */
+    private static final String GRUPOS = "grupos";
+
+    /** Servicio de persistencia utilizado por el adaptador. */
+    private ServicioPersistencia servPersistencia;
+
+    /** Instancia única del adaptador (patrón Singleton). */
+    private static AdaptadorUsuario unicaInstancia = null;
+
+    /**
+     * Constructor privado. Inicializa el servicio de persistencia desde la factoría.
+     */
+    public AdaptadorUsuario() {
+        this.servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
+    }
+
+    /**
+     * Devuelve la única instancia del adaptador de usuarios.
+     *
+     * @return instancia única de {@link AdaptadorUsuario}
+     */
+    public static AdaptadorUsuario getUnicaInstancia() {
+        if (unicaInstancia == null)
+            unicaInstancia = new AdaptadorUsuario();
+        return unicaInstancia;
+    }
+
+    /**
+     * Registra un objeto {@link Usuario} en la base de datos.
+     * También registra sus contactos individuales y grupos asociados.
+     * Si ya existe una entidad con su código, no realiza ninguna acción.
+     *
+     * @param usuario el usuario a registrar
+     */
 	public void registrarUsuario(Usuario usuario) {
 		// Se comprueba que no está registrada la entidad que corresponde al código del objeto
 
@@ -94,6 +143,15 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		PoolDAO.getUnicaInstancia().addObject(usuario.getCodigo(), usuario);
 	}
 
+	/**
+     * Recupera un {@link Usuario} desde la persistencia usando su código.
+     * Si ya está presente en el {@link PoolDAO}, se retorna directamente.
+     * En caso contrario, reconstruye el usuario a partir de sus propiedades
+     * y carga sus contactos individuales y grupos.
+     *
+     * @param codigo identificador del usuario
+     * @return el usuario reconstruido
+     */
 	public Usuario recuperarUsuario(int codigo) {
 		// Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contains(codigo)) {
@@ -130,12 +188,23 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		return usuario;
 	}
 
+	/**
+     * Recupera todos los usuarios registrados en la base de datos.
+     * 
+     * @return lista de todos los {@link Usuario} almacenados
+     */
 	public List<Usuario> recuperarTodosLosUsuarios() {
 		return servPersistencia.recuperarEntidades("usuario").stream()
 				.map(entidad -> recuperarUsuario(entidad.getId()))
 				.collect(Collectors.toList());
 	}
 
+	/**
+     * Modifica la información persistida de un {@link Usuario}.
+     * Actualiza sus propiedades, contactos individuales y grupos.
+     *
+     * @param usuario el usuario con información actualizada
+     */
 	public void modificarUsuario(Usuario usuario) {
 		//Se recupera entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
@@ -172,8 +241,14 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
-	// TODO ES POSIBLE ELIMINAR UN USUARIO EN LA APP? CREO QUE NO
+	/**
+     * Elimina completamente un {@link Usuario} del sistema de persistencia.
+     * También elimina sus contactos individuales y grupos relacionados.
+     *
+     * @param usuario el usuario a eliminar
+     */
 	public void borrarUsuario(Usuario usuario) {
+		// TODO ES POSIBLE ELIMINAR UN USUARIO EN LA APP? CREO QUE NO
 		// Se recupera entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
@@ -195,6 +270,12 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 	}
 
+	/**
+     * Recupera una lista de contactos individuales del usuario a partir de sus códigos.
+     *
+     * @param codigos cadena de códigos separados por espacios
+     * @return lista de contactos individuales
+     */
 	private List<Contacto> getContactosIndividuales(String codigos) {
 		return Arrays.stream(codigos.split(" ")) // Dividimos la cadena en un array usando el espacio como separador
 				.filter(codigo -> !codigo.isEmpty()) // Filtramos códigos vacíos
@@ -203,6 +284,12 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				.collect(Collectors.toList());
 	}
 
+	 /**
+     * Recupera una lista de grupos del usuario a partir de sus códigos.
+     *
+     * @param codigos cadena de códigos separados por espacios
+     * @return lista de grupos
+     */
 	private List<Contacto> getGrupos(String codigos) {
 		return Arrays.stream(codigos.split(" "))
 				.filter(codigo -> !codigo.isEmpty())
@@ -211,6 +298,12 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				.collect(Collectors.toList());
 	}
 
+	/**
+     * Convierte una lista de contactos en una cadena con sus códigos separados por espacios.
+     *
+     * @param contactos lista de contactos a convertir
+     * @return cadena con los códigos concatenados
+     */
 	private String getCodigos(List<Contacto> contactos) {
 		return contactos.stream()
 				.map(c -> String.valueOf(c.getCodigo())) // Convertimos el código a String

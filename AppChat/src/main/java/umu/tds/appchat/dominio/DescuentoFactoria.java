@@ -5,7 +5,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * Factoria para la creación de objetos que implementan la interfaz {@link Descuento}.
+ * Asocia tipos de descuento con sus respectivas implementaciones a través de {@link Supplier}.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class DescuentoFactoria {
+
+    /**
+     * Mapa que asocia cada tipo de descuento con un proveedor de instancias de {@link Descuento}.
+     */
     private static final Map<TipoDescuento, Supplier<Descuento>> proveedores = new HashMap<>();
 
     static {
@@ -14,10 +25,17 @@ public class DescuentoFactoria {
         proveedores.put(TipoDescuento.MENSAJE, () -> new DescuentoPorMensaje(10, 0.05));
     }
 
+    /**
+     * Crea una instancia de {@link Descuento} según el tipo especificado.
+     *
+     * @param tipo el tipo de descuento deseado
+     * @return instancia correspondiente de {@link Descuento}
+     * @throws IllegalArgumentException si el tipo no está registrado
+     */
     public static Descuento crearDescuento(TipoDescuento tipo) {
         Supplier<Descuento> supplier = proveedores.get(tipo);
         if (supplier == null) {
-        	throw new IllegalArgumentException("Tipo de descuento desconocido: " + tipo.toString());
+            throw new IllegalArgumentException("Tipo de descuento desconocido: " + tipo.toString());
         }
         return supplier.get();
     }

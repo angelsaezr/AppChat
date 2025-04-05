@@ -16,7 +16,10 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * Ventana para editar el perfil del usuario (imagen y saludo).
+ * Diálogo para editar el perfil de usuario.
+ * Permite cambiar la imagen de perfil y el saludo del usuario.
+ * 
+ * Valida que el saludo no esté vacío antes de realizar los cambios.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -28,6 +31,12 @@ public class VentanaEditarPerfil extends JDialog {
     private JTextField txtSaludo;
     private File imagenSeleccionada;
 
+    /**
+     * Crea e inicializa el diálogo para editar el perfil de usuario.
+     * Permite al usuario cambiar su imagen de perfil y el saludo.
+     * 
+     * @param ventanaMain la ventana principal que invoca este diálogo
+     */
     public VentanaEditarPerfil(VentanaMain ventanaMain) {
         super(ventanaMain, "Editar Perfil", true);
         setSize(450, 350);

@@ -5,16 +5,24 @@ import java.awt.*;
 import tds.BubbleText;
 
 /**
- * Clase del panel donde se cargan los chats.
+ * Panel personalizado que representa la interfaz del área de conversación (chat).
+ * Contiene un contenedor vertical de burbujas de mensajes y un scroll automático.
+ * Permite añadir mensajes de texto y emoticonos de forma visual.
+ * 
+ * Utiliza {@link BubbleText} para renderizar cada mensaje.
  * 
  * @author Ángel
  * @author Francisco Javier
  */
 @SuppressWarnings("serial")
 public class ChatPanel extends JPanel {
+
     private JPanel chatContainer;
     private JScrollPane scrollPane;
 
+    /**
+     * Crea un nuevo {@code ChatPanel} con diseño vertical y estilo visual predeterminado.
+     */
     public ChatPanel() {
         setLayout(new BorderLayout());
         setBackground(new Color(240, 240, 240));
@@ -33,6 +41,14 @@ public class ChatPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Añade un mensaje al chat, compuesto de texto, emoticono o ambos.
+     *
+     * @param sender nombre del remitente
+     * @param text texto del mensaje
+     * @param emoticono identificador del emoticono (-1 si no hay)
+     * @param isSent true si el mensaje fue enviado por el usuario, false si fue recibido
+     */
     public void addMensaje(String sender, String text, int emoticono, boolean isSent) {
         Color bubbleColor = isSent ? new Color(173, 216, 230) : new Color(200, 200, 200);
         int type = isSent ? BubbleText.SENT : BubbleText.RECEIVED;
@@ -45,6 +61,13 @@ public class ChatPanel extends JPanel {
         }
     }
 
+    /**
+     * Añade un emoticono como burbuja individual al chat.
+     *
+     * @param emojiId identificador del emoticono
+     * @param sender nombre del remitente
+     * @param isSent true si el mensaje fue enviado por el usuario, false si fue recibido
+     */
     public void addEmoticon(int emojiId, String sender, boolean isSent) {
         Color bubbleColor = isSent ? new Color(173, 216, 230) : new Color(200, 200, 200);
         int type = isSent ? BubbleText.SENT : BubbleText.RECEIVED;
@@ -54,9 +77,10 @@ public class ChatPanel extends JPanel {
 
     private void agregarBurbuja(BubbleText bubble) {
         chatContainer.add(bubble);
-        
+
         // Ajustar el tamaño preferido para permitir el crecimiento del chatContainer
-        chatContainer.setPreferredSize(new Dimension(chatContainer.getWidth(), (int)chatContainer.getPreferredSize().getHeight() + bubble.getHeight()));
+        chatContainer.setPreferredSize(new Dimension(chatContainer.getWidth(),
+                (int) chatContainer.getPreferredSize().getHeight() + bubble.getHeight()));
         chatContainer.revalidate();
         chatContainer.repaint();
     }

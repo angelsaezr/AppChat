@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Ventana con la tabla de contactos.
+ * Diálogo para mostrar y seleccionar entre los contactos individuales y los grupos del usuario.
+ * Permite agregar contactos o grupos mediante tablas interactivas.
  * 
  * @author Ángel
  * @author Francisco Javier
@@ -25,6 +26,11 @@ public class VentanaContactos extends JDialog {
 	private GroupTableModel tableModelGrupos;
 	private JButton btnAceptar;
 
+	 /**
+     * Crea e inicializa el diálogo para mostrar los contactos y grupos del usuario.
+     * 
+     * @param ventanaMain la ventana principal que invoca este diálogo
+     */
 	public VentanaContactos(VentanaMain ventanaMain) {
 		super(ventanaMain, "Contactos", true);
 		setSize(600, 600);
@@ -140,7 +146,9 @@ public class VentanaContactos extends JDialog {
         tableGrupos.addKeyListener(enterKeyListener);
 	}
 
-	// Clase interna para el modelo de la tabla
+	/**
+     * Clase interna para gestionar el modelo de tabla de los contactos individuales.
+     */
 	private static class ContactTableModel extends AbstractTableModel {
 		private final String[] nombresColumna = { "Nombre", "Teléfono", "Saludo" };
 		private final List<Object[]> data;
@@ -179,7 +187,9 @@ public class VentanaContactos extends JDialog {
 		}
 	}
 
-	// Modelo para grupos
+	/**
+     * Clase interna para gestionar el modelo de tabla de los grupos.
+     */
 	private static class GroupTableModel extends AbstractTableModel {
 		private final String[] nombresColumna = { "Nombre", "Miembros" };
 		private final List<Object[]> data;
@@ -218,13 +228,26 @@ public class VentanaContactos extends JDialog {
 		}
 	}
 
+	/**
+     * Añade un contacto individual a la tabla de contactos.
+     *
+     * @param nombre el nombre del contacto
+     * @param movil el número de teléfono del contacto
+     * @param saludo el saludo del contacto
+     * @return true si el contacto fue añadido correctamente
+     */
 	public boolean addContactoIndividual(String nombre, String movil, String saludo) {
 		return tableModelContactos.add(nombre, movil, saludo);
 	}
 
+	/**
+     * Añade un grupo a la tabla de grupos.
+     *
+     * @param nombre el nombre del grupo
+     * @param miembros los miembros del grupo
+     * @return true si el grupo fue añadido correctamente
+     */
 	public boolean addGrupo(String nombre, String miembros) {
 		return tableModelGrupos.add(nombre, miembros);
 	}
-	
-	
 }

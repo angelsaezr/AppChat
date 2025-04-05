@@ -14,26 +14,73 @@ import java.util.stream.Collectors;
 import beans.Entidad;
 import beans.Propiedad;
 
+/**
+ * Adaptador para la persistencia de objetos {@link Grupo} mediante el patrón DAO.
+ * Utiliza {@link ServicioPersistencia} para registrar, recuperar y modificar entidades.
+ * Aplica el patrón Singleton para garantizar una única instancia.
+ * 
+ * Gestiona las propiedades persistidas: nombre, mensajes, imagen y miembros del grupo.
+ * 
+ * @author Ángel
+ * @author Francisco Javier
+ */
 public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 
-	private static final String NOMBRE = "nombre";
-	private static final String MENSAJES = "mensajes";
-	private static final String IMAGEN = "imagen";
-	private static final String MIEMBROS = "miembros";
+    /**
+     * Nombre de la propiedad "nombre" utilizada en persistencia.
+     */
+    private static final String NOMBRE = "nombre";
+
+    /**
+     * Nombre de la propiedad "mensajes" utilizada en persistencia.
+     */
+    private static final String MENSAJES = "mensajes";
+
+    /**
+     * Nombre de la propiedad "imagen" utilizada en persistencia.
+     */
+    private static final String IMAGEN = "imagen";
+
+    /**
+     * Nombre de la propiedad "miembros" utilizada en persistencia.
+     */
+    private static final String MIEMBROS = "miembros";
+
+    /**
+     * Servicio de persistencia utilizado para las operaciones DAO.
+     */
+    private ServicioPersistencia servPersistencia;
+
+    /**
+     * Instancia única del adaptador (patrón Singleton).
+     */
+    private static AdaptadorGrupo unicaInstancia = null;
+
+    /**
+     * Constructor privado que inicializa el servicio de persistencia desde la factoría.
+     */
+    public AdaptadorGrupo() {
+        servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
+    }
+
+    /**
+     * Devuelve la instancia única del adaptador para grupos.
+     *
+     * @return instancia única de {@link AdaptadorGrupo}
+     */
+    public static AdaptadorGrupo getUnicaInstancia() {
+        if (unicaInstancia == null)
+            unicaInstancia = new AdaptadorGrupo();
+        return unicaInstancia;
+    }
 	
-	private ServicioPersistencia servPersistencia;
-	private static AdaptadorGrupo unicaInstancia = null;
-	
-	public AdaptadorGrupo() {
-		servPersistencia = FactoriaServicioPersistencia.getInstance().getServicioPersistencia();
-	}
-	
-	public static AdaptadorGrupo getUnicaInstancia() {
-		if (unicaInstancia == null)
-			unicaInstancia = new AdaptadorGrupo();
-		return unicaInstancia;
-	}
-	
+    /**
+     * Registra un objeto {@link Grupo} en el sistema de persistencia.
+     * Si el grupo ya está registrado (según su código), no se realiza ninguna acción.
+     * También registra sus miembros y mensajes asociados si aún no están persistidos.
+     *
+     * @param grupo el grupo que se desea registrar
+     */
 	public void registrarGrupo(Grupo grupo) {
 		// Se comprueba que no está registrada la entidad que corresponde al código del objeto
 
@@ -73,6 +120,13 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		PoolDAO.getUnicaInstancia().addObject(grupo.getCodigo(), grupo);
 	}
 
+	 /**
+     * Recupera un grupo desde la persistencia usando su código identificador.
+     * Si el objeto ya existe en el {@link PoolDAO}, lo devuelve directamente.
+     * 
+     * @param codigo código único del grupo
+     * @return el objeto {@link Grupo} recuperado
+     */
 	public Grupo recuperarGrupo(int codigo) {
 		// Si el objeto está en el pool se retorna
 		if (PoolDAO.getUnicaInstancia().contains(codigo)) {
@@ -107,12 +161,24 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		
 	}
 	
+	/**
+     * Recupera todos los objetos {@link Grupo} almacenados en la base de datos.
+     * Utiliza {@code recuperarGrupo} para reconstruir cada grupo desde su entidad.
+     *
+     * @return lista de todos los grupos registrados
+     */
 	public List<Grupo> recuperarTodosLosContactosIndividuales() {
 		return servPersistencia.recuperarEntidades("grupo").stream()
 				.map(entidad -> recuperarGrupo(entidad.getId()))
 				.collect(Collectors.toList());
 	}
 
+	/**
+     * Modifica los datos persistidos de un {@link Grupo}.
+     * Actualiza las propiedades de nombre, mensajes, imagen y miembros en la entidad correspondiente.
+     *
+     * @param grupo el grupo con información actualizada
+     */
 	public void modificarGrupo(Grupo grupo) {
 		//Se recupera entidad
 		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getCodigo());
@@ -133,6 +199,12 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		}
 	}
 
+	/**
+     * Elimina completamente un grupo del sistema de persistencia.
+     * También elimina todos los mensajes asociados al grupo y lo elimina del {@link PoolDAO} si es necesario.
+     *
+     * @param grupo el grupo a eliminar
+     */
 	public void borrarGrupo(Grupo grupo) {
 		// Se recupera entidad
 		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getCodigo());
@@ -151,34 +223,56 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		}		
 	}
 	
-	
-	private List<Mensaje> getMensajes(String codigos) {
-		return Arrays.stream(codigos.split(" "))
-				.filter(codigo -> !codigo.isEmpty())
-				.map(Integer::parseInt)
-				.map(codigo -> AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo))
-				.collect(Collectors.toList());
-	}
-	
-	private String getCodigosMensajes(List<Mensaje> mensajes) {
-		return mensajes.stream()
-				.map(m -> String.valueOf(m.getCodigo())) // Convertimos el código a String
-				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
-													// práctica en rendimiento
-	}
-	
-	private List<ContactoIndividual> getMiembros(String codigos) {
-		return Arrays.stream(codigos.split(" "))
-				.filter(codigo -> !codigo.isEmpty())
-				.map(Integer::parseInt)
-				.map(codigo -> AdaptadorContactoIndividual.getUnicaInstancia().recuperarContactoIndividual(codigo))
-				.collect(Collectors.toList());
-	}
-	
-	private String getCodigosContactosIndiv(List<ContactoIndividual> contactosIndiv) {
-		return contactosIndiv.stream()
-				.map(c -> String.valueOf(c.getCodigo())) // Convertimos el código a String
-				.collect(Collectors.joining(" ")); // Unimos los códigos con un espacio entre ellos, eficiente y buena
-													// práctica en rendimiento
-	}
+    /**
+     * Recupera una lista de objetos {@link Mensaje} a partir de una cadena con sus códigos separados por espacios.
+     *
+     * @param codigos cadena con los identificadores de los mensajes
+     * @return lista de mensajes correspondientes a los códigos
+     */
+    private List<Mensaje> getMensajes(String codigos) {
+        return Arrays.stream(codigos.split(" "))
+                .filter(codigo -> !codigo.isEmpty())
+                .map(Integer::parseInt)
+                .map(codigo -> AdaptadorMensaje.getUnicaInstancia().recuperarMensaje(codigo))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Convierte una lista de mensajes en una cadena con sus códigos separados por espacios.
+     * Este formato se utiliza en la persistencia para representar relaciones.
+     *
+     * @param mensajes lista de mensajes
+     * @return cadena con los códigos separados por espacios
+     */
+    private String getCodigosMensajes(List<Mensaje> mensajes) {
+        return mensajes.stream()
+                .map(m -> String.valueOf(m.getCodigo()))
+                .collect(Collectors.joining(" "));
+    }
+
+    /**
+     * Recupera una lista de {@link ContactoIndividual} a partir de una cadena con sus códigos separados por espacios.
+     *
+     * @param codigos cadena con los identificadores de los contactos individuales
+     * @return lista de contactos individuales correspondientes
+     */
+    private List<ContactoIndividual> getMiembros(String codigos) {
+        return Arrays.stream(codigos.split(" "))
+                .filter(codigo -> !codigo.isEmpty())
+                .map(Integer::parseInt)
+                .map(codigo -> AdaptadorContactoIndividual.getUnicaInstancia().recuperarContactoIndividual(codigo))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Convierte una lista de contactos individuales en una cadena con sus códigos separados por espacios.
+     *
+     * @param contactosIndiv lista de contactos individuales
+     * @return cadena con los códigos separados por espacios
+     */
+    private String getCodigosContactosIndiv(List<ContactoIndividual> contactosIndiv) {
+        return contactosIndiv.stream()
+                .map(c -> String.valueOf(c.getCodigo()))
+                .collect(Collectors.joining(" "));
+    }
 }
