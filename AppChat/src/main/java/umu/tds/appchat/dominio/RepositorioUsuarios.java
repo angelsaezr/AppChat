@@ -1,6 +1,7 @@
 package umu.tds.appchat.dominio;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import umu.tds.appchat.persistencia.DAOException;
@@ -38,6 +39,10 @@ public class RepositorioUsuarios {
 		if (unicaInstancia == null)
 			unicaInstancia = new RepositorioUsuarios();
 		return unicaInstancia;
+	}
+    
+    public LinkedList<Usuario> getUsuarios() {
+    	return new LinkedList<Usuario>(usuarios.values());
 	}
 
     // Método para agregar un usuario

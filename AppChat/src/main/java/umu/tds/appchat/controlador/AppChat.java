@@ -148,6 +148,32 @@ public class AppChat {
     }
     
     public void cargarMensajesNoAgregados() {
+        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
+        List<Usuario> todosLosUsuarios = repositorioUsuarios.getUsuarios();
+
+        for (Usuario u: todosLosUsuarios) {
+        	if (u.equals(usuarioActual)) break;
+        	for (Contacto contacto : u.getContactos()) {
+        		//if (usuarioActual.getContactos().contains(contacto)) break;
+        		if (((ContactoIndividual) contacto).getMovil().equals(this.usuarioActual.getMovil()) && !contacto.getMensajes().isEmpty() && contacto != null) {
+        			ContactoIndividual co = agregarContacto("", u.getMovil());
+        			System.out.println("Agregado con móvil: " + u.getMovil());
+        			System.out.println("Número de contactos del usuario actual: " + usuarioActual.getContactos().size());
+        			if (co != null) adaptadorContactoIndividual.registrarContactoIndividual(co);
+        		}
+        	}
+        	//&& !esContactoAgregado(contacto)
+        
+        	// poner si ya lo tiene agregado que no lo agregue
+        	// poner si entra una segunda vez y no lo ha agregado, que no vuelva a agregar
+        	// al entrear con el otro usuario, sale el mensaje como si lo hubiera enviado el, error
+        	
+        }
+        adaptadorUsuario.modificarUsuario(usuarioActual);
+        
+    }
+    
+    /*public void cargarMensajesNoAgregados() {
         List<Usuario> todosLosUsuarios = adaptadorUsuario.recuperarTodosLosUsuarios();
 
         for (Usuario u : todosLosUsuarios) {
@@ -177,31 +203,6 @@ public class AppChat {
         }
 
         adaptadorUsuario.modificarUsuario(usuarioActual);
-    }
-
-    
-    /*public void cargarMensajesNoAgregados() {
-        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
-        List<Usuario> todosLosUsuarios = adaptadorUsuario.recuperarTodosLosUsuarios();
-
-        for (Usuario u: todosLosUsuarios) {
-        	System.out.println("aaa");
-        	if (u.equals(usuarioActual)) return;
-        	for (Contacto contacto : u.getContactos()) {
-        		if (usuarioActual.getContactos().contains(contacto)) return;
-        		if (((ContactoIndividual) contacto).getMovil().equals(this.usuarioActual.getMovil()) && !contacto.getMensajes().isEmpty()){
-        			//break;
-        			agregarContacto("", u.getMovil());
-        			System.out.println("agregado con movil: " + u.getMovil());
-        		}
-        	}
-        	//&& !esContactoAgregado(contacto)
-        
-       
-        	
-        }
-        adaptadorUsuario.modificarUsuario(usuarioActual);
-        
     }*/
     
     /*public void cargarMensajesNoAgregados() {

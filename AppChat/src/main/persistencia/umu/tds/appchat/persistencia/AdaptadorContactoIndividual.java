@@ -39,10 +39,6 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 			return;
 		}
 
-		// Se registran sus objetos referenciados
-		/*for (Mensaje m: contacto.getMensajes()) {
-			AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m);
-		}*/
 		// TODO NO DEBERIA AÑADIRSE EL USUARIO OTRA VEZ AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
 
 		List<Mensaje> mensajesRegistrados = new ArrayList<>();
