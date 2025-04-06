@@ -41,6 +41,7 @@ public abstract class Contacto {
     public Contacto(String nombre) {
         this.nombre = nombre;
         this.mensajes = new LinkedList<Mensaje>();
+        this.codigo = 0;
     }
 
     /**

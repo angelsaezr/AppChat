@@ -56,6 +56,7 @@ public class Mensaje {
         this.emoticono = emoticono;
         this.tipo = tipo;
         this.fechaHoraEnvio = LocalDateTime.now();
+        this.codigo = 0;
     }
 
     /**
