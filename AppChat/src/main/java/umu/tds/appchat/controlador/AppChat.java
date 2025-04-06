@@ -256,7 +256,7 @@ public class AppChat {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
             this.usuarioActual = usuario;
-            cargarMensajesNoAgregados();
+            //cargarMensajesNoAgregados();
             return true;
         }
         return false;
@@ -315,7 +315,7 @@ public class AppChat {
     }*/
 
     // TODO hacer javadoc de este metodo cuando se termine
-    public void cargarMensajesNoAgregados() {
+    /*public void cargarMensajesNoAgregados() {
         List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
         List<Usuario> todosLosUsuarios = repositorioUsuarios.getUsuarios();
 
@@ -341,7 +341,7 @@ public class AppChat {
         }
         adaptadorUsuario.modificarUsuario(usuarioActual);
         
-    }
+    }*/
     
     /*public void cargarMensajesNoAgregados() {
         List<Usuario> todosLosUsuarios = adaptadorUsuario.recuperarTodosLosUsuarios();
@@ -487,6 +487,7 @@ public class AppChat {
         if (!usuarioActual.addMensaje(receptor, mensaje)) {
             return false;
         }
+        adaptadorMensaje.registrarMensaje(mensaje);
 
         if (receptor instanceof ContactoIndividual) {
             return enviarMensajeAContactoIndividual((ContactoIndividual) receptor, mensaje);
@@ -505,18 +506,22 @@ public class AppChat {
      * @param mensaje el mensaje a enviar
      * @return true si el mensaje se envió correctamente
      */
-    private boolean enviarMensajeAContactoIndividual(ContactoIndividual contactoReceptor, Mensaje mensaje) {
+    private boolean enviarMensajeAContactoIndividual(ContactoIndividual contactoReceptor, Mensaje mensajeOriginal) {
         Usuario usuarioReceptor = contactoReceptor.getUsuario();
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
 
         if (contactoSender == null) {
             contactoSender = new ContactoIndividual("", usuarioActual);
             usuarioReceptor.addContacto(contactoSender);
+            adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
+            adaptadorUsuario.modificarUsuario(usuarioReceptor);
         }
-
-        usuarioReceptor.addMensaje(contactoSender, mensaje);
-        adaptadorMensaje.registrarMensaje(mensaje);
+        Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
+        usuarioReceptor.addMensaje(contactoSender, mensaje2);
+        
+        adaptadorMensaje.registrarMensaje(mensaje2);
         adaptadorContactoIndividual.modificarContactoIndividual(contactoReceptor);
+        adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
 
         return true;
     }
@@ -529,7 +534,28 @@ public class AppChat {
      * @return true si el mensaje fue enviado a todos los miembros correctamente
      */
     private boolean enviarMensajeAGrupo(Grupo grupo, Mensaje mensajeOriginal) {
-        return grupo.getMiembros().stream()
+    	for(ContactoIndividual c : grupo.getMiembros()) {
+        	Usuario usuarioReceptor = c.getUsuario();
+        	if(!usuarioReceptor.equals(usuarioActual)) {
+        		ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
+        		System.out.println("Receptor: " + usuarioReceptor.getNombre() + ". contactoSender: " + contactoSender);
+        		if (contactoSender == null) {
+                    contactoSender = new ContactoIndividual("", usuarioActual);
+                    usuarioReceptor.addContacto(contactoSender);
+                    adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
+                    adaptadorUsuario.modificarUsuario(usuarioReceptor);
+                }
+        		Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
+                usuarioReceptor.addMensaje(contactoSender, mensaje2);
+                adaptadorMensaje.registrarMensaje(mensaje2);
+                System.out.println("Mensaje registrado en appchat");
+                adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
+        	}
+        }
+    	adaptadorGrupo.modificarGrupo(grupo);
+    	return true;
+    	
+        /*return grupo.getMiembros().stream()
             .map(ContactoIndividual::getUsuario)
             .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
             .map(usuarioReceptor -> {
@@ -537,16 +563,19 @@ public class AppChat {
                 if (contactoSender == null) {
                     contactoSender = new ContactoIndividual("", usuarioActual);
                     usuarioReceptor.addContacto(contactoSender);
+                    adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
+                    adaptadorUsuario.modificarUsuario(usuarioReceptor);
                 }
 
                 // Crea una copia del mensaje para cada usuario
                 Mensaje copiaMensaje = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
                 usuarioReceptor.addMensaje(contactoSender, copiaMensaje);
-                adaptadorMensaje.registrarMensaje(mensajeOriginal);
+                adaptadorMensaje.registrarMensaje(copiaMensaje);
                 adaptadorGrupo.modificarGrupo(grupo);
+                adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
                 return true;
             })
-            .allMatch(Boolean::booleanValue);
+            .allMatch(Boolean::booleanValue);*/
     }
 
     /**

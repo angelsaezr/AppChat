@@ -181,10 +181,18 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		List<Contacto> contactos = getContactosIndividuales(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
+		for(Contacto c: contactos) {
+			ContactoIndividual cI = (ContactoIndividual) c;
+			System.out.println("ContactoIndividual:" + cI.getNombre() + ". Nickname:" + cI.getUsuario().getNombre() + ". ID:" + cI.getCodigo());
+			for(Mensaje m : cI.getMensajes()) {
+				System.out.println(m.getTexto());
+			}
+		}
 		List<Contacto> grupos = getGrupos(servPersistencia.recuperarPropiedadEntidad(eUsuario, GRUPOS));
 		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
 		usuario.setContactos(contactos);
 		// Se retorna el objeto
+		System.out.println("Usuario " + usuario.getNombre() + " recuperado\n");
 		return usuario;
 	}
 

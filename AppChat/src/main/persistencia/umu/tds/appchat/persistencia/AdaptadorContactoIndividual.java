@@ -2,6 +2,7 @@ package umu.tds.appchat.persistencia;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
+import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.*;
 
 import java.util.ArrayList;
@@ -103,7 +104,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eContactoIndividual = Optional.ofNullable(servPersistencia.registrarEntidad(eContactoIndividual.get()));
 		contacto.setCodigo(eContactoIndividual.get().getId());
-
+		System.out.println("ContactoIndvidual " + contacto.getNombre() + " registrado");
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(contacto.getCodigo(), contacto);
 	}
@@ -142,7 +143,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		}
 	
 		contactoIndividual.setUsuario(usuario);	
-
+		System.out.println("ContactoIndvidual " + contactoIndividual.getNombre() + " recuperado");
 		// Se retorna el objeto
 		return contactoIndividual;
 	}	
