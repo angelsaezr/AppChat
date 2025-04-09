@@ -511,7 +511,7 @@ public class AppChat {
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
 
         if (contactoSender == null) {
-            contactoSender = new ContactoIndividual("", usuarioActual);
+            contactoSender = new ContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
             usuarioReceptor.addContacto(contactoSender);
             adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
             adaptadorUsuario.modificarUsuario(usuarioReceptor);
@@ -540,7 +540,7 @@ public class AppChat {
         		ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
         		System.out.println("Receptor: " + usuarioReceptor.getNombre() + ". contactoSender: " + contactoSender);
         		if (contactoSender == null) {
-                    contactoSender = new ContactoIndividual("", usuarioActual);
+                    contactoSender = new ContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
                     usuarioReceptor.addContacto(contactoSender);
                     adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
                     adaptadorUsuario.modificarUsuario(usuarioReceptor);
@@ -714,7 +714,7 @@ public class AppChat {
      * @return nombre del contacto o su móvil si el nombre está vacío
      */
     public String getNombreContacto(Contacto c) {
-        return c.getNombre().isBlank() && c instanceof ContactoIndividual 
+        return c.getNombre().startsWith("$") && c instanceof ContactoIndividual 
             ? ((ContactoIndividual) c).getMovil() 
             : c.getNombre();
     }

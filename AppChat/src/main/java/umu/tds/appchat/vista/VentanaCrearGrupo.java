@@ -70,7 +70,7 @@ public class VentanaCrearGrupo extends JDialog {
         for (Contacto c : listaContactos) {
         	if (c instanceof ContactoIndividual) {
         		if (AppChat.getInstance().esContactoAgregado(c)) {
-        			contactoInfo = c.getNombre() + " (" + ((ContactoIndividual) c).getMovil() + ")";
+        			contactoInfo = AppChat.getInstance().getNombreContacto(c) + " (" + ((ContactoIndividual) c).getMovil() + ")";
              		contactListModel.addElement(contactoInfo);
         		}
         	}

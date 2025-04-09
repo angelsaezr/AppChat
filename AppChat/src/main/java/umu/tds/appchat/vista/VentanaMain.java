@@ -98,7 +98,7 @@ public class VentanaMain extends JFrame {
                 .filter(ContactoIndividual.class::isInstance)
                 .map(ContactoIndividual.class::cast)
                 .filter(cI -> !cI.getNombre().isBlank())
-                .forEach(cI -> tablaContactos.addContactoIndividual(cI.getNombre(), cI.getMovil(), cI.getSaludo()));
+                .forEach(cI -> tablaContactos.addContactoIndividual(AppChat.getInstance().getNombreContacto(cI), cI.getMovil(), cI.getSaludo()));
             
             AppChat.getInstance().getContactosUsuarioActual().stream()
                 .filter(Grupo.class::isInstance)

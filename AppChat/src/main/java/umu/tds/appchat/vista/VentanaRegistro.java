@@ -244,6 +244,10 @@ public class VentanaRegistro extends JDialog {
         	JOptionPane.showMessageDialog(this, "Ya existe un usuario registrado con este móvil.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        if (txtUsuario.getText().startsWith("$")) {
+        	JOptionPane.showMessageDialog(this, "Carácter '$' no permitido", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         String rutaImagen = "";
     	if (imagenSeleccionada != null)
     		rutaImagen = imagenSeleccionada.getAbsolutePath();
