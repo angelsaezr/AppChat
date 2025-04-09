@@ -2,7 +2,6 @@ package umu.tds.appchat.persistencia;
 
 import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
-import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.*;
 
 import java.util.ArrayList;
@@ -79,9 +78,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		Optional<Entidad> eContactoIndividual = Optional.ofNullable(servPersistencia.recuperarEntidad(contacto.getCodigo()));
 		if (eContactoIndividual.isPresent()) {
 			return;
-		}
-
-		// TODO NO DEBERIA AÑADIRSE EL USUARIO OTRA VEZ AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
+		}	
 
 		List<Mensaje> mensajesRegistrados = new ArrayList<>();
 
@@ -183,15 +180,15 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 			servPersistencia.modificarEntidad(eContactoIndividual);
 		}
 	}
-
+	
 	/**
      * Elimina completamente un {@link ContactoIndividual} del sistema de persistencia.
      * Borra primero los mensajes asociados, luego la entidad, y finalmente lo quita del pool.
      *
      * @param contacto el contacto individual a eliminar
      */
+	/*
 	public void borrarContactoIndividual(ContactoIndividual contacto) {
-		// TODO ES POSIBLE ELIMINAR UN CONTACTO INDIVIDUAL EN LA APP? CREO QUE NO
 		// Se recupera entidad
 		Entidad eContactoIndividual = servPersistencia.recuperarEntidad(contacto.getCodigo());
 
@@ -205,7 +202,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		if (PoolDAO.getUnicaInstancia().contains(contacto.getCodigo())) {
 			PoolDAO.getUnicaInstancia().removeObject(contacto.getCodigo());
 		}
-	}
+	}*/
 	
 	/**
      * Recupera una lista de objetos {@link Mensaje} a partir de un string con sus códigos separados por espacios.

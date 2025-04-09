@@ -10,7 +10,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;

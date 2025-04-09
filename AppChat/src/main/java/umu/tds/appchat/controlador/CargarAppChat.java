@@ -1,10 +1,6 @@
 package umu.tds.appchat.controlador;
 
 import java.awt.EventQueue;
-import java.time.LocalDate;
-
-import umu.tds.appchat.dominio.ContactoIndividual;
-import umu.tds.appchat.dominio.RepositorioUsuarios;
 import umu.tds.appchat.vista.VentanaLogin;
 
 /**

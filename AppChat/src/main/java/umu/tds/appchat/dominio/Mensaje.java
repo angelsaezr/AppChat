@@ -51,11 +51,11 @@ public class Mensaje {
      * @param emoticono código del emoticono
      * @param tipo tipo del mensaje (enviado o recibido)
      */
-    public Mensaje(String texto, int emoticono, TipoMensaje tipo) {
+    public Mensaje(String texto, int emoticono, TipoMensaje tipo, LocalDateTime fechaHoraEnvio) {
         this.texto = texto;
         this.emoticono = emoticono;
         this.tipo = tipo;
-        this.fechaHoraEnvio = LocalDateTime.now();
+        this.fechaHoraEnvio = fechaHoraEnvio;
         this.codigo = 0;
     }
 

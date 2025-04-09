@@ -49,5 +49,5 @@ public interface IAdaptadorContactoIndividualDAO {
      *
      * @param contacto el contacto a eliminar
      */
-    public void borrarContactoIndividual(ContactoIndividual contacto);
+    //public void borrarContactoIndividual(ContactoIndividual contacto);
 }

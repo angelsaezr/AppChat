@@ -130,25 +130,17 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Si no lo está se recupera entidad y las propiedades de campos de tipo primitivo
 		Entidad eMensaje = servPersistencia.recuperarEntidad(codigo);
 		String texto = servPersistencia.recuperarPropiedadEntidad(eMensaje, TEXTO);
-		
-		//int emoticono = Integer.parseInt(servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO));
 		String emoticonoStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, EMOTICONO);
 		int emoticono = (emoticonoStr != null && !emoticonoStr.isEmpty()) ? Integer.parseInt(emoticonoStr) : 0;
-
-		//TipoMensaje tipo = TipoMensaje.valueOf(servPersistencia.recuperarPropiedadEntidad(eMensaje, TIPO));
 		String tipoStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, TIPO);
-		TipoMensaje tipo = (tipoStr != null) ? TipoMensaje.valueOf(tipoStr) : TipoMensaje.RECIBIDO; // TODO NO ES RECIBIDO
-
-		//LocalDateTime fechaHoraEnvio = LocalDateTime.parse(servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO));
+		TipoMensaje tipo = (tipoStr != null) ? TipoMensaje.valueOf(tipoStr) : TipoMensaje.RECIBIDO;
 		String fechaStr = servPersistencia.recuperarPropiedadEntidad(eMensaje, FECHA_HORA_ENVIO);
-		// TODO REVISAR ESTO
 		LocalDateTime fechaHoraEnvio = (fechaStr != null && !fechaStr.isEmpty())
 		    ? LocalDateTime.parse(fechaStr)
 		    : LocalDateTime.now();
 		
-		
 		// Se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
-		Mensaje mensaje = new Mensaje(texto, emoticono, tipo);
+		Mensaje mensaje = new Mensaje(texto, emoticono, tipo, fechaHoraEnvio);
 		mensaje.setCodigo(codigo);
 
 		// Se añade al pool

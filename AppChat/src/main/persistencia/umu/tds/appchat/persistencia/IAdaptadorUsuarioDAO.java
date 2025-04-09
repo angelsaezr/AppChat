@@ -50,5 +50,5 @@ public interface IAdaptadorUsuarioDAO {
      *
      * @param usuario el usuario a eliminar
      */
-    public void borrarUsuario(Usuario usuario);
+    //public void borrarUsuario(Usuario usuario);
 }

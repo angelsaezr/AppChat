@@ -3,6 +3,7 @@ package umu.tds.appchat.controlador;
 import java.io.File;
 import java.text.Normalizer;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -261,151 +262,6 @@ public class AppChat {
         }
         return false;
     }
-    
-    /*public void cargarMensajesNoAgregados() {
-        List<Usuario> todosLosUsuarios = repositorioUsuarios.getUsuarios();
-
-        for (Usuario otroUsuario : todosLosUsuarios) {
-            // Saltar si es el propio usuario actual
-            if (otroUsuario.equals(usuarioActual)) continue;
-
-            for (Contacto contacto : otroUsuario.getContactos()) {
-
-                // 1. MENSAJES DIRECTOS: Si el contacto es individual y apunta al usuario actual
-                if (contacto instanceof ContactoIndividual) {
-                    ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
-                    Usuario receptor = contactoIndividual.getUsuario();
-
-                    if (receptor.getMovil().equals(usuarioActual.getMovil())) {
-                        // Si no ha sido agregado aún por el usuario actual y hay mensajes
-                        boolean yaAgregado = usuarioActual.getContactoIndividual(otroUsuario.getMovil()) != null;
-                        if (!yaAgregado && !contacto.getMensajes().isEmpty()) {
-                            ContactoIndividual nuevo = new ContactoIndividual("", otroUsuario);
-                            if (usuarioActual.addContacto(nuevo)) {
-                                adaptadorContactoIndividual.registrarContactoIndividual(nuevo);
-                            }
-                        }
-                    }
-                }
-
-                // 2. MENSAJES POR GRUPO: Revisar si el usuario actual está en grupos del otro usuario
-                else if (contacto instanceof Grupo) {
-                    Grupo grupo = (Grupo) contacto;
-
-                    boolean usuarioEsMiembro = grupo.getMiembros().stream()
-                            .anyMatch(miembro -> miembro.getMovil().equals(usuarioActual.getMovil()));
-
-                    if (usuarioEsMiembro) {
-                        // El otro usuario mandó mensajes a través de un grupo donde el actual es miembro
-                        boolean yaAgregado = usuarioActual.getContactoIndividual(otroUsuario.getMovil()) != null;
-
-                        // Revisar que haya mensajes enviados a través de ese grupo
-                        if (!yaAgregado && !contacto.getMensajes().isEmpty()) {
-                            ContactoIndividual nuevo = new ContactoIndividual("", otroUsuario);
-                            if (usuarioActual.addContacto(nuevo)) {
-                                adaptadorContactoIndividual.registrarContactoIndividual(nuevo);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        adaptadorUsuario.modificarUsuario(usuarioActual);
-    }*/
-
-    // TODO hacer javadoc de este metodo cuando se termine
-    /*public void cargarMensajesNoAgregados() {
-        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
-        List<Usuario> todosLosUsuarios = repositorioUsuarios.getUsuarios();
-
-        for (Usuario u: todosLosUsuarios) {
-        	if (u.equals(usuarioActual)) continue;
-        	for (Contacto contacto : u.getContactos()) {
-        		//if (usuarioActual.getContactos().contains(contacto)) break;
-        		if (contacto instanceof ContactoIndividual && ((ContactoIndividual) contacto).getMovil().equals(this.usuarioActual.getMovil()) && !contacto.getMensajes().isEmpty() && contacto != null) {
-        			ContactoIndividual co = agregarContacto("", u.getMovil());
-        			System.out.println("Agregado con móvil: " + u.getMovil());
-        			System.out.println("Número de contactos del usuario actual: " + usuarioActual.getContactos().size());
-        			if (co != null) adaptadorContactoIndividual.registrarContactoIndividual(co);
-        		} else if (contacto instanceof Grupo) {
-        			
-        		}
-        	}
-        	//&& !esContactoAgregado(contacto)
-        
-        	// poner si ya lo tiene agregado que no lo agregue
-        	// poner si entra una segunda vez y no lo ha agregado, que no vuelva a agregar
-        	// al entrear con el otro usuario, sale el mensaje como si lo hubiera enviado el, error
-        	// tener en cuenta el tipo de mensaje
-        }
-        adaptadorUsuario.modificarUsuario(usuarioActual);
-        
-    }*/
-    
-    /*public void cargarMensajesNoAgregados() {
-        List<Usuario> todosLosUsuarios = adaptadorUsuario.recuperarTodosLosUsuarios();
-
-        for (Usuario u : todosLosUsuarios) {
-            if (u.equals(usuarioActual)) continue;
-
-            for (Contacto contacto : u.getContactos()) {
-                if (!(contacto instanceof ContactoIndividual)) continue;
-
-                ContactoIndividual cInd = (ContactoIndividual) contacto;
-
-                // Si este contacto apunta al usuario actual
-                if (cInd.getMovil().equals(usuarioActual.getMovil())) {
-
-                    // Verificamos si ya está agregado en la lista de contactos del usuario actual
-                    boolean yaAgregado = usuarioActual.getContactos().stream()
-                            .filter(c -> c instanceof ContactoIndividual)
-                            .map(c -> ((ContactoIndividual) c).getMovil())
-                            .anyMatch(movil -> movil.equals(u.getMovil()));
-
-                    if (!yaAgregado && !cInd.getMensajes().isEmpty()) {
-                        // Agregar al usuario actual un contacto para este emisor
-                        agregarContacto("", u.getMovil());
-                        System.out.println("📩 Agregado contacto no registrado con móvil: " + u.getMovil());
-                    }
-                }
-            }
-        }
-
-        adaptadorUsuario.modificarUsuario(usuarioActual);
-    }*/
-    
-    /*public void cargarMensajesNoAgregados() {
-        List<Mensaje> todosLosMensajes = adaptadorMensaje.recuperarTodosLosMensajes();
-        List<Usuario> emisoresNoAgregados = new LinkedList<>();
-
-        for (Mensaje mensaje : todosLosMensajes) {
-            if (mensaje.getTipo() == TipoMensaje.RECIBIDO) {
-                for (Contacto c : usuarioActual.getContactos()) {
-                    if (c instanceof ContactoIndividual) {
-                        ContactoIndividual contacto = (ContactoIndividual) c;
-
-                        // Si este contacto tiene el mensaje recibido
-                        if (contacto.getMensajes().contains(mensaje)) {
-                            Usuario emisor = contacto.getUsuario();
-
-                            // ¿Este emisor ya está agregado por el usuario actual?
-                            boolean yaAgregado = usuarioActual.getContactos().stream()
-                                .filter(ci -> ci instanceof ContactoIndividual)
-                                .map(ci -> ((ContactoIndividual) ci).getMovil())
-                                .anyMatch(movil -> movil.equals(emisor.getMovil()));
-
-                            if (!yaAgregado && !emisoresNoAgregados.contains(emisor)) {
-                                emisoresNoAgregados.add(emisor);
-                                adaptadorUsuario.modificarUsuario(usuarioActual);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
 
     /**
      * Agregar un contacto individual al usuario actual.
@@ -465,8 +321,6 @@ public class AppChat {
         usuarioActual.addContacto(nuevoGrupo);
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return nuevoGrupo;
-
-        // TODO return null;
     }
 
     /**
@@ -481,7 +335,7 @@ public class AppChat {
         if (usuarioActual == null) return false;
 
         // Crea y registrar mensaje
-        Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO);
+        Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO, LocalDateTime.now());
 
         // Intenta enviarlo desde el usuario actual
         if (!usuarioActual.addMensaje(receptor, mensaje)) {
@@ -516,7 +370,7 @@ public class AppChat {
             adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
             adaptadorUsuario.modificarUsuario(usuarioReceptor);
         }
-        Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
+        Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO, LocalDateTime.now());
         usuarioReceptor.addMensaje(contactoSender, mensaje2);
         
         adaptadorMensaje.registrarMensaje(mensaje2);
@@ -545,7 +399,7 @@ public class AppChat {
                     adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
                     adaptadorUsuario.modificarUsuario(usuarioReceptor);
                 }
-        		Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
+        		Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO, LocalDateTime.now());
                 usuarioReceptor.addMensaje(contactoSender, mensaje2);
                 adaptadorMensaje.registrarMensaje(mensaje2);
                 System.out.println("Mensaje registrado en appchat");

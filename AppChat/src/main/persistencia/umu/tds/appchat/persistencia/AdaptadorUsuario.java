@@ -255,8 +255,8 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
      *
      * @param usuario el usuario a eliminar
      */
+	/*
 	public void borrarUsuario(Usuario usuario) {
-		// TODO ES POSIBLE ELIMINAR UN USUARIO EN LA APP? CREO QUE NO
 		// Se recupera entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
 
@@ -276,7 +276,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		if (PoolDAO.getUnicaInstancia().contains(usuario.getCodigo())) {
 			PoolDAO.getUnicaInstancia().removeObject(usuario.getCodigo());
 		}
-	}
+	}*/
 
 	/**
      * Recupera una lista de contactos individuales del usuario a partir de sus códigos.
