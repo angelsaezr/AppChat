@@ -294,6 +294,15 @@ public class Usuario {
     public void setDescuento(TipoDescuento tipoDescuento) {
         this.descuento = Optional.of(DescuentoFactoria.crearDescuento(tipoDescuento));
     }
+    
+    /**
+     * Establece un tipo de descuento específico para el usuario.
+     *
+     * @param tipoDescuento tipo de descuento a aplicar
+     */
+    public void setDescuento(Descuento descuento) {
+        this.descuento = Optional.of(descuento);
+    }
 
     /**
      * Establece el código identificador del usuario.

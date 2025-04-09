@@ -10,6 +10,10 @@ import java.time.LocalDate;
  * @author Francisco Javier
  */
 public class DescuentoPorFecha implements Descuento {
+	/**
+     * Código identificador del descuento.
+     */
+    private int codigo;
 
     /**
      * Fecha de inicio del periodo en que se aplica el descuento.
@@ -37,6 +41,7 @@ public class DescuentoPorFecha implements Descuento {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.porcentajeDescuento = porcentajeDescuento;
+        this.codigo = 0;
     }
 
     /**
@@ -53,4 +58,50 @@ public class DescuentoPorFecha implements Descuento {
         }
         return 0.0;
     }
+    
+    /**
+     * Obtiene el código identificador del descuento.
+     *
+     * @return código del descuento
+     */
+    @Override
+    public int getCodigo() {
+    	return codigo;
+    }
+    
+    /**
+     * Establece el código identificador del descuento.
+     *
+     * @param codigo nuevo código del descuento
+     */
+    public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+    
+    /**
+     * Devuelve la fecha y hora de inicio del descuento.
+     *
+     * @return fecha y hora de inicio
+     */
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
+	}
+	
+	/**
+     * Devuelve la fecha y hora de inicio del descuento.
+     *
+     * @return fecha y hora de inicio
+     */
+	public LocalDate getFechaFin() {
+		return fechaFin;
+	}
+	
+	/**
+     * Devuelve el porcentaje de descuento.
+     *
+     * @return porcentaje de descuento
+     */
+	public double getPorcentajeDescuento() {
+		return porcentajeDescuento;
+	}
 }

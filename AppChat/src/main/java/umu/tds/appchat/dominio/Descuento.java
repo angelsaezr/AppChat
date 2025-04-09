@@ -17,4 +17,18 @@ public interface Descuento {
      * @return porcentaje de descuento aplicado
      */
     double getDescuento(int numMensajes);
+    
+    /**
+     * Obtiene el código identificador del descuento.
+     *
+     * @return código del descuento
+     */
+    int getCodigo();
+    
+    /**
+     * Establece el código identificador del descuento.
+     *
+     * @param codigo nuevo código del descuento
+     */
+    public void setCodigo(int codigo);
 }

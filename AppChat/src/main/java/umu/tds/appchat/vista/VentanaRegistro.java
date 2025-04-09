@@ -216,7 +216,7 @@ public class VentanaRegistro extends JDialog {
      */
     private void validarCampos(ActionEvent e) {
     	/*
-    	// TODO QUITAR COMENTARIO CUANDO SE ACABE LA APP DEL TODO
+    	// TODO QUITAR COMENTARIO CUANDO SE ACABE LA APP
     	// Valida formato del email
     	String email = txtEmail.getText().trim();
     	String emailRegex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";

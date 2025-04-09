@@ -8,6 +8,10 @@ package umu.tds.appchat.dominio;
  * @author Francisco Javier
  */
 public class DescuentoPorMensaje implements Descuento {
+	/**
+     * Código identificador del descuento.
+     */
+    private int codigo;
 
     /**
      * Umbral mínimo de mensajes enviados para aplicar el descuento.
@@ -28,6 +32,7 @@ public class DescuentoPorMensaje implements Descuento {
     public DescuentoPorMensaje(int umbralMensajes, double porcentajeDescuento) {
         this.umbralMensajes = umbralMensajes;
         this.porcentajeDescuento = porcentajeDescuento;
+        this.codigo = 0;
     }
 
     /**
@@ -40,4 +45,41 @@ public class DescuentoPorMensaje implements Descuento {
     public double getDescuento(int numMensajes) {
         return numMensajes >= umbralMensajes ? porcentajeDescuento : 0.0;
     }
+    
+    /**
+     * Obtiene el código identificador del descuento.
+     *
+     * @return código del descuento
+     */
+    @Override
+    public int getCodigo() {
+    	return codigo;
+    }
+    
+    /**
+     * Establece el código identificador del descuento.
+     *
+     * @param codigo nuevo código del descuento
+     */
+    public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+    
+    /**
+     * Devuelve el umbral mínimo de mensajes enviados para aplicar el descuento.
+     * 
+     * @return umbral mínimo de mensajes enviados para aplicar el descuento
+     */
+    public int getUmbralMensajes() {
+		return umbralMensajes;
+	}
+    
+    /**
+     * Devuelve el porcentaje de descuento.
+     *
+     * @return porcentaje de descuento
+     */
+	public double getPorcentajeDescuento() {
+		return porcentajeDescuento;
+	}
 }
