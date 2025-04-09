@@ -23,9 +23,45 @@ import umu.tds.appchat.dominio.Grupo;
  */
 @SuppressWarnings("serial")
 public class VentanaEditarMiembrosGrupo extends JDialog {
-    private JList<String> contactList, groupList;
-    private DefaultListModel<String> contactListModel, groupListModel;
-    private JButton btnAceptar, btnCancelar, btnAdd, btnRemove;
+    /**
+     * Lista de contactos disponibles para agregar al grupo.
+     */
+    private JList<String> contactList;
+
+    /**
+     * Lista de miembros actuales del grupo.
+     */
+    private JList<String> groupList;
+
+    /**
+     * Modelo de datos para la lista de contactos disponibles.
+     */
+    private DefaultListModel<String> contactListModel;
+
+    /**
+     * Modelo de datos para la lista de miembros del grupo.
+     */
+    private DefaultListModel<String> groupListModel;
+
+    /**
+     * Botón para confirmar los cambios realizados en los miembros del grupo.
+     */
+    private JButton btnAceptar;
+
+    /**
+     * Botón para cancelar los cambios y cerrar el diálogo.
+     */
+    private JButton btnCancelar;
+
+    /**
+     * Botón para agregar contactos seleccionados al grupo.
+     */
+    private JButton btnAdd;
+
+    /**
+     * Botón para quitar miembros seleccionados del grupo.
+     */
+    private JButton btnRemove;
 
     /**
      * Crea e inicializa el diálogo para editar los miembros de un grupo.

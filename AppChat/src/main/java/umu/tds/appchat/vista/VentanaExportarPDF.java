@@ -28,8 +28,20 @@ import umu.tds.appchat.utils.ExportPDF;
  */
 @SuppressWarnings("serial")
 public class VentanaExportarPDF extends JDialog {
+    /**
+     * Desplegable para seleccionar el contacto cuya conversación se desea exportar.
+     */
     private JComboBox<Contacto> comboContactos;
-    private JButton btnGuardar, btnCancelar;
+
+    /**
+     * Botón para iniciar la exportación de la conversación seleccionada a un archivo PDF.
+     */
+    private JButton btnGuardar;
+
+    /**
+     * Botón para cancelar la operación y cerrar el diálogo.
+     */
+    private JButton btnCancelar;
 
     /**
      * Crea e inicializa el diálogo para exportar los mensajes de un contacto a un archivo PDF.

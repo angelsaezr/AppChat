@@ -13,7 +13,15 @@ import umu.tds.appchat.controlador.AppChat;
  */
 @SuppressWarnings("serial")
 public class VentanaPremiumAplicado extends JDialog {
-    private JButton btnExportarPDF, btnAnularPremium;
+    /**
+     * Botón que permite al usuario exportar conversaciones a un archivo PDF.
+     */
+    private JButton btnExportarPDF;
+
+    /**
+     * Botón que permite al usuario anular su suscripción premium.
+     */
+    private JButton btnAnularPremium;
 
     /**
      * Crea la ventana para gestionar la suscripción premium.

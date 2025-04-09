@@ -26,9 +26,39 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class VentanaEditarPerfil extends JDialog {
-    private JLabel lblImagenPerfil, lblSaludo;
-    private JButton btnSeleccionarImagen, btnGuardar, btnCancelar;
+    /**
+     * Etiqueta que muestra la imagen de perfil actual del usuario.
+     */
+    private JLabel lblImagenPerfil;
+
+    /**
+     * Etiqueta que indica el campo del saludo del usuario.
+     */
+    private JLabel lblSaludo;
+
+    /**
+     * Botón para seleccionar una nueva imagen de perfil.
+     */
+    private JButton btnSeleccionarImagen;
+
+    /**
+     * Botón para guardar los cambios realizados en el perfil.
+     */
+    private JButton btnGuardar;
+
+    /**
+     * Botón para cancelar la edición del perfil y cerrar el diálogo.
+     */
+    private JButton btnCancelar;
+
+    /**
+     * Campo de texto donde el usuario puede editar su saludo.
+     */
     private JTextField txtSaludo;
+
+    /**
+     * Archivo de imagen seleccionado por el usuario como nueva imagen de perfil.
+     */
     private File imagenSeleccionada;
 
     /**

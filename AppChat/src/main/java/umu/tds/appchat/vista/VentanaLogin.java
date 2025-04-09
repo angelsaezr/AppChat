@@ -22,8 +22,19 @@ import umu.tds.appchat.controlador.AppChat;
  */
 @SuppressWarnings("serial")
 public class VentanaLogin extends JFrame {
+    /**
+     * Panel principal que contiene todos los componentes de la ventana de login.
+     */
     private JPanel contentPane;
+
+    /**
+     * Campo de texto para introducir el número de teléfono del usuario.
+     */
     private JTextField txtPhone;
+
+    /**
+     * Campo de texto para introducir la contraseña del usuario.
+     */
     private JPasswordField txtPassword;
 
     /**
@@ -31,7 +42,6 @@ public class VentanaLogin extends JFrame {
      * Proporciona campos de texto para ingresar el número de teléfono y la contraseña,
      * un botón para iniciar sesión, y un enlace para el registro de nuevos usuarios.
      * 
-     * @param parent la ventana principal desde la cual se abre esta ventana de inicio de sesión
      */
     public VentanaLogin() {
         setTitle("AppChat");

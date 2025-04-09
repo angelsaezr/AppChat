@@ -28,12 +28,69 @@ import java.io.File;
  */
 @SuppressWarnings("serial")
 public class VentanaCrearGrupo extends JDialog {
+    /**
+     * Campo de texto donde se introduce el nombre del nuevo grupo.
+     */
     private JTextField groupNameField;
-    private JList<String> contactList, groupList;
+
+    /**
+     * Lista que muestra los contactos disponibles para agregar al grupo.
+     */
+    private JList<String> contactList;
+
+    /**
+     * Lista que muestra los contactos ya seleccionados para el grupo.
+     */
+    private JList<String> groupList;
+
+    /**
+     * Lista de contactos del usuario actual, utilizada como fuente para la creación del grupo.
+     */
     private List<Contacto> listaContactos;
-    private DefaultListModel<String> contactListModel, groupListModel;
-    private JButton btnAceptar, btnCancelar, btnAdd, btnRemove, btnSeleccionarImagen;
+
+    /**
+     * Modelo de la lista de contactos disponibles.
+     */
+    private DefaultListModel<String> contactListModel;
+
+    /**
+     * Modelo de la lista de contactos seleccionados para el grupo.
+     */
+    private DefaultListModel<String> groupListModel;
+
+    /**
+     * Botón para confirmar la creación del grupo.
+     */
+    private JButton btnAceptar;
+
+    /**
+     * Botón para cancelar la operación y cerrar el diálogo.
+     */
+    private JButton btnCancelar;
+
+    /**
+     * Botón para mover contactos desde la lista de disponibles a la de seleccionados.
+     */
+    private JButton btnAdd;
+
+    /**
+     * Botón para remover contactos de la lista de seleccionados y devolverlos a la lista de disponibles.
+     */
+    private JButton btnRemove;
+
+    /**
+     * Botón para seleccionar una imagen desde el sistema de archivos para el grupo.
+     */
+    private JButton btnSeleccionarImagen;
+
+    /**
+     * Etiqueta que muestra una vista previa de la imagen seleccionada para el grupo.
+     */
     private JLabel lblImagenSeleccionada;
+
+    /**
+     * Archivo de imagen seleccionado como avatar del grupo.
+     */
     private File imagenSeleccionada;
 
     /**

@@ -26,13 +26,84 @@ import umu.tds.appchat.controlador.AppChat;
  */
 @SuppressWarnings("serial")
 public class VentanaRegistro extends JDialog {
-    private JPanel contentPane, panelSeleccionarImagen, panelBotones, panelImagen;
-    private JTextField txtUsuario, txtEmail, txtMovil;
+    /**
+     * Panel principal que contiene todos los componentes de la ventana.
+     */
+    private JPanel contentPane;
+
+    /**
+     * Panel que contiene el botón para seleccionar una imagen.
+     */
+    private JPanel panelSeleccionarImagen;
+
+    /**
+     * Panel que contiene los botones de acción (registrar, cancelar).
+     */
+    private JPanel panelBotones;
+
+    /**
+     * Panel que muestra la imagen seleccionada.
+     */
+    private JPanel panelImagen;
+
+    /**
+     * Campo de texto para ingresar el nombre de usuario.
+     */
+    private JTextField txtUsuario;
+
+    /**
+     * Campo de texto para ingresar el correo electrónico del usuario.
+     */
+    private JTextField txtEmail;
+
+    /**
+     * Campo de texto para ingresar el número de teléfono del usuario.
+     */
+    private JTextField txtMovil;
+
+    /**
+     * Área de texto para ingresar un saludo personalizado.
+     */
     private JTextArea txtSaludo;
-    private JPasswordField txtPassword, txtRepitePassword;
+
+    /**
+     * Campo de contraseña para ingresar la contraseña del usuario.
+     */
+    private JPasswordField txtPassword;
+
+    /**
+     * Campo de contraseña para repetir la contraseña y validarla.
+     */
+    private JPasswordField txtRepitePassword;
+
+    /**
+     * Selector de fecha para la fecha de nacimiento del usuario.
+     */
     private JDateChooser dateChooser;
-    private JButton btnRegistrar, btnCancelar, btnSeleccionarImagen;
+
+    /**
+     * Botón para completar el registro del usuario.
+     */
+    private JButton btnRegistrar;
+
+    /**
+     * Botón para cancelar el registro y cerrar la ventana.
+     */
+    private JButton btnCancelar;
+
+    /**
+     * Botón para abrir el diálogo de selección de imagen de perfil.
+     */
+    private JButton btnSeleccionarImagen;
+
+    /**
+     * Etiqueta que muestra la imagen seleccionada por el usuario.
+     */
     private JLabel lblImagenSeleccionada;
+
+    /**
+     * Archivo de imagen seleccionado como imagen de perfil.
+     */
     private File imagenSeleccionada;
 
     /**

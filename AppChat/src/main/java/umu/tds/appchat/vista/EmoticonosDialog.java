@@ -21,6 +21,9 @@ import umu.tds.appchat.dominio.Contacto;
  */
 @SuppressWarnings("serial")
 public class EmoticonosDialog extends JDialog {
+    /**
+     * Panel que contiene los botones con los emoticonos disponibles para enviar.
+     */
     private JPanel panelEmojis;
 
     /**

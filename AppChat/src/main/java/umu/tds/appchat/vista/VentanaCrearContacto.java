@@ -20,9 +20,25 @@ import java.awt.event.KeyEvent;
  */
 @SuppressWarnings("serial")
 public class VentanaCrearContacto extends JDialog {
+    /**
+     * Campo de texto para ingresar el nombre del nuevo contacto.
+     */
     private JTextField nameField;
+
+    /**
+     * Campo de texto para ingresar el número de teléfono del nuevo contacto.
+     */
     private JTextField phoneField;
-    private JButton btnAceptar, btnCancelar;
+
+    /**
+     * Botón para confirmar la creación del contacto.
+     */
+    private JButton btnAceptar;
+
+    /**
+     * Botón para cancelar la operación y cerrar el diálogo.
+     */
+    private JButton btnCancelar;
 
     /**
      * Crea e inicializa el diálogo para la creación de un nuevo contacto.

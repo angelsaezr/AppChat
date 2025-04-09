@@ -20,11 +20,30 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class VentanaContactos extends JDialog {
-	private JTable tableContactos;
-	private JTable tableGrupos;
-	private ContactTableModel tableModelContactos;
-	private GroupTableModel tableModelGrupos;
-	private JButton btnAceptar;
+    /**
+     * Tabla que muestra los contactos individuales del usuario.
+     */
+    private JTable tableContactos;
+
+    /**
+     * Tabla que muestra los grupos del usuario.
+     */
+    private JTable tableGrupos;
+
+    /**
+     * Modelo de datos para la tabla de contactos individuales.
+     */
+    private ContactTableModel tableModelContactos;
+
+    /**
+     * Modelo de datos para la tabla de grupos.
+     */
+    private GroupTableModel tableModelGrupos;
+
+    /**
+     * Botón para cerrar el diálogo y volver a la ventana principal.
+     */
+    private JButton btnAceptar;
 
 	 /**
      * Crea e inicializa el diálogo para mostrar los contactos y grupos del usuario.

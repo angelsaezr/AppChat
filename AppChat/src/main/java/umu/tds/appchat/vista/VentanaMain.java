@@ -38,16 +38,154 @@ import umu.tds.appchat.utils.Utils;
  */
 @SuppressWarnings("serial")
 public class VentanaMain extends JFrame {
+    /**
+     * Panel que muestra la lista de contactos del usuario.
+     */
     private JPanel panelContactos;
+
+    /**
+     * Panel principal donde se muestra el chat con el contacto seleccionado.
+     */
     private JPanel panelChat;
+
+    /**
+     * Área de texto donde el usuario escribe los mensajes.
+     */
     private JTextArea areaTexto;
+
+    /**
+     * Lista visual de los contactos del usuario.
+     */
     private JList<Contacto> listaContactos;
+
+    /**
+     * Contacto actualmente seleccionado para chatear.
+     */
     private Contacto contactoSeleccionado;
-    private JButton botonBuscar, botonContactos, botonCrearContacto, botonCrearGrupo, botonPremium, botonCerrarSesion, botonEnviar, botonEmoticonos, botonEditarContacto;
-    private JLabel imagenPerfil, imagenContactoSeleccionado, nombreContactoSeleccionado, starLabel;
-    private JPanel barraSuperior, panelIzquierda, panelDerecha, panelAreaTexto, panelEnviar, panelEscribir, panelEmoticonos, panelContactoSeleccionado, panelEditarContacto;
+
+    /**
+     * Botón para buscar mensajes en las conversaciones.
+     */
+    private JButton botonBuscar;
+
+    /**
+     * Botón para abrir la ventana de contactos.
+     */
+    private JButton botonContactos;
+
+    /**
+     * Botón para crear un nuevo contacto.
+     */
+    private JButton botonCrearContacto;
+
+    /**
+     * Botón para crear un nuevo grupo.
+     */
+    private JButton botonCrearGrupo;
+
+    /**
+     * Botón para activar o acceder a funciones premium.
+     */
+    private JButton botonPremium;
+
+    /**
+     * Botón para cerrar sesión en la aplicación.
+     */
+    private JButton botonCerrarSesion;
+
+    /**
+     * Botón para enviar el mensaje escrito en el área de texto.
+     */
+    private JButton botonEnviar;
+
+    /**
+     * Botón para abrir el selector de emoticonos.
+     */
+    private JButton botonEmoticonos;
+
+    /**
+     * Botón para editar la información del contacto seleccionado.
+     */
+    private JButton botonEditarContacto;
+
+    /**
+     * Imagen de perfil del usuario actual.
+     */
+    private JLabel imagenPerfil;
+
+    /**
+     * Imagen del contacto actualmente seleccionado.
+     */
+    private JLabel imagenContactoSeleccionado;
+
+    /**
+     * Nombre del contacto actualmente seleccionado.
+     */
+    private JLabel nombreContactoSeleccionado;
+
+    /**
+     * Icono de estrella que indica que el usuario es premium.
+     */
+    private JLabel starLabel;
+
+    /**
+     * Panel superior que contiene botones de navegación y opciones.
+     */
+    private JPanel barraSuperior;
+
+    /**
+     * Panel izquierdo de la barra superior, con botones de navegación.
+     */
+    private JPanel panelIzquierda;
+
+    /**
+     * Panel derecho de la barra superior, con la imagen de perfil y estado premium.
+     */
+    private JPanel panelDerecha;
+
+    /**
+     * Panel contenedor del área de escritura de mensajes.
+     */
+    private JPanel panelAreaTexto;
+
+    /**
+     * Panel contenedor del botón de enviar.
+     */
+    private JPanel panelEnviar;
+
+    /**
+     * Panel que contiene el área de texto, el botón de enviar y emoticonos.
+     */
+    private JPanel panelEscribir;
+
+    /**
+     * Panel que contiene el botón de emoticonos.
+     */
+    private JPanel panelEmoticonos;
+
+    /**
+     * Panel que muestra la imagen y nombre del contacto seleccionado.
+     */
+    private JPanel panelContactoSeleccionado;
+
+    /**
+     * Panel que contiene botones para editar el contacto seleccionado.
+     */
+    private JPanel panelEditarContacto;
+
+    /**
+     * Modelo de lista para manejar los contactos del usuario.
+     */
     private DefaultListModel<Contacto> modeloLista;
+
+    /**
+     * Imagen seleccionada por el usuario (para cambiar foto de grupo, etc.).
+     */
     private File imagenSeleccionada;
+
+    /**
+     * Diálogo emergente de selección de emoticonos.
+     */
     private EmoticonosDialog popup;
     
     /**

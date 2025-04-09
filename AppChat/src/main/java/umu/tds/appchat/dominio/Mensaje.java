@@ -50,6 +50,7 @@ public class Mensaje {
      * @param texto contenido del mensaje
      * @param emoticono código del emoticono
      * @param tipo tipo del mensaje (enviado o recibido)
+     * @param fechaHoraEnvio fecha y hora en la que fue enviado el mensaje
      */
     public Mensaje(String texto, int emoticono, TipoMensaje tipo, LocalDateTime fechaHoraEnvio) {
         this.texto = texto;

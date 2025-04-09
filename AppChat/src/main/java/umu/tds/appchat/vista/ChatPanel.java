@@ -16,8 +16,14 @@ import tds.BubbleText;
  */
 @SuppressWarnings("serial")
 public class ChatPanel extends JPanel {
-
+    /**
+     * Contenedor vertical que almacena las burbujas de mensajes dentro del chat.
+     */
     private JPanel chatContainer;
+
+    /**
+     * Scroll automático que envuelve el contenedor de chat y permite navegar por los mensajes.
+     */
     private JScrollPane scrollPane;
 
     /**

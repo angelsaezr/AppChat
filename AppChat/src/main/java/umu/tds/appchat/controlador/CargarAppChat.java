@@ -11,14 +11,19 @@ import umu.tds.appchat.vista.VentanaLogin;
  */
 public class CargarAppChat {
 	
+	/**
+	 * Método principal de la aplicación.
+	 * 
+	 * Inicia la aplicación en el hilo de despacho de eventos de AWT,
+	 * encargándose de mostrar de forma segura la ventana de login {@link VentanaLogin}
+	 * en el hilo principal de la interfaz gráfica.
+	 * 
+	 * @param args argumentos de línea de comandos (no se utilizan)
+	 */
 	public static void main(String[] args) {
 		
 	    System.out.println("Fin de la carga de datos");
 	    
-	    /**
-	     * Inicia la aplicación en el hilo de despacho de eventos de AWT.
-	     * Se encarga de crear y mostrar la ventana de login de forma segura en el hilo principal de la interfaz gráfica.
-	     */
 	    EventQueue.invokeLater(new Runnable() {
 	        public void run() {
 	            try {

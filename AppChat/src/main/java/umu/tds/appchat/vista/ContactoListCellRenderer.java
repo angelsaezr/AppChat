@@ -32,11 +32,30 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("serial")
 public class ContactoListCellRenderer extends JPanel implements ListCellRenderer<Contacto> {
+    /**
+     * Panel que contiene las etiquetas de texto (nombre, teléfono y saludo).
+     */
     private JPanel panelTexto;
-	private JLabel lblImagen;
-	private JLabel lblNombre;
-	private JLabel lblTelefono;
-	private JLabel lblSaludo;
+
+    /**
+     * Etiqueta que muestra la imagen del contacto.
+     */
+    private JLabel lblImagen;
+
+    /**
+     * Etiqueta que muestra el nombre del contacto.
+     */
+    private JLabel lblNombre;
+
+    /**
+     * Etiqueta que muestra el número de teléfono o los miembros del grupo.
+     */
+    private JLabel lblTelefono;
+
+    /**
+     * Etiqueta que muestra el saludo del contacto, si es un contacto individual.
+     */
+    private JLabel lblSaludo;
 
 	/**
      * Crea un nuevo renderizador de celdas para una lista de contactos.

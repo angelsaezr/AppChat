@@ -296,9 +296,9 @@ public class Usuario {
     }
     
     /**
-     * Establece un tipo de descuento específico para el usuario.
+     * Establece descuento específico para el usuario.
      *
-     * @param tipoDescuento tipo de descuento a aplicar
+     * @param descuento descuento a aplicar
      */
     public void setDescuento(Descuento descuento) {
         this.descuento = Optional.of(descuento);

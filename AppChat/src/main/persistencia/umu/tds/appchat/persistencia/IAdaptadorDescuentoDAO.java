@@ -5,7 +5,7 @@ import java.util.List;
 import umu.tds.appchat.dominio.Descuento;
 
 /**
- * Interfaz DAO para la gestión de objetos {@link Mensaje} en la capa de persistencia.
+ * Interfaz DAO para la gestión de objetos {@link Descuento} en la capa de persistencia.
  * Define las operaciones necesarias para registrar, recuperar y eliminar descuentos.
  * 
  * Esta interfaz debe ser implementada por adaptadores que interactúen con el sistema de almacenamiento.

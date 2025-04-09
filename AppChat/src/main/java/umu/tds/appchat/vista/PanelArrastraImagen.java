@@ -30,13 +30,32 @@ import java.awt.Color;
  * @author Ángel
  * @author Francisco Javier
  */
+@SuppressWarnings("serial")
 public class PanelArrastraImagen extends JDialog {
-
-    private static final long serialVersionUID = 1L;
+	
+    /**
+     * Panel principal del contenido del diálogo.
+     */
     private JPanel contentPane = new JPanel();
+
+    /**
+     * Lista de archivos que el usuario ha subido o seleccionado.
+     */
     private List<File> archivosSubidos = new ArrayList<>();
+
+    /**
+     * Etiqueta que muestra la ruta del archivo subido o seleccionado.
+     */
     private JLabel lblArchivoSubido;
+
+    /**
+     * Botón para aceptar la imagen seleccionada.
+     */
     private JButton btnAceptar;
+
+    /**
+     * Botón para cancelar la acción y cerrar el diálogo.
+     */
     private JButton btnCancelar;
 
     /**
@@ -44,7 +63,6 @@ public class PanelArrastraImagen extends JDialog {
      *
      * @param owner la ventana principal sobre la cual se mostrará el diálogo
      */
-    @SuppressWarnings({ "serial" })
     public PanelArrastraImagen(JFrame owner) {
         super(owner, "Agregar fotos", true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);

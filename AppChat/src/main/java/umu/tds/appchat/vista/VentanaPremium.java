@@ -17,7 +17,15 @@ import umu.tds.appchat.dominio.TipoDescuento;
  */
 @SuppressWarnings("serial")
 public class VentanaPremium extends JDialog {
-    private JButton btnAceptar, btnCancelar;
+    /**
+     * Botón para confirmar la selección del tipo de descuento y activar el modo premium.
+     */
+    private JButton btnAceptar;
+
+    /**
+     * Botón para cancelar la operación y cerrar la ventana sin aplicar ningún cambio.
+     */
+    private JButton btnCancelar;
 
     /**
      * Crea la ventana de selección de descuento para el usuario.

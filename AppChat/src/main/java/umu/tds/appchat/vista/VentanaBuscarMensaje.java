@@ -26,9 +26,34 @@ import java.awt.event.MouseEvent;
  */
 @SuppressWarnings("serial")
 public class VentanaBuscarMensaje extends JDialog {
-    private JTextField textFieldTexto, textFieldTelefono, textFieldContacto;
+    /**
+     * Campo de texto para ingresar el contenido del mensaje a buscar.
+     */
+    private JTextField textFieldTexto;
+
+    /**
+     * Campo de texto para ingresar el número de teléfono asociado al mensaje a buscar.
+     */
+    private JTextField textFieldTelefono;
+
+    /**
+     * Campo de texto para ingresar el nombre del contacto relacionado con el mensaje a buscar.
+     */
+    private JTextField textFieldContacto;
+
+    /**
+     * Botón para ejecutar la acción de búsqueda con los criterios introducidos.
+     */
     private JButton btnBuscar;
+
+    /**
+     * Panel donde se muestran los resultados de la búsqueda.
+     */
     private JPanel panelResultados;
+
+    /**
+     * Referencia a la ventana principal desde la que se lanza este diálogo.
+     */
     private VentanaMain ventanaMain;
     
     /**
