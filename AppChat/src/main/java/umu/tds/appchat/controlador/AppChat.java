@@ -81,7 +81,7 @@ public class AppChat {
 
     /**
      * Constructor privado de la clase AppChat.
-     * Inicializa adaptadores, repositorios y la factoría de descuento.
+     * Inicializa adaptadores y repositorios.
      */
     private AppChat() {
         inicializarAdaptadores();

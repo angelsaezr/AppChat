@@ -33,22 +33,15 @@ public class RepositorioUsuarios {
     private Map<String, Usuario> usuarios; // Mapa con clave = móvil, valor = usuario
 
     /**
-     * Mapa de usuarios indexado por código de usuario.
-     */
-    private Map<Integer, Usuario> usuariosCod; // Códigos usuarios
-
-    /**
      * Constructor privado que inicializa el repositorio y carga los usuarios desde la base de datos.
      */
     private RepositorioUsuarios() {
         this.usuarios = new HashMap<>();
-        this.usuariosCod = new HashMap<>();
 
         try {
             FactoriaDAO.getUnicaInstancia().getUsuarioDAO().recuperarTodosLosUsuarios().stream()
                 .forEach(u -> {
                     usuarios.put(u.getMovil(), u);
-                    usuariosCod.put(u.getCodigo(), u);
                 });
         } catch (DAOException e) {
             e.printStackTrace();
@@ -86,7 +79,6 @@ public class RepositorioUsuarios {
             return false; // No se permite añadir usuarios duplicados por número de móvil
         }
         usuarios.put(usuario.getMovil(), usuario);
-        usuariosCod.put(usuario.getCodigo(), usuario);
         return true;
     }
 
@@ -101,7 +93,6 @@ public class RepositorioUsuarios {
             return false;
         }
         usuarios.remove(usuario.getMovil());
-        usuariosCod.remove(usuario.getCodigo());
         return true;
     }
 
