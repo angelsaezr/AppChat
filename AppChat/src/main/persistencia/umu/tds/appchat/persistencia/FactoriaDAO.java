@@ -81,4 +81,11 @@ public abstract class FactoriaDAO {
      * @return instancia de {@link IAdaptadorGrupoDAO}
      */
     public abstract IAdaptadorGrupoDAO getGrupoDAO();
+    
+    /**
+     * Devuelve el adaptador DAO para descuentos.
+     *
+     * @return instancia de {@link IAdaptadorGrupoDAO}
+     */
+    public abstract IAdaptadorDescuentoDAO getDescuentoDAO();
 }

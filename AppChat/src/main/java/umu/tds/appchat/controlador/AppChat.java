@@ -1,6 +1,7 @@
 package umu.tds.appchat.controlador;
 
 import java.io.File;
+
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +17,10 @@ import umu.tds.appchat.persistencia.IAdaptadorContactoIndividualDAO;
 import umu.tds.appchat.persistencia.IAdaptadorGrupoDAO;
 import umu.tds.appchat.persistencia.IAdaptadorMensajeDAO;
 import umu.tds.appchat.persistencia.IAdaptadorUsuarioDAO;
+import umu.tds.appchat.persistencia.IAdaptadorDescuentoDAO;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.DescuentoFactoria;
 import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
@@ -60,6 +63,11 @@ public class AppChat {
 	 * Adaptador para operaciones de persistencia sobre mensajes.
 	 */
 	private IAdaptadorMensajeDAO adaptadorMensaje;
+	
+	/**
+	 * Adaptador para operaciones de persistencia sobre descuentos.
+	 */
+	private IAdaptadorDescuentoDAO adaptadorDescuento;
 
 	/**
 	 * Repositorio de usuarios en memoria.
@@ -73,7 +81,7 @@ public class AppChat {
 
     /**
      * Constructor privado de la clase AppChat.
-     * Inicializa adaptadores y repositorios.
+     * Inicializa adaptadores, repositorios y la factoría de descuento.
      */
     private AppChat() {
         inicializarAdaptadores();
@@ -104,6 +112,7 @@ public class AppChat {
             adaptadorContactoIndividual = factoria.getContactoIndividualDAO();
             adaptadorGrupo = factoria.getGrupoDAO();
             adaptadorMensaje = factoria.getMensajeDAO();
+            adaptadorDescuento = factoria.getDescuentoDAO();
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -205,6 +214,8 @@ public class AppChat {
 
         usuarioActual.setPremium(true);
         usuarioActual.setDescuento(tipo);
+        
+        adaptadorDescuento.registrarDescuento(DescuentoFactoria.crearDescuento(tipo));
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return true;
     }
@@ -218,6 +229,11 @@ public class AppChat {
         if (usuarioActual == null) return false;
 
         this.usuarioActual.setPremium(false);
+        
+        usuarioActual.getDescuento().ifPresent(descuento -> {
+            adaptadorDescuento.borrarDescuento(descuento);
+        });
+        
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return true;
     }
@@ -392,7 +408,6 @@ public class AppChat {
         	Usuario usuarioReceptor = c.getUsuario();
         	if(!usuarioReceptor.equals(usuarioActual)) {
         		ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
-        		System.out.println("Receptor: " + usuarioReceptor.getNombre() + ". contactoSender: " + contactoSender);
         		if (contactoSender == null) {
                     contactoSender = new ContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
                     usuarioReceptor.addContacto(contactoSender);
@@ -402,7 +417,6 @@ public class AppChat {
         		Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO, LocalDateTime.now());
                 usuarioReceptor.addMensaje(contactoSender, mensaje2);
                 adaptadorMensaje.registrarMensaje(mensaje2);
-                System.out.println("Mensaje registrado en appchat");
                 adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
         	}
         }

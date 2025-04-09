@@ -108,7 +108,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eMensaje = Optional.ofNullable(servPersistencia.registrarEntidad(eMensaje.get()));		
 		mensaje.setCodigo(eMensaje.get().getId());
-		System.out.println("Mensaje registrado " + mensaje.getTexto() + " (" + mensaje.getTipo() + ")" + mensaje.getCodigo());
+		
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(mensaje.getCodigo(), mensaje);
 	}
@@ -145,10 +145,7 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(codigo, mensaje);
-
-		// Se recuperan los objetos referenciados y se actualiza el objeto
 		
-		System.out.println("Mensaje recuperado " + mensaje.getTexto() + " (" + mensaje.getTipo() + ")" + mensaje.getCodigo());
 		// Se retorna el objeto
 		return mensaje;
 		

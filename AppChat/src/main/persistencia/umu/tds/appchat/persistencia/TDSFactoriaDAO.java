@@ -55,4 +55,14 @@ public class TDSFactoriaDAO extends FactoriaDAO {
     public IAdaptadorMensajeDAO getMensajeDAO() {
         return AdaptadorMensaje.getUnicaInstancia();
     }
+    
+    /**
+     * Devuelve la instancia única del adaptador DAO de descuentos.
+     *
+     * @return adaptador de mensajes
+     */
+    @Override
+    public IAdaptadorDescuentoDAO getDescuentoDAO() {
+        return AdaptadorDescuento.getUnicaInstancia();
+    }
 }

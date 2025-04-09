@@ -96,7 +96,7 @@ public class Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.isPremium = false;
         this.contactos = new LinkedList<>();
-        this.descuento = null; // Por defecto, el usuario no tiene descuento
+        this.descuento = Optional.empty(); // Por defecto, el usuario no tiene descuento
         this.codigo = 0;
     }
 
@@ -283,7 +283,7 @@ public class Usuario {
      * @return un {@code Optional} con el descuento, o vacío si no tiene
      */
     public Optional<Descuento> getDescuento() {
-        return descuento;
+        return descuento == null ? Optional.empty() : descuento;
     }
 
     /**
