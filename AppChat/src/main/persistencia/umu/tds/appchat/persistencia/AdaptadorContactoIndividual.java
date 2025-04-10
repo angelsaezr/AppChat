@@ -83,7 +83,10 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
 		
 		List<Mensaje> mensajesRegistrados = contacto.getMensajes().stream()
-			    .peek(m -> AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m))
+			    .map(m -> {
+			        AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m);
+			        return m;
+			    })
 			    .collect(Collectors.toList());
 		
 		// Se crea la entidad
