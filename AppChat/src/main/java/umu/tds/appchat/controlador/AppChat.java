@@ -320,7 +320,7 @@ public class AppChat {
         else
             rutaImagen = "src/main/resources/grupo2.jpg";
 
-        List<ContactoIndividual> contactos;
+        List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
         try {
             contactos = getContactosUsuarioActual().stream()
                 .filter(c -> c instanceof ContactoIndividual)
