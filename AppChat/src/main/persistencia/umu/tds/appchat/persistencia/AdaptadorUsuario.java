@@ -176,6 +176,9 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		Usuario usuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
 		usuario.setPremium(isPremium);
 		usuario.setCodigo(codigo);
+		
+		// Se añade al pool
+		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		List<Contacto> contactos = getContactosIndividuales(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
@@ -192,9 +195,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		        System.err.println("Formato incorrecto en el ID del descuento: " + descuentoStr);
 		    }
 		}
-		
-		// Se añade al pool
-		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 		
 		// Se retorna el objeto
 		return usuario;
