@@ -85,15 +85,15 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
      * @param descuento el descuento a registrar
      */
 	public void registrarDescuento(Descuento descuento) {
-		
+		// Si ya tiene código, no registrar de nuevo
+	    if (descuento.getCodigo() != 0) {
+	        return;
+	    }
 		// Se comprueba que no está registrada la entidad que corresponde al código del objeto
 		Optional<Entidad> eDescuento = Optional.ofNullable(servPersistencia.recuperarEntidad(descuento.getCodigo()));
 		if (eDescuento.isPresent()) {
 			return;
 		}
-
-		// Se registran sus objetos referenciados
-		
 
 		// Se crea la entidad
 		eDescuento = Optional.of(new Entidad());
@@ -122,6 +122,8 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
 		descuento.setCodigo(eDescuento.get().getId());
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(descuento.getCodigo(), descuento);
+		
+		System.out.println("AdaptadorDescuentoID:"+descuento.getCodigo());
 	}
 
 	/**
@@ -133,6 +135,7 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
      * @return el descuento recuperado o reconstruido
      */
 	public Descuento recuperarDescuento(int codigo) {
+		System.out.println("-ID:"+codigo);
 		Descuento descuento;
 		
 		// Si el objeto está en el pool se retorna

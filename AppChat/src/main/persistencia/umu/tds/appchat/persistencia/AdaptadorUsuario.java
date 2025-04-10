@@ -176,9 +176,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		Usuario usuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
 		usuario.setPremium(isPremium);
 		usuario.setCodigo(codigo);
-		
-		// Se añade al pool
-		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 
 		// Se recuperan los objetos referenciados y se actualiza el objeto
 		List<Contacto> contactos = getContactosIndividuales(servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTACTOS_INDIV));
@@ -186,8 +183,19 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		contactos.addAll(grupos); // Se añade los grupos a la lista de contactos individuales para agruparlos todos
 		usuario.setContactos(contactos);
 		String descuentoStr = servPersistencia.recuperarPropiedadEntidad(eUsuario, DESCUENTO);
-		if (descuentoStr != "null")
-			usuario.setDescuento(AdaptadorDescuento.getUnicaInstancia().recuperarDescuento(Integer.parseInt(descuentoStr)));
+		if (descuentoStr != null && !descuentoStr.equals("null")) {
+		    try {
+		        int descuentoId = Integer.parseInt(descuentoStr);
+		        Descuento descuento = AdaptadorDescuento.getUnicaInstancia().recuperarDescuento(descuentoId);
+		        System.out.println("descuento recuperado: " + descuento);
+		        usuario.setDescuento(descuento);
+		    } catch (NumberFormatException e) {
+		        System.err.println("Formato incorrecto en el ID del descuento: " + descuentoStr);
+		    }
+		}
+		
+		// Se añade al pool
+		PoolDAO.getUnicaInstancia().addObject(codigo, usuario);
 		
 		// Se retorna el objeto
 		return usuario;
@@ -216,34 +224,45 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 				
 		List<Contacto> contactosIndiv = usuario.getContactos().stream().filter(c -> c instanceof ContactoIndividual).collect(Collectors.toList());
 		List<Contacto> grupos = usuario.getContactos().stream().filter(c -> c instanceof Grupo).collect(Collectors.toList());
-				
 		//Se recorren sus propiedades y se actualiza su valor
 		for (Propiedad prop : eUsuario.getPropiedades()) {
-			if (prop.getNombre().equals(NOMBRE)) {
-				prop.setValor(usuario.getNombre());
-			} else if (prop.getNombre().equals(MOVIL)) {
-				prop.setValor(usuario.getMovil());
-			} else if (prop.getNombre().equals(CONTRASEÑA)) {
-				prop.setValor(usuario.getContraseña());
-			} else if (prop.getNombre().equals(EMAIL)) {
-				prop.setValor(usuario.getEmail());
-			} else if (prop.getNombre().equals(IMAGEN)) {
-				prop.setValor(usuario.getImagen());
-			} else if (prop.getNombre().equals(IS_PREMIUM)) {
-				prop.setValor(String.valueOf(usuario.isPremium()));
-			} else if (prop.getNombre().equals(SALUDO)) {
-				prop.setValor(usuario.getSaludo());
-			} else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
-				prop.setValor(usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-			} else if (prop.getNombre().equals(DESCUENTO)) {
-				usuario.getDescuento().ifPresent(descuento -> prop.setValor(String.valueOf(descuento.getCodigo())));
-			} else if (prop.getNombre().equals(CONTACTOS_INDIV)) {
-				prop.setValor(getCodigos(contactosIndiv));
-			} else if (prop.getNombre().equals(GRUPOS)) {
-				prop.setValor(getCodigos(grupos));
-			}
-			servPersistencia.modificarEntidad(eUsuario);
+		    if (prop.getNombre().equals(NOMBRE)) {
+		        prop.setValor(usuario.getNombre());
+		    } else if (prop.getNombre().equals(MOVIL)) {
+		        prop.setValor(usuario.getMovil());
+		    } else if (prop.getNombre().equals(CONTRASEÑA)) {
+		        prop.setValor(usuario.getContraseña());
+		    } else if (prop.getNombre().equals(EMAIL)) {
+		        prop.setValor(usuario.getEmail());
+		    } else if (prop.getNombre().equals(IMAGEN)) {
+		        prop.setValor(usuario.getImagen());
+		    } else if (prop.getNombre().equals(IS_PREMIUM)) {
+		        prop.setValor(String.valueOf(usuario.isPremium()));
+		    } else if (prop.getNombre().equals(SALUDO)) {
+		        prop.setValor(usuario.getSaludo());
+		    } else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {
+		        prop.setValor(usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+		    } else if (prop.getNombre().equals(DESCUENTO)) {
+		        String valor = usuario.getDescuento()
+		                .map(descuento -> {
+		                    if (descuento.getCodigo() == 0) { // Solo registrar si no tiene código
+		                        AdaptadorDescuento adaptador = AdaptadorDescuento.getUnicaInstancia();
+		                        adaptador.registrarDescuento(descuento);
+		                    }
+		                    return String.valueOf(descuento.getCodigo());
+		                })
+		                .orElse("null");
+		            prop.setValor(valor);
+		        } else if (prop.getNombre().equals(CONTACTOS_INDIV)) {
+		        prop.setValor(getCodigos(contactosIndiv));
+		    } else if (prop.getNombre().equals(GRUPOS)) {
+		        prop.setValor(getCodigos(grupos));
+		    }
+		    servPersistencia.modificarEntidad(eUsuario);
 		}
+		Entidad eUsuarioAux = servPersistencia.recuperarEntidad(usuario.getCodigo());
+		String descuentoStr = servPersistencia.recuperarPropiedadEntidad(eUsuarioAux, DESCUENTO);
+		System.out.println("descuentoStr recuperado:" + descuentoStr + ".");
 	}
 
 	/**
