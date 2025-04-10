@@ -5,6 +5,7 @@ import tds.driver.FactoriaServicioPersistencia;
 import tds.driver.ServicioPersistencia;
 import umu.tds.appchat.dominio.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,10 +121,9 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
 		// Se registra la entidad y se asocia id al objeto almacenado
 		eDescuento = Optional.ofNullable(servPersistencia.registrarEntidad(eDescuento.get()));		
 		descuento.setCodigo(eDescuento.get().getId());
+		
 		// Se añade al pool
 		PoolDAO.getUnicaInstancia().addObject(descuento.getCodigo(), descuento);
-		
-		System.out.println("AdaptadorDescuentoID:"+descuento.getCodigo());
 	}
 
 	/**
@@ -135,7 +135,6 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
      * @return el descuento recuperado o reconstruido
      */
 	public Descuento recuperarDescuento(int codigo) {
-		System.out.println("-ID:"+codigo);
 		Descuento descuento;
 		
 		// Si el objeto está en el pool se retorna
@@ -146,22 +145,18 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
 		// Si no lo está se recupera entidad y las propiedades de campos de tipo primitivo
 		Entidad eDescuento = servPersistencia.recuperarEntidad(codigo);
 		String tipo = servPersistencia.recuperarPropiedadEntidad(eDescuento, TIPO);
-		if (tipo == "descuentoPorFecha") {
+		if (tipo.equals("descuentoPorFecha")) {
 			String fechaInicioStr = servPersistencia.recuperarPropiedadEntidad(eDescuento, FECHA_INICIO);
-			LocalDateTime fechaInicio = (fechaInicioStr != null && !fechaInicioStr.isEmpty())
-			    ? LocalDateTime.parse(fechaInicioStr)
-			    : LocalDateTime.now();
+			LocalDate fechaInicio = LocalDate.parse(fechaInicioStr);
 			String fechaFinStr = servPersistencia.recuperarPropiedadEntidad(eDescuento, FECHA_INICIO);
-			LocalDateTime fechaFin = (fechaFinStr != null && !fechaFinStr.isEmpty())
-			    ? LocalDateTime.parse(fechaFinStr)
-			    : LocalDateTime.now();
+			LocalDate fechaFin = LocalDate.parse(fechaFinStr);
 			String porcentajeDescuentoStr = servPersistencia.recuperarPropiedadEntidad(eDescuento, PORCENTAJE_DESCUENTO);
 			double porcentajeDescuento = (porcentajeDescuentoStr != null && !porcentajeDescuentoStr.isEmpty()) ? Double.parseDouble(porcentajeDescuentoStr) : 0;
 			
 			// Se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
-			descuento = new DescuentoPorFecha(fechaInicio.toLocalDate(), fechaFin.toLocalDate(), porcentajeDescuento);
+			descuento = new DescuentoPorFecha(fechaInicio, fechaFin, porcentajeDescuento);
 			descuento.setCodigo(codigo);
-		} else if (tipo == "descuentoPorMensaje") {
+		} else if (tipo.equals("descuentoPorMensaje")) {
 			String umbralMensajesStr = servPersistencia.recuperarPropiedadEntidad(eDescuento, UMBRAL_MENSAJES);
 			int umbralMensajes = (umbralMensajesStr != null && !umbralMensajesStr.isEmpty()) ? Integer.parseInt(umbralMensajesStr) : 0;
 			String porcentajeDescuentoStr = servPersistencia.recuperarPropiedadEntidad(eDescuento, PORCENTAJE_DESCUENTO);

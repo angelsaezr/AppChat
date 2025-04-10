@@ -10,6 +10,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
@@ -286,8 +287,7 @@ public class VentanaRegistro extends JDialog {
      * @param e El evento generado por el clic en el botón de registro.
      */
     private void validarCampos(ActionEvent e) {
-    	/*
-    	// TODO QUITAR COMENTARIO CUANDO SE ACABE LA APP
+    	
     	// Valida formato del email
     	String email = txtEmail.getText().trim();
     	String emailRegex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
@@ -296,12 +296,13 @@ public class VentanaRegistro extends JDialog {
     	    return;
     	}
     	
-    	// Valida que el móvil contenga solo números y tenga exactamente 9 dígitos
+    	// Valida que el móvil contenga solo números
     	String movil = txtMovil.getText().trim();
-    	if (!movil.matches("\\d{9}")) {
-    	    JOptionPane.showMessageDialog(this, "El número de móvil debe contener exactamente 9 dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
-    	    return;
-    	}*/
+		if (!movil.matches("\\d+")) {
+		    JOptionPane.showMessageDialog(this, "El móvil solo debe contener dígitos.", "Error", JOptionPane.ERROR_MESSAGE);
+		    return;
+		}
+		
     	if (txtUsuario.getText().isBlank() || txtEmail.getText().isBlank() || txtMovil.getText().isBlank()|| new String(txtPassword.getPassword()).isBlank() || new String(txtRepitePassword.getPassword()).isBlank()) {
             JOptionPane.showMessageDialog(this, "Rellena todos los campos obligatorios.", "Error", JOptionPane.ERROR_MESSAGE);
             return;

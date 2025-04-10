@@ -187,7 +187,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		    try {
 		        int descuentoId = Integer.parseInt(descuentoStr);
 		        Descuento descuento = AdaptadorDescuento.getUnicaInstancia().recuperarDescuento(descuentoId);
-		        System.out.println("descuento recuperado: " + descuento);
 		        usuario.setDescuento(descuento);
 		    } catch (NumberFormatException e) {
 		        System.err.println("Formato incorrecto en el ID del descuento: " + descuentoStr);
@@ -260,9 +259,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		    }
 		    servPersistencia.modificarEntidad(eUsuario);
 		}
-		Entidad eUsuarioAux = servPersistencia.recuperarEntidad(usuario.getCodigo());
-		String descuentoStr = servPersistencia.recuperarPropiedadEntidad(eUsuarioAux, DESCUENTO);
-		System.out.println("descuentoStr recuperado:" + descuentoStr + ".");
 	}
 
 	/**

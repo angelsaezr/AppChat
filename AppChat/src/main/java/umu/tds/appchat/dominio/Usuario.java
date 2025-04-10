@@ -301,7 +301,7 @@ public class Usuario {
      * @param descuento descuento a aplicar
      */
     public void setDescuento(Descuento descuento) {
-        this.descuento = Optional.of(descuento);
+        this.descuento = Optional.ofNullable(descuento);
     }
 
     /**
