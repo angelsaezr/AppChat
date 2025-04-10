@@ -445,4 +445,11 @@ public class Usuario {
             return false;
         }
     }
+    
+    /**
+     * Elimina el descuento asociado a un usuario.
+     */
+    public void removeDescuento() {
+    	this.descuento = Optional.empty();
+    }
 }

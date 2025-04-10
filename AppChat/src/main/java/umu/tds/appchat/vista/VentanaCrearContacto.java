@@ -114,7 +114,7 @@ public class VentanaCrearContacto extends JDialog {
     				ventanaMain.actualizarListaContactos();
     				dispose();
         		} else {
-        			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema o ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+        			JOptionPane.showMessageDialog(this, "El contacto no está registrado en el sistema o ya está agregado", "Error", JOptionPane.ERROR_MESSAGE);
         		}
         	}
         });

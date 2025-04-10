@@ -501,7 +501,7 @@ public class VentanaMain extends JFrame {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
                 String nombre = !esEnviado ? AppChat.getInstance().getNombreContacto(contactoSeleccionado) : AppChat.getInstance().getNombreUsuarioActual();
                 
-                if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.equals("")) {
+                if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.startsWith("$")) {
                 	ContactoIndividual c = (ContactoIndividual) contactoSeleccionado;
                 	nombre = c.getMovil();
                 }
@@ -617,7 +617,7 @@ public class VentanaMain extends JFrame {
             	
             	   panelEditarContacto.add(botonEliminarGrupo);
             	   
-            } else if (contactoSeleccionado instanceof ContactoIndividual && contactoSeleccionado.getNombre().equals("")) {
+            } else if (contactoSeleccionado instanceof ContactoIndividual && contactoSeleccionado.getNombre().startsWith("$")) {
             	botonEditarContacto = new JButton("Asignar nombre");
                 botonEditarContacto.setPreferredSize(new Dimension(115, 40));
                 botonEditarContacto.setBackground(new Color(0, 128, 128));

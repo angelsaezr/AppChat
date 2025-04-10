@@ -82,7 +82,7 @@ public class VentanaExportarPDF extends JDialog {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Contacto) {
                     Contacto c = (Contacto) value;
-                    String texto = c.getNombre();
+                    String texto = AppChat.getInstance().getNombreContacto(c);
                     if (c instanceof ContactoIndividual) {
                         texto += " (" + ((ContactoIndividual) c).getMovil() + ")";
                     }

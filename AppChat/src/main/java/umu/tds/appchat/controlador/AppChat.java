@@ -229,6 +229,7 @@ public class AppChat {
         if (usuarioActual == null) return false;
 
         this.usuarioActual.setPremium(false);
+        usuarioActual.removeDescuento();
         
         usuarioActual.getDescuento().ifPresent(descuento -> {
             adaptadorDescuento.borrarDescuento(descuento);

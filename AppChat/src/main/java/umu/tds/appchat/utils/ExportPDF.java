@@ -56,7 +56,7 @@ public class ExportPDF {
             Font estiloTitulo = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
             Paragraph encabezado;
             if (contacto instanceof ContactoIndividual) {
-                encabezado = new Paragraph("Conversación entre " + contacto.getNombre() + " y " + AppChat.getInstance().getNombreUsuarioActual(), estiloTitulo);
+                encabezado = new Paragraph("Conversación entre " + AppChat.getInstance().getNombreContacto(contacto) + " y " + AppChat.getInstance().getNombreUsuarioActual(), estiloTitulo);
             } else {
                 encabezado = new Paragraph("Conversación del grupo \"" + contacto.getNombre() + "\"", estiloTitulo);
             }
@@ -82,7 +82,7 @@ public class ExportPDF {
                     autor = AppChat.getInstance().getNombreUsuarioActual();
                 } else {
                     contenedor.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    autor = contacto.getNombre();
+                    autor = AppChat.getInstance().getNombreContacto(contacto);
                 }
 
                 // Autor (opcional si quieres mostrarlo en cada mensaje)
