@@ -499,7 +499,7 @@ public class VentanaMain extends JFrame {
             AppChat.getInstance().getMensajesDelContacto(contactoSeleccionado).stream()
             .forEach(mensaje -> {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
-                String nombre = !esEnviado ? contactoSeleccionado.getNombre() : AppChat.getInstance().getNombreUsuarioActual();
+                String nombre = !esEnviado ? AppChat.getInstance().getNombreContacto(contactoSeleccionado) : AppChat.getInstance().getNombreUsuarioActual();
                 
                 if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.equals("")) {
                 	ContactoIndividual c = (ContactoIndividual) contactoSeleccionado;
