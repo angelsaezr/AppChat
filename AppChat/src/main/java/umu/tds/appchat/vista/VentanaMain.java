@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -713,13 +714,14 @@ public class VentanaMain extends JFrame {
     private void enviarMensaje() {
     	String texto = areaTexto.getText().trim();
         if (!texto.isEmpty()) {
-            // Dividir el texto en líneas usando el salto de línea (\n) como delimitador
+            // Divide el texto en líneas usando el salto de línea (\n) como delimitador
             String[] lineas = texto.split("\n");
             
-            // Enviar un mensaje por cada línea
-            for (String linea : lineas) {
-                AppChat.getInstance().enviarMensajeContacto(contactoSeleccionado, linea.trim(), -1);
-            }
+            // Envia un mensaje por cada línea
+            Arrays.stream(lineas)
+            	.map(String::trim)
+            	.forEach(linea -> AppChat.getInstance().enviarMensajeContacto(contactoSeleccionado, linea, -1));
+
             areaTexto.setText("");
         	actualizarChat();
         }

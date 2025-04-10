@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
@@ -319,18 +320,21 @@ public class AppChat {
         else
             rutaImagen = "src/main/resources/grupo2.jpg";
 
-        List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
-        for(Contacto c : getContactosUsuarioActual()) {
-            if (c instanceof ContactoIndividual) {
-                for(String s : miembros) {
-                    if (s.equals(c.getNombre())) {
-                        ContactoIndividual cI = (ContactoIndividual) c;
-                        Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(cI.getMovil());
-                        if (usuarioContacto == null || cI.getMovil().equals(usuarioActual.getMovil())) return null;
-                        contactos.add(cI);
+        List<ContactoIndividual> contactos;
+        try {
+            contactos = getContactosUsuarioActual().stream()
+                .filter(c -> c instanceof ContactoIndividual)
+                .map(c -> (ContactoIndividual) c)
+                .filter(cI -> miembros.contains(cI.getNombre()))
+                .peek(cI -> {
+                    Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(cI.getMovil());
+                    if (usuarioContacto == null || cI.getMovil().equals(usuarioActual.getMovil())) {
+                        throw new IllegalStateException("Contacto inválido");
                     }
-                }
-            }
+                })
+                .collect(Collectors.toList());
+        } catch (IllegalStateException e) {
+            return null;
         }
 
         Grupo nuevoGrupo = new Grupo(nombreGrupo, contactos, rutaImagen);
@@ -405,26 +409,35 @@ public class AppChat {
      * @return true si el mensaje fue enviado a todos los miembros correctamente
      */
     private boolean enviarMensajeAGrupo(Grupo grupo, Mensaje mensajeOriginal) {
-    	for(ContactoIndividual c : grupo.getMiembros()) {
-        	Usuario usuarioReceptor = c.getUsuario();
-        	if(!usuarioReceptor.equals(usuarioActual)) {
-        		ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
-        		if (contactoSender == null) {
-                    contactoSender = new ContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
-                    usuarioReceptor.addContacto(contactoSender);
-                    adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
-                    adaptadorUsuario.modificarUsuario(usuarioReceptor);
-                }
-        		Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO, LocalDateTime.now());
-                usuarioReceptor.addMensaje(contactoSender, mensaje2);
-                adaptadorMensaje.registrarMensaje(mensaje2);
-                adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
-        	}
-        }
+    	grupo.getMiembros().stream()
+        .map(ContactoIndividual::getUsuario)
+        .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
+        .forEach(usuarioReceptor -> {
+            ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
+            if (contactoSender == null) {
+                contactoSender = new ContactoIndividual("$" + usuarioActual.getMovil(), usuarioActual);
+                usuarioReceptor.addContacto(contactoSender);
+                adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
+                adaptadorUsuario.modificarUsuario(usuarioReceptor);
+            }
+
+            Mensaje mensaje2 = new Mensaje(
+                mensajeOriginal.getTexto(),
+                mensajeOriginal.getEmoticono(),
+                TipoMensaje.RECIBIDO,
+                LocalDateTime.now()
+            );
+
+            usuarioReceptor.addMensaje(contactoSender, mensaje2);
+            adaptadorMensaje.registrarMensaje(mensaje2);
+            adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
+        });
+
     	adaptadorGrupo.modificarGrupo(grupo);
     	return true;
+    }
     	
-        /*return grupo.getMiembros().stream()
+        /*TODO ELIMINAR SI PROCEDE return grupo.getMiembros().stream()
             .map(ContactoIndividual::getUsuario)
             .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
             .map(usuarioReceptor -> {
@@ -445,7 +458,6 @@ public class AppChat {
                 return true;
             })
             .allMatch(Boolean::booleanValue);*/
-    }
 
     /**
      * Busca mensajes que contengan el texto especificado y pertenezcan a un contacto y móvil determinados.
@@ -646,18 +658,14 @@ public class AppChat {
 
         if (nuevosMiembros.isEmpty()) return false; // El grupo no puede quedar vacío
 
-        List<ContactoIndividual> nuevosMiembrosLista = new LinkedList<>();
-        for (String movil : nuevosMiembros) {
-            ContactoIndividual contacto = this.usuarioActual.getContactoIndividual(movil);
-            if (contacto != null) {
-                nuevosMiembrosLista.add(contacto);
-            }
-        }
+        List<ContactoIndividual> nuevosMiembrosLista = nuevosMiembros.stream()
+            .map(usuarioActual::getContactoIndividual)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
 
         grupo.removeAllMiembros();
-        for (ContactoIndividual nuevoMiembro : nuevosMiembrosLista) {
-            grupo.addMiembro(nuevoMiembro);
-        }
+
+        nuevosMiembrosLista.forEach(grupo::addMiembro);
 
         adaptadorGrupo.modificarGrupo(grupo);
         adaptadorUsuario.modificarUsuario(usuarioActual);

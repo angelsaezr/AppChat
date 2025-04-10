@@ -328,12 +328,14 @@ public class Usuario {
         // Solo comprobar móviles duplicados si el contacto es individual
         if (contacto instanceof ContactoIndividual) {
             ContactoIndividual nuevoCI = (ContactoIndividual) contacto;
-            for (Contacto c : contactos) {
-                if (c instanceof ContactoIndividual) {
-                    if (((ContactoIndividual) c).getMovil().equals(nuevoCI.getMovil())) {
-                        return false;
-                    }
-                }
+
+            boolean movilDuplicado = contactos.stream()
+                .filter(c -> c instanceof ContactoIndividual)
+                .map(c -> (ContactoIndividual) c)
+                .anyMatch(cI -> cI.getMovil().equals(nuevoCI.getMovil()));
+
+            if (movilDuplicado) {
+                return false;
             }
         }
 

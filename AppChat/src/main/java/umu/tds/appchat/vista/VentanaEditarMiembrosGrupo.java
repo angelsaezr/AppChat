@@ -88,16 +88,18 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         groupListModel = new DefaultListModel<>();
 
         List<Contacto> listaContactos = AppChat.getInstance().getContactosUsuarioActual();
-        for (Contacto c : listaContactos) {
-            if (c instanceof ContactoIndividual) {
-                String contactoInfo = c.getNombre() + " (" + ((ContactoIndividual) c).getMovil() + ")";
-                if (grupo.getMiembros().contains(c)) {
-                    groupListModel.addElement(contactoInfo);
-                } else if (AppChat.getInstance().esContactoAgregado(c)){
-                    contactListModel.addElement(contactoInfo);
-                }
-            }
-        }
+        listaContactos.stream()
+        	.filter(c -> c instanceof ContactoIndividual)
+        	.map(c -> (ContactoIndividual) c)
+        	.forEach(c -> {
+        		String contactoInfo = c.getNombre() + " (" + c.getMovil() + ")";
+        		if (grupo.getMiembros().contains(c)) {
+        			groupListModel.addElement(contactoInfo);
+        		} else if (AppChat.getInstance().esContactoAgregado(c)) {
+        			contactListModel.addElement(contactoInfo);
+        		}
+        	});
+
 
         contactList = new JList<>(contactListModel);
         groupList = new JList<>(groupListModel);
@@ -213,9 +215,11 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
 
     private void moverSeleccionados(JList<String> origen, DefaultListModel<String> modeloOrigen, DefaultListModel<String> modeloDestino) {
         List<String> seleccionados = origen.getSelectedValuesList();
-        for (String s : seleccionados) {
-            modeloDestino.addElement(s);
-            modeloOrigen.removeElement(s);
-        }
+        seleccionados.stream()
+        	.forEach(s -> {
+        		modeloDestino.addElement(s);
+        		modeloOrigen.removeElement(s);
+        	});
+
     }
 }

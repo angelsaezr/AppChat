@@ -80,12 +80,11 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 			return;
 		}	
 
-		List<Mensaje> mensajesRegistrados = new ArrayList<>();
-
-		for (Mensaje m : contacto.getMensajes()) {
-		    AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m);
-		    mensajesRegistrados.add(m);
-		}
+		AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
+		
+		List<Mensaje> mensajesRegistrados = contacto.getMensajes().stream()
+			    .peek(m -> AdaptadorMensaje.getUnicaInstancia().registrarMensaje(m))
+			    .collect(Collectors.toList());
 		
 		// Se crea la entidad
 		eContactoIndividual = Optional.of(new Entidad());
@@ -135,9 +134,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 		// Se actualiza el objeto
 		List<Mensaje> mensajes = getMensajes(servPersistencia.recuperarPropiedadEntidad(eContactoIndividual, MENSAJES));
 		
-		for (Mensaje mensaje : mensajes) {
-			contactoIndividual.addMensaje(mensaje);
-		}
+		mensajes.stream().forEach(contactoIndividual::addMensaje);
 	
 		contactoIndividual.setUsuario(usuario);	
 		// Se retorna el objeto

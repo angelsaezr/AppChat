@@ -122,16 +122,13 @@ public class VentanaCrearGrupo extends JDialog {
         // Listas
         contactListModel = new DefaultListModel<>();
         groupListModel = new DefaultListModel<>();
-        String contactoInfo = null;
         listaContactos = AppChat.getInstance().getContactosUsuarioActual();
-        for (Contacto c : listaContactos) {
-        	if (c instanceof ContactoIndividual) {
-        		if (AppChat.getInstance().esContactoAgregado(c)) {
-        			contactoInfo = AppChat.getInstance().getNombreContacto(c) + " (" + ((ContactoIndividual) c).getMovil() + ")";
-             		contactListModel.addElement(contactoInfo);
-        		}
-        	}
-        }
+        listaContactos.stream()
+        	.filter(c -> c instanceof ContactoIndividual)
+        	.filter(c -> AppChat.getInstance().esContactoAgregado(c))
+        	.map(c -> AppChat.getInstance().getNombreContacto(c) + " (" + ((ContactoIndividual) c).getMovil() + ")")
+        	.forEach(contactListModel::addElement);
+
 
         contactList = new JList<>(contactListModel);
         groupList = new JList<>(groupListModel);
@@ -281,9 +278,11 @@ public class VentanaCrearGrupo extends JDialog {
 
     private void moverSeleccionados(JList<String> origen, DefaultListModel<String> modeloOrigen, DefaultListModel<String> modeloDestino) {
         List<String> seleccionados = origen.getSelectedValuesList();
-        for (String s : seleccionados) {
+        seleccionados.stream()
+        	.forEach(s -> {
             modeloDestino.addElement(s);
             modeloOrigen.removeElement(s);
-        }
+        });
+
     }
 }

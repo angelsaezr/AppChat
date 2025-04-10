@@ -101,13 +101,17 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		}
 
 		// Se registran sus objetos referenciados
-		for (Contacto contacto : usuario.getContactos()) {
-			if (contacto instanceof ContactoIndividual) {
-				AdaptadorContactoIndividual.getUnicaInstancia().registrarContactoIndividual((ContactoIndividual) contacto);
-			} else if (contacto instanceof Grupo) {
-				AdaptadorGrupo.getUnicaInstancia().registrarGrupo((Grupo) contacto);
-			}
-		}
+		usuario.getContactos().stream()
+		    .forEach(contacto -> {
+		        if (contacto instanceof ContactoIndividual) {
+		            AdaptadorContactoIndividual.getUnicaInstancia()
+		                .registrarContactoIndividual((ContactoIndividual) contacto);
+		        } else if (contacto instanceof Grupo) {
+		            AdaptadorGrupo.getUnicaInstancia()
+		                .registrarGrupo((Grupo) contacto);
+		        }
+		    });
+
 		usuario.getDescuento().ifPresent(descuento -> AdaptadorDescuento.getUnicaInstancia().registrarDescuento(descuento));
 
 		// Se crea la entidad
@@ -267,7 +271,7 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
      *
      * @param usuario el usuario a eliminar
      */
-	/*
+	/*TODO ELIMINAR SI PROCEDE
 	public void borrarUsuario(Usuario usuario) {
 		// Se recupera entidad
 		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());

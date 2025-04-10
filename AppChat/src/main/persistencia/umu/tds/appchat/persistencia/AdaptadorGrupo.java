@@ -91,14 +91,13 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 
 		// Se registran sus objetos referenciados
 		AdaptadorContactoIndividual adaptadorContacto = AdaptadorContactoIndividual.getUnicaInstancia();
-		for (ContactoIndividual miembro : grupo.getMiembros()) {
-		    adaptadorContacto.registrarContactoIndividual(miembro);
-		}
+		grupo.getMiembros().stream()
+	    	.forEach(adaptadorContacto::registrarContactoIndividual);
+
 
 		AdaptadorMensaje adaptadorMensaje = AdaptadorMensaje.getUnicaInstancia();
-		for (Mensaje mensaje : grupo.getMensajes()) {
-		    adaptadorMensaje.registrarMensaje(mensaje);
-		}
+		grupo.getMensajes().stream()
+	    	.forEach(adaptadorMensaje::registrarMensaje);
 
 		// Se crea la entidad
 		eGrupo = Optional.of(new Entidad());
@@ -210,9 +209,9 @@ public class AdaptadorGrupo implements IAdaptadorGrupoDAO {
 		Entidad eGrupo = servPersistencia.recuperarEntidad(grupo.getCodigo());
 
 		// Se eliminan sus entidades agregadas
-		for (Mensaje mensaje : grupo.getMensajes()) {
-		    AdaptadorMensaje.getUnicaInstancia().borrarMensaje(mensaje);
-		}
+		grupo.getMensajes().stream()
+	    	.forEach(AdaptadorMensaje.getUnicaInstancia()::borrarMensaje);
+
 
 		// Se elimina la entidad
 		servPersistencia.borrarEntidad(eGrupo);

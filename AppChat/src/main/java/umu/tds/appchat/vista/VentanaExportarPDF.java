@@ -63,15 +63,9 @@ public class VentanaExportarPDF extends JDialog {
         List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
         List<Contacto> contactosAgregados = new ArrayList<>();
 
-        for (Contacto c : contactos) {
-            if (c instanceof ContactoIndividual) {
-                if (AppChat.getInstance().esContactoAgregado(c)) {
-                    contactosAgregados.add(c);
-                }
-            } else {
-                contactosAgregados.add(c); // Grupo
-            }
-        }
+        contactos.stream()
+        .filter(c -> !(c instanceof ContactoIndividual) || AppChat.getInstance().esContactoAgregado(c))
+        .forEach(contactosAgregados::add);
 
         comboContactos = new JComboBox<Contacto>(contactosAgregados.toArray(new Contacto[0]));
         comboContactos.setPreferredSize(new Dimension(250, 30));
