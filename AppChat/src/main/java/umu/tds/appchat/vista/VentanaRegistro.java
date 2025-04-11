@@ -288,13 +288,13 @@ public class VentanaRegistro extends JDialog {
      */
     private void validarCampos(ActionEvent e) {
     	
-    	/*TODO// Valida formato del email
+    	// Valida formato del email
     	String email = txtEmail.getText().trim();
     	String emailRegex = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
     	if (!Pattern.matches(emailRegex, email)) {
     	    JOptionPane.showMessageDialog(this, "El email no tiene un formato válido.", "Error", JOptionPane.ERROR_MESSAGE);
     	    return;
-    	}*/
+    	}
     	
     	// Valida que el móvil contenga solo números
     	String movil = txtMovil.getText().trim();

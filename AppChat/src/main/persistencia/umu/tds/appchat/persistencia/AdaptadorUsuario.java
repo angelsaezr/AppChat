@@ -266,35 +266,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 	}
 
 	/**
-     * Elimina completamente un {@link Usuario} del sistema de persistencia.
-     * También elimina sus contactos individuales y grupos relacionados.
-     *
-     * @param usuario el usuario a eliminar
-     */
-	/*TODO ELIMINAR SI PROCEDE
-	public void borrarUsuario(Usuario usuario) {
-		// Se recupera entidad
-		Entidad eUsuario = servPersistencia.recuperarEntidad(usuario.getCodigo());
-
-		// Se eliminan sus entidades agregadas
-		for (Contacto contacto : usuario.getContactos()) {
-			if (contacto instanceof ContactoIndividual) {
-				AdaptadorContactoIndividual.getUnicaInstancia().borrarContactoIndividual((ContactoIndividual) contacto);
-			} else {
-				AdaptadorGrupo.getUnicaInstancia().borrarGrupo((Grupo) contacto);
-			}
-		}
-
-		// Se elimina la entidad
-		servPersistencia.borrarEntidad(eUsuario);
-
-		// Si esta en el pool de objetos se elimina
-		if (PoolDAO.getUnicaInstancia().contains(usuario.getCodigo())) {
-			PoolDAO.getUnicaInstancia().removeObject(usuario.getCodigo());
-		}
-	}*/
-
-	/**
      * Recupera una lista de contactos individuales del usuario a partir de sus códigos.
      *
      * @param codigos cadena de códigos separados por espacios

@@ -436,28 +436,6 @@ public class AppChat {
     	adaptadorGrupo.modificarGrupo(grupo);
     	return true;
     }
-    	
-        /*TODO ELIMINAR SI PROCEDE return grupo.getMiembros().stream()
-            .map(ContactoIndividual::getUsuario)
-            .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
-            .map(usuarioReceptor -> {
-                ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
-                if (contactoSender == null) {
-                    contactoSender = new ContactoIndividual("", usuarioActual);
-                    usuarioReceptor.addContacto(contactoSender);
-                    adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
-                    adaptadorUsuario.modificarUsuario(usuarioReceptor);
-                }
-
-                // Crea una copia del mensaje para cada usuario
-                Mensaje copiaMensaje = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO);
-                usuarioReceptor.addMensaje(contactoSender, copiaMensaje);
-                adaptadorMensaje.registrarMensaje(copiaMensaje);
-                adaptadorGrupo.modificarGrupo(grupo);
-                adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
-                return true;
-            })
-            .allMatch(Boolean::booleanValue);*/
 
     /**
      * Busca mensajes que contengan el texto especificado y pertenezcan a un contacto y móvil determinados.
