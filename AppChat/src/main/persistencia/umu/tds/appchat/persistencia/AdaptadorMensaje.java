@@ -90,9 +90,6 @@ public class AdaptadorMensaje implements IAdaptadorMensajeDAO {
 			return;
 		}
 
-		// Se registran sus objetos referenciados
-		
-
 		// Se crea la entidad
 		eMensaje = Optional.of(new Entidad());
 		eMensaje.get().setNombre("mensaje");

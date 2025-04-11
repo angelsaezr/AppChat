@@ -80,6 +80,7 @@ public class AdaptadorContactoIndividual implements IAdaptadorContactoIndividual
 			return;
 		}	
 
+		// Se registran sus objetos referenciados
 		AdaptadorUsuario.getUnicaInstancia().registrarUsuario(contacto.getUsuario());	
 		
 		List<Mensaje> mensajesRegistrados = contacto.getMensajes().stream()

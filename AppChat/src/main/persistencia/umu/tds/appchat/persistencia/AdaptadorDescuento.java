@@ -90,6 +90,7 @@ public class AdaptadorDescuento implements IAdaptadorDescuentoDAO {
 	    if (descuento.getCodigo() != 0) {
 	        return;
 	    }
+	    
 		// Se comprueba que no está registrada la entidad que corresponde al código del objeto
 		Optional<Entidad> eDescuento = Optional.ofNullable(servPersistencia.recuperarEntidad(descuento.getCodigo()));
 		if (eDescuento.isPresent()) {
