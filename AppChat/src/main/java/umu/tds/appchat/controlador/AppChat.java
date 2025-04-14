@@ -203,6 +203,10 @@ public class AppChat {
                 .map(ContactoIndividual::getNombre) // Obtener el nombre de cada contacto
                 .collect(Collectors.toList()); // Convertir a lista
     }
+    
+    // TODO cargar appchar ponerlo para tutoria
+    // TODO quitar los gets
+    // TODO lo de asignar nombre 
 
     /**
      * Activa el modo premium para el usuario actual con un tipo de descuento especificado.
@@ -213,7 +217,7 @@ public class AppChat {
     public boolean activarPremium(TipoDescuento tipo) {
         if (usuarioActual == null) return false;
 
-        usuarioActual.setPremium(true);
+        usuarioActual.setPremium(true); // TODO  solo 1 metodo, que retorne el valor del descuento
         usuarioActual.setDescuento(tipo);
         
         adaptadorDescuento.registrarDescuento(DescuentoFactoria.crearDescuento(tipo));
@@ -256,8 +260,8 @@ public class AppChat {
         if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
             return false; // Ya existe un usuario con ese número
         }
-        if (imagen == "")
-            imagen = "src/main/resources/profile1.jpg";
+        if (imagen == "") // TODO imagen = imagen por defecto, se hace en ventana
+            imagen = "src/main/resources/profile1.jpg"; // TODO controlador no hace validaciones
         Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
         adaptadorUsuario.registrarUsuario(nuevoUsuario);
         repositorioUsuarios.addUsuario(nuevoUsuario);
@@ -275,7 +279,6 @@ public class AppChat {
         Usuario usuario = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuario != null && usuario.getContraseña().equals(contraseña)) {
             this.usuarioActual = usuario;
-            //cargarMensajesNoAgregados();
             return true;
         }
         return false;
@@ -294,6 +297,7 @@ public class AppChat {
         Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuarioContacto == null) return null;
 
+        // TODO usuario debe crear contacto
         ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
         if (usuarioActual.addContacto(nuevoContacto)) {
             adaptadorContactoIndividual.registrarContactoIndividual(nuevoContacto);
@@ -320,6 +324,7 @@ public class AppChat {
         else
             rutaImagen = "src/main/resources/grupo2.jpg";
 
+        // TODO 
         List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
         try {
             contactos = getContactosUsuarioActual().stream()
@@ -355,6 +360,7 @@ public class AppChat {
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
         if (usuarioActual == null) return false;
 
+        // TODO patron creador, cambiar
         // Crea y registrar mensaje
         Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO, LocalDateTime.now());
 
@@ -391,6 +397,7 @@ public class AppChat {
             adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
             adaptadorUsuario.modificarUsuario(usuarioReceptor);
         }
+        // TODO creador, logica bien
         Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO, LocalDateTime.now());
         usuarioReceptor.addMensaje(contactoSender, mensaje2);
         
@@ -420,7 +427,7 @@ public class AppChat {
                 adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
                 adaptadorUsuario.modificarUsuario(usuarioReceptor);
             }
-
+            
             Mensaje mensaje2 = new Mensaje(
                 mensajeOriginal.getTexto(),
                 mensajeOriginal.getEmoticono(),
@@ -447,6 +454,7 @@ public class AppChat {
      */
     public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
         // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
+    	// TODO normalizar en privado o aparte, clase utils
         String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "")
                 .toLowerCase();
@@ -476,7 +484,9 @@ public class AppChat {
      * @return true si el contacto cumple con los criterios de búsqueda, false en caso contrario
      */
     private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
-        if (!movil.isBlank()) {
+    	// TODO cambiar nombre metodo (contacto cumple filtros)
+    	// TODO en dominio
+    	if (!movil.isBlank()) {
             if (c instanceof ContactoIndividual) {
                 return ((ContactoIndividual) c).getMovil().equals(movil);
             } else if (c instanceof Grupo) {
@@ -485,6 +495,7 @@ public class AppChat {
             }
         }
         if (!nombre.isBlank()) {
+        	// TODO sacar normalizar
             String nombreNormalizado = Normalizer.normalize(nombre, Normalizer.Form.NFD)
                     .replaceAll("\\p{M}", "")
                     .toLowerCase();
