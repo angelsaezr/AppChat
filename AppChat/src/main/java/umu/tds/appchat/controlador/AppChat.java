@@ -20,6 +20,7 @@ import umu.tds.appchat.utils.Utils;
 import umu.tds.appchat.persistencia.IAdaptadorDescuentoDAO;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Descuento;
 import umu.tds.appchat.dominio.DescuentoFactoria;
 import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.Mensaje;
@@ -134,17 +135,6 @@ public class AppChat {
         return usuarioActual;
     }
     
-    /**
-     * Comprobar si el contacto es miembro del grupo.
-     *
-     * @param contacto nombre del contacto
-     * @param grupo nombre del grupo
-     * @return true si el contacto pertenece al grupo, false en caso contrario
-     */
-    public boolean esMiembroGrupo(String contacto, String grupo) {
-        return usuarioActual.esMiembroGrupo(contacto, grupo);
-    }
-    
     // TODO cargar appchar ponerlo para tutoria
     // TODO lo de asignar nombre 
 
@@ -155,8 +145,7 @@ public class AppChat {
      * @return true si se activó correctamente, false si no hay usuario actual
      */
     public boolean activarPremium(TipoDescuento tipo) {
-        usuarioActual.setPremium(true); // TODO  solo 1 metodo, que retorne el valor del descuento
-        usuarioActual.setDescuento(tipo);
+        usuarioActual.activarPremium(tipo);
         
         adaptadorDescuento.registrarDescuento(DescuentoFactoria.crearDescuento(tipo));
         adaptadorUsuario.modificarUsuario(usuarioActual);
@@ -169,13 +158,9 @@ public class AppChat {
      * @return true si se desactivó correctamente, false si no hay usuario actual
      */
     public boolean anularPremium() {
-        this.usuarioActual.setPremium(false);
-        usuarioActual.removeDescuento();
-        
-        usuarioActual.getDescuento().ifPresent(descuento -> {
-            adaptadorDescuento.borrarDescuento(descuento);
-        });
-        
+        this.usuarioActual.anularPremium();
+        Descuento d = this.usuarioActual.getDescuento().get();
+        adaptadorDescuento.borrarDescuento(d);
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return true;
     }

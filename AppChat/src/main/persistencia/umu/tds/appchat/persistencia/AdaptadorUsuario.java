@@ -43,9 +43,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
     /** Propiedad de la imagen de perfil. */
     private static final String IMAGEN = "imagen";
 
-    /** Propiedad que indica si el usuario es premium. */
-    private static final String IS_PREMIUM = "isPremium";
-
     /** Propiedad del saludo personalizado. */
     private static final String SALUDO = "saludo";
 
@@ -133,7 +130,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 						new Propiedad(CONTRASEÑA, usuario.getContraseña()),
 						new Propiedad(EMAIL, usuario.getEmail()),
 						new Propiedad(IMAGEN, usuario.getImagen()),
-						new Propiedad(IS_PREMIUM, String.valueOf(usuario.isPremium())),
 						new Propiedad(SALUDO, usuario.getSaludo()),
 						new Propiedad(FECHA_NACIMIENTO,usuario.getFechaNacimiento().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))),
 						new Propiedad(DESCUENTO, usuario.getDescuento()
@@ -172,13 +168,11 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		String contraseña = servPersistencia.recuperarPropiedadEntidad(eUsuario, CONTRASEÑA);
 		String email = servPersistencia.recuperarPropiedadEntidad(eUsuario, EMAIL);
 		String imagen = servPersistencia.recuperarPropiedadEntidad(eUsuario, IMAGEN);
-		boolean isPremium = Boolean.parseBoolean(servPersistencia.recuperarPropiedadEntidad(eUsuario, IS_PREMIUM));
 		String saludo = servPersistencia.recuperarPropiedadEntidad(eUsuario, SALUDO);
 		LocalDate fechaNacimiento = LocalDate.parse(servPersistencia.recuperarPropiedadEntidad(eUsuario, FECHA_NACIMIENTO), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
 		// Se crea el objeto, se inicializa con propiedades anteriores y se añade al pool si es necesario
 		Usuario usuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
-		usuario.setPremium(isPremium);
 		usuario.setCodigo(codigo);
 		
 		// Se añade al pool
@@ -239,8 +233,6 @@ public class AdaptadorUsuario implements IAdaptadorUsuarioDAO {
 		        prop.setValor(usuario.getEmail());
 		    } else if (prop.getNombre().equals(IMAGEN)) {
 		        prop.setValor(usuario.getImagen());
-		    } else if (prop.getNombre().equals(IS_PREMIUM)) {
-		        prop.setValor(String.valueOf(usuario.isPremium()));
 		    } else if (prop.getNombre().equals(SALUDO)) {
 		        prop.setValor(usuario.getSaludo());
 		    } else if (prop.getNombre().equals(FECHA_NACIMIENTO)) {

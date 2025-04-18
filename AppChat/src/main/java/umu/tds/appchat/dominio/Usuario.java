@@ -257,15 +257,6 @@ public class Usuario {
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
-
-    /**
-     * Activa o desactiva el modo premium del usuario.
-     *
-     * @param premium true para activar premium, false para desactivarlo
-     */
-    public void setPremium(boolean premium) {
-        this.isPremium = premium;
-    }
 	
     /**
      * Establece la lista de contactos del usuario.
@@ -287,12 +278,24 @@ public class Usuario {
     }
 
     /**
-     * Establece un tipo de descuento específico para el usuario.
+     * Establece un tipo de descuento específico para el usuario y lo convierte en premium.
      *
      * @param tipoDescuento tipo de descuento a aplicar
+     * @return el descuento del usuario
      */
-    public void setDescuento(TipoDescuento tipoDescuento) {
+    public Descuento activarPremium(TipoDescuento tipoDescuento) {
+    	this.isPremium = true;
         this.descuento = Optional.of(DescuentoFactoria.crearDescuento(tipoDescuento));
+        return this.descuento.get();
+    }
+    
+    /**
+     * El usuario cancela la suscripción premium y establece el descuento a null
+     *
+     */
+    public void anularPremium() {
+    	this.isPremium = false;
+    	this.descuento = Optional.empty();
     }
     
     /**
@@ -301,6 +304,7 @@ public class Usuario {
      * @param descuento descuento a aplicar
      */
     public void setDescuento(Descuento descuento) {
+    	this.isPremium = true;
         this.descuento = Optional.ofNullable(descuento);
     }
 
@@ -423,12 +427,5 @@ public class Usuario {
         } else {
             return false;
         }
-    }
-    
-    /**
-     * Elimina el descuento asociado a un usuario.
-     */
-    public void removeDescuento() {
-    	this.descuento = Optional.empty();
     }
 }
