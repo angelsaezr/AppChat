@@ -1,6 +1,7 @@
 package umu.tds.appchat.dominio;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -369,18 +370,41 @@ public class Usuario {
     }
 
     /**
-     * Añade un mensaje a un contacto específico del usuario.
+     * Añade un mensaje al chat con un contacto específico del usuario.
      *
-     * @param receptor el contacto que recibirá el mensaje
-     * @param mensaje el mensaje a agregar
-     * @return true si el mensaje fue agregado correctamente, false si el contacto no existe
+     * @param receptor el contacto individual del chat en el que se desea agregar el mensaje
+     * @param texto contenido del mensaje
+     * @param emoticono código del emoticono adjunto
+     * @param tipo enviado o recibido
+     * @return el mensaje añadido al chat
      */
-    public boolean addMensaje(Contacto receptor, Mensaje mensaje) {
-        return contactos.stream()
-                .filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
-                .findFirst()
-                .map(contacto -> contacto.addMensaje(mensaje))
-                .orElse(false);
+    public Mensaje enviarMensajeAContactoIndividual(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
+    	Mensaje mensaje = new Mensaje(texto, emoticono, tipo, LocalDateTime.now());
+    	ContactoIndividual receptorEnLista = (ContactoIndividual)contactos.stream()
+    			.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
+    			.findFirst()
+    			.get();
+    	receptorEnLista.addMensaje(mensaje);
+        return mensaje;
+    }
+    
+    /**
+     * Añade un mensaje al chat con un grupo del usuario.
+     *
+     * @param receptor el grupo en el que se desea agregar el mensaje
+     * @param texto contenido del mensaje
+     * @param emoticono código del emoticono adjunto
+     * @param tipo enviado o recibido
+     * @return el mensaje añadido al chat del grupo
+     */
+    public Mensaje enviarMensajeAGrupo(Grupo grupo, String texto, int emoticono, TipoMensaje tipo) {
+    	Mensaje mensaje = new Mensaje(texto, emoticono, tipo, LocalDateTime.now());
+    	Grupo grupoEnLista = (Grupo)contactos.stream()
+    			.filter(contacto -> contacto.getNombre().equals(grupo.getNombre()))
+    			.findFirst()
+    			.get();
+    	grupoEnLista.addMensaje(mensaje);
+        return mensaje;
     }
 
     /**

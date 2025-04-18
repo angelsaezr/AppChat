@@ -3,7 +3,6 @@ package umu.tds.appchat.controlador;
 import java.io.File;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -251,84 +250,43 @@ public class AppChat {
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
         // TODO patron creador, cambiar
         // Crea y registrar mensaje
-        Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO, LocalDateTime.now());
-
-        // Intenta enviarlo desde el usuario actual
-        if (!usuarioActual.addMensaje(receptor, mensaje)) {
-            return false;
-        }
-        adaptadorMensaje.registrarMensaje(mensaje);
-
-        if (receptor instanceof ContactoIndividual) {
-            return enviarMensajeAContactoIndividual((ContactoIndividual) receptor, mensaje);
-        } else if (receptor instanceof Grupo) {
-            return enviarMensajeAGrupo((Grupo) receptor, mensaje);
-        }
+    	Mensaje mensajeEnviado;
+    	if (receptor instanceof ContactoIndividual) {
+    		ContactoIndividual contactoReceptor = (ContactoIndividual) receptor;
+    		mensajeEnviado = this.usuarioActual.enviarMensajeAContactoIndividual(contactoReceptor, texto, emoticono, TipoMensaje.ENVIADO);
+    		adaptadorMensaje.registrarMensaje(mensajeEnviado);
+    		
+    		añadirMensajeRecibido(contactoReceptor, texto, emoticono);
+    		
+            adaptadorContactoIndividual.modificarContactoIndividual(contactoReceptor);
+    	} else if (receptor instanceof Grupo) {
+    		Grupo grupoReceptor = (Grupo) receptor;
+    		mensajeEnviado = this.usuarioActual.enviarMensajeAGrupo(grupoReceptor, texto, emoticono, TipoMensaje.ENVIADO);
+    		adaptadorMensaje.registrarMensaje(mensajeEnviado);
+    		
+    		for(ContactoIndividual contactoReceptor : grupoReceptor.getMiembros()) {
+    			añadirMensajeRecibido(contactoReceptor, texto, emoticono);
+    		}
+    		
+    		adaptadorGrupo.modificarGrupo(grupoReceptor);
+    	}
 
         return true;
     }
-
-
-    /**
-     * Método auxiliar para enviar mensaje a un usuario individual.
-     *
-     * @param contactoReceptor el contacto individual que recibe el mensaje
-     * @param mensaje el mensaje a enviar
-     * @return true si el mensaje se envió correctamente
-     */
-    private boolean enviarMensajeAContactoIndividual(ContactoIndividual contactoReceptor, Mensaje mensajeOriginal) {
-        Usuario usuarioReceptor = contactoReceptor.getUsuario();
+    
+    private void añadirMensajeRecibido(ContactoIndividual contactoReceptor, String texto, int emoticono) {
+    	Usuario usuarioReceptor = contactoReceptor.getUsuario();
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
-
         if (contactoSender == null) {
         	contactoSender = usuarioReceptor.addContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
             adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
             adaptadorUsuario.modificarUsuario(usuarioReceptor);
         }
-        // TODO creador, logica bien
-        Mensaje mensaje2 = new Mensaje(mensajeOriginal.getTexto(), mensajeOriginal.getEmoticono(), TipoMensaje.RECIBIDO, LocalDateTime.now());
-        usuarioReceptor.addMensaje(contactoSender, mensaje2);
         
-        adaptadorMensaje.registrarMensaje(mensaje2);
-        adaptadorContactoIndividual.modificarContactoIndividual(contactoReceptor);
+        Mensaje mensajeRecibido = usuarioReceptor.enviarMensajeAContactoIndividual(contactoSender, texto, emoticono, TipoMensaje.RECIBIDO);
+        
+        adaptadorMensaje.registrarMensaje(mensajeRecibido);
         adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
-
-        return true;
-    }
-
-    /**
-     * Método auxiliar para enviar mensaje a un grupo.
-     *
-     * @param grupo el grupo al que se enviará el mensaje
-     * @param mensajeOriginal el mensaje a enviar
-     * @return true si el mensaje fue enviado a todos los miembros correctamente
-     */
-    private boolean enviarMensajeAGrupo(Grupo grupo, Mensaje mensajeOriginal) {
-    	grupo.getMiembros().stream()
-        .map(ContactoIndividual::getUsuario)
-        .filter(usuarioReceptor -> !usuarioReceptor.equals(usuarioActual))
-        .forEach(usuarioReceptor -> {
-            ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
-            if (contactoSender == null) {
-            	contactoSender = usuarioReceptor.addContactoIndividual("$" + usuarioActual.getMovil(), usuarioActual);
-                adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
-                adaptadorUsuario.modificarUsuario(usuarioReceptor);
-            }
-            
-            Mensaje mensaje2 = new Mensaje(
-                mensajeOriginal.getTexto(),
-                mensajeOriginal.getEmoticono(),
-                TipoMensaje.RECIBIDO,
-                LocalDateTime.now()
-            );
-
-            usuarioReceptor.addMensaje(contactoSender, mensaje2);
-            adaptadorMensaje.registrarMensaje(mensaje2);
-            adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
-        });
-
-    	adaptadorGrupo.modificarGrupo(grupo);
-    	return true;
     }
 
     /**
