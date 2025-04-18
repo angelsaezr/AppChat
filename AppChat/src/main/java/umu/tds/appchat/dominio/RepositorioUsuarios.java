@@ -1,5 +1,6 @@
 package umu.tds.appchat.dominio;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -71,15 +72,22 @@ public class RepositorioUsuarios {
     /**
      * Agrega un nuevo usuario al repositorio.
      *
-     * @param usuario el usuario a agregar
-     * @return true si se agregó correctamente, false si ya existe un usuario con ese móvil o es null
+     * @param nombre nombre del usuario
+     * @param movil número de móvil del usuario
+     * @param contraseña contraseña del usuario
+     * @param fechaNacimiento fecha de nacimiento del usuario
+     * @param imagen ruta de la imagen de perfil
+     * @param saludo saludo personalizado del usuario
+     * @param email correo electrónico del usuario
+     * @return nuevoUsuario si no existe un usuario con ese móvil, null si ya existe un usuario con ese móvil
      */
-    public boolean addUsuario(Usuario usuario) {
-        if (usuario == null || usuarios.containsKey(usuario.getMovil())) {
-            return false; // No se permite añadir usuarios duplicados por número de móvil
+    public Usuario addUsuario(String nombre, String movil, String contraseña, LocalDate fechaNacimiento, String imagen, String saludo, String email) {
+    	if (this.buscarUsuarioPorMovil(movil) != null) {
+            return null; // Ya existe un usuario con ese número
         }
-        usuarios.put(usuario.getMovil(), usuario);
-        return true;
+        Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
+        usuarios.put(movil, nuevoUsuario);
+        return nuevoUsuario;
     }
 
     /**

@@ -196,10 +196,12 @@ public class AppChat {
         if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
             return false; // Ya existe un usuario con ese número
         }
-        Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
-        adaptadorUsuario.registrarUsuario(nuevoUsuario);
-        repositorioUsuarios.addUsuario(nuevoUsuario);
-        return true;
+        Usuario nuevoUsuario = repositorioUsuarios.addUsuario(nombre, movil, contraseña, fechaNacimiento, imagen, saludo, email);
+        if(nuevoUsuario != null) {
+        	adaptadorUsuario.registrarUsuario(nuevoUsuario);
+        	return true;
+        }
+        return false;
     }
 
     /**
