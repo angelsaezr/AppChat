@@ -17,6 +17,7 @@ import umu.tds.appchat.persistencia.IAdaptadorContactoIndividualDAO;
 import umu.tds.appchat.persistencia.IAdaptadorGrupoDAO;
 import umu.tds.appchat.persistencia.IAdaptadorMensajeDAO;
 import umu.tds.appchat.persistencia.IAdaptadorUsuarioDAO;
+import umu.tds.appchat.utils.Utils;
 import umu.tds.appchat.persistencia.IAdaptadorDescuentoDAO;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
@@ -420,9 +421,7 @@ public class AppChat {
     public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
         // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
     	// TODO normalizar en privado o aparte, clase utils
-        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD)
-                .replaceAll("\\p{M}", "")
-                .toLowerCase();
+        String textoNormalizado = Utils.normalizarTexto(texto);
 
         return getContactosUsuarioActual().stream()
             .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
@@ -430,9 +429,7 @@ public class AppChat {
                 List<Mensaje> mensajes = getMensajesDelContacto(c); // Obtiene los mensajes del contacto
                 return mensajes.stream()
                     .filter(m -> textoNormalizado.isBlank() || 
-                        Normalizer.normalize(m.getTexto(), Normalizer.Form.NFD)
-                            .replaceAll("\\p{M}", "")
-                            .toLowerCase()
+                    		Utils.normalizarTexto(m.getTexto())
                             .contains(textoNormalizado)) // Búsqueda sin tildes y flexible
                     .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos
                     .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed()); // Ordena de más reciente a antiguo
@@ -460,22 +457,15 @@ public class AppChat {
             }
         }
         if (!nombre.isBlank()) {
-        	// TODO sacar normalizar
-            String nombreNormalizado = Normalizer.normalize(nombre, Normalizer.Form.NFD)
-                    .replaceAll("\\p{M}", "")
-                    .toLowerCase();
+            String nombreNormalizado = Utils.normalizarTexto(nombre);
 
-            String nombreContactoNormalizado = Normalizer.normalize(c.getNombre(), Normalizer.Form.NFD)
-                    .replaceAll("\\p{M}", "")
-                    .toLowerCase();
+            String nombreContactoNormalizado = Utils.normalizarTexto(c.getNombre());
 
             if (nombreContactoNormalizado.contains(nombreNormalizado)) return true;
 
             if (c instanceof Grupo) {
                 return ((Grupo) c).getMiembros().stream().anyMatch(miembro -> {
-                    String nombreMiembroNormalizado = Normalizer.normalize(miembro.getNombre(), Normalizer.Form.NFD)
-                            .replaceAll("\\p{M}", "")
-                            .toLowerCase();
+                    String nombreMiembroNormalizado = Utils.normalizarTexto(miembro.getNombre());
                     return nombreMiembroNormalizado.contains(nombreNormalizado);
                 });
             }

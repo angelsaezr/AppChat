@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 
 /**
  * Clase utilidades.
@@ -80,5 +81,11 @@ public class Utils {
         g2.drawImage(image, 0, 0, size, size, null);
         g2.dispose();
         return roundedImage;
+    }
+    
+    public static String normalizarTexto(String textoSinNormalizar) {
+    	return Normalizer.normalize(textoSinNormalizar, Normalizer.Form.NFD)
+        .replaceAll("\\p{M}", "")
+        .toLowerCase();
     }
 }
