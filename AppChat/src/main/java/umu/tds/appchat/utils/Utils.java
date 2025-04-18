@@ -83,9 +83,20 @@ public class Utils {
         return roundedImage;
     }
     
+    /**
+     * Normaliza un texto eliminando los acentos y convirtiéndolo a minúsculas.
+     * <p>
+     * Este método utiliza la forma de normalización NFD (Normalization Form Decomposition)
+     * para descomponer los caracteres acentuados en su forma base seguida de los signos diacríticos.
+     * Luego elimina esos signos y convierte todo el texto a minúsculas.
+     * </p>
+     *
+     * @param textoSinNormalizar El texto original que puede contener caracteres acentuados.
+     * @return Una versión del texto sin acentos ni signos diacríticos y en minúsculas.
+     */
     public static String normalizarTexto(String textoSinNormalizar) {
-    	return Normalizer.normalize(textoSinNormalizar, Normalizer.Form.NFD)
-        .replaceAll("\\p{M}", "")
-        .toLowerCase();
+        return Normalizer.normalize(textoSinNormalizar, Normalizer.Form.NFD)
+            .replaceAll("\\p{M}", "")
+            .toLowerCase();
     }
 }

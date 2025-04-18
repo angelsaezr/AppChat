@@ -227,7 +227,7 @@ public class AppChat {
      *
      * @param nombreGrupo nombre del grupo a crear
      * @param miembros lista de nombres de los miembros
-     * @param imagenGrupo archivo de imagen del grupo (puede ser null)
+     * @param rutaImagen ruta de la imagen del grupo
      * @return el grupo creado, o null si no fue posible crear el grupo
      */
     public Grupo agregarGrupo(String nombreGrupo, List<ContactoIndividual> miembros, String rutaImagen) {
@@ -240,12 +240,18 @@ public class AppChat {
     }
 
     /**
-     * Enviar mensaje a un contacto individual.
+     * Envía un mensaje a un contacto individual o a un grupo.
+     * <p>
+     * Dependiendo del tipo del contacto receptor, este método se encarga de enviar un mensaje,
+     * registrar el mensaje enviado, simular la recepción del mensaje por el destinatario (para
+     * mantener la consistencia en ambas direcciones), y actualizar los datos correspondientes en
+     * los adaptadores de datos.
+     * </p>
      *
-     * @param receptor el contacto o grupo al que se desea enviar el mensaje
-     * @param texto contenido del mensaje
-     * @param emoticono código del emoticono adjunto
-     * @return true si el mensaje fue enviado correctamente, false en caso contrario
+     * @param receptor   El contacto destinatario del mensaje. Puede ser un {@link ContactoIndividual} o un {@link Grupo}.
+     * @param texto      El texto del mensaje a enviar.
+     * @param emoticono  El identificador del emoticono asociado al mensaje.
+     * @return {@code true} si el mensaje fue enviado correctamente.
      */
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
     	Mensaje mensajeEnviado;
@@ -272,6 +278,18 @@ public class AppChat {
         return true;
     }
     
+    /**
+     * Simula la recepción de un mensaje por parte de un contacto individual.
+     * <p>
+     * Si el contacto del remitente no existe en la agenda del usuario receptor, se crea automáticamente.
+     * Luego se genera un mensaje con tipo {@code RECIBIDO}, se registra y se actualizan los datos del
+     * contacto en los adaptadores correspondientes.
+     * </p>
+     *
+     * @param contactoReceptor El contacto individual que recibe el mensaje.
+     * @param texto            El contenido del mensaje recibido.
+     * @param emoticono        El identificador del emoticono del mensaje.
+     */
     private void añadirMensajeRecibido(ContactoIndividual contactoReceptor, String texto, int emoticono) {
     	Usuario usuarioReceptor = contactoReceptor.getUsuario();
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());

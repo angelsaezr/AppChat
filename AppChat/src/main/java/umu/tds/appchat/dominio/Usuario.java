@@ -347,6 +347,7 @@ public class Usuario {
      *
      * @param nombreGrupo el nombre con el que se agrega el grupo
      * @param miembros lista de miembros del grupo
+     * @param rutaImagen ruta de la imagen del grupo
      * @return nuevoGrupo grupo añadido
      */
     public Grupo addGrupo(String nombreGrupo, List<ContactoIndividual> miembros, String rutaImagen) {
@@ -389,7 +390,7 @@ public class Usuario {
     /**
      * Añade un mensaje al chat con un grupo del usuario.
      *
-     * @param receptor el grupo en el que se desea agregar el mensaje
+     * @param grupo grupo donde se envia el mensaje
      * @param texto contenido del mensaje
      * @param emoticono código del emoticono adjunto
      * @param tipo enviado o recibido
