@@ -259,8 +259,6 @@ public class AppChat {
         if (repositorioUsuarios.buscarUsuarioPorMovil(movil) != null) {
             return false; // Ya existe un usuario con ese número
         }
-        if (imagen == "") // TODO imagen = imagen por defecto, se hace en ventana
-            imagen = "src/main/resources/profile1.jpg"; // TODO controlador no hace validaciones
         Usuario nuevoUsuario = new Usuario(nombre, movil, contraseña, imagen, saludo, email, fechaNacimiento);
         adaptadorUsuario.registrarUsuario(nuevoUsuario);
         repositorioUsuarios.addUsuario(nuevoUsuario);

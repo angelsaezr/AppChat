@@ -27,6 +27,10 @@ import umu.tds.appchat.controlador.AppChat;
  */
 @SuppressWarnings("serial")
 public class VentanaRegistro extends JDialog {
+	/**
+     * Ruta de la imagen por defecto.
+     */
+	private String IMAGEN_POR_DEFECTO = "src/main/resources/profile1.jpg";
     /**
      * Panel principal que contiene todos los componentes de la ventana.
      */
@@ -319,7 +323,7 @@ public class VentanaRegistro extends JDialog {
         	JOptionPane.showMessageDialog(this, "Carácter '$' no permitido", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        String rutaImagen = "";
+        String rutaImagen = IMAGEN_POR_DEFECTO;
     	if (imagenSeleccionada != null)
     		rutaImagen = imagenSeleccionada.getAbsolutePath();
     	LocalDate fechaNacimientoLocal = LocalDate.now();

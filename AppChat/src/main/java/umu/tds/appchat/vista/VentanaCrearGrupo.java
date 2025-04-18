@@ -29,6 +29,9 @@ import java.io.File;
 
 @SuppressWarnings("serial")
 public class VentanaCrearGrupo extends JDialog {
+	/**
+     * Ruta de la imagen por defecto.
+     */
 	private String IMAGEN_POR_DEFECTO = "src/main/resources/grupo2.jpg";
     /**
      * Campo de texto donde se introduce el nombre del nuevo grupo.
