@@ -27,6 +27,7 @@ import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
 import umu.tds.appchat.dominio.TipoMensaje;
+import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.utils.Utils;
 
 /**
@@ -200,6 +201,8 @@ public class VentanaMain extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        
         // Aplicar FlatLaf
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
@@ -233,13 +236,13 @@ public class VentanaMain extends JFrame {
         
         botonContactos = crearBotonSuperior("👥  Contactos", new Color(0, 128, 128), 155, 15, 110, 30, () -> {
             VentanaContactos tablaContactos = new VentanaContactos(VentanaMain.this);
-            AppChat.getInstance().getContactosUsuarioActual().stream()
+            usuarioActual.getContactos().stream()
                 .filter(ContactoIndividual.class::isInstance)
                 .map(ContactoIndividual.class::cast)
                 .filter(cI -> !cI.getNombre().isBlank())
-                .forEach(cI -> tablaContactos.addContactoIndividual(AppChat.getInstance().getNombreContacto(cI), cI.getMovil(), cI.getSaludo()));
+                .forEach(cI -> tablaContactos.addContactoIndividual(cI.getNombreContacto(), cI.getMovil(), cI.getSaludo()));
             
-            AppChat.getInstance().getContactosUsuarioActual().stream()
+            usuarioActual.getContactos().stream()
                 .filter(Grupo.class::isInstance)
                 .map(Grupo.class::cast)
                 .forEach(g -> {
@@ -497,10 +500,12 @@ public class VentanaMain extends JFrame {
             
             ChatPanel chatPanel = new ChatPanel();
             
-            AppChat.getInstance().getMensajesDelContacto(contactoSeleccionado).stream()
+            Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+            
+            contactoSeleccionado.getMensajes()
             .forEach(mensaje -> {
                 boolean esEnviado = mensaje.getTipo() == TipoMensaje.ENVIADO;
-                String nombre = !esEnviado ? AppChat.getInstance().getNombreContacto(contactoSeleccionado) : AppChat.getInstance().getNombreUsuarioActual();
+                String nombre = !esEnviado ? contactoSeleccionado.getNombreContacto() : usuarioActual.getNombre();
                 
                 if(!esEnviado && contactoSeleccionado instanceof ContactoIndividual && nombre.startsWith("$")) {
                 	ContactoIndividual c = (ContactoIndividual) contactoSeleccionado;
@@ -538,7 +543,7 @@ public class VentanaMain extends JFrame {
     	        System.err.println("No se pudo cargar la imagen: " + fotoUsuario);
     	        e.printStackTrace();
     	    }
-            nombreContactoSeleccionado.setText(AppChat.getInstance().getNombreContacto(contactoSeleccionado));
+            nombreContactoSeleccionado.setText(contactoSeleccionado.getNombreContacto());
             
             panelContactoSeleccionado = new JPanel(new BorderLayout(10, 0));
             panelContactoSeleccionado.setBackground(Color.WHITE);
@@ -657,8 +662,9 @@ public class VentanaMain extends JFrame {
      * Elimina todos los contactos anteriores y carga los nuevos.
      */
     public void actualizarListaContactos() {
+    	Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
         modeloLista.clear();
-        List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
+        List<Contacto> contactos = usuarioActual.getContactos();
         contactos.forEach(modeloLista::addElement);
     }
     
@@ -667,7 +673,8 @@ public class VentanaMain extends JFrame {
      * Carga la imagen desde la ubicación almacenada en la base de datos o un valor predeterminado si no existe.
      */
     public void actualizarImagenPerfil() {
-    	String fotoUsuario = AppChat.getInstance().getImagenPerfil();
+    	Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+    	String fotoUsuario = usuarioActual.getImagen();
         Image imagenOriginal;
         if (fotoUsuario != "") {
         	try {

@@ -10,7 +10,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
@@ -121,7 +120,7 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 	        e.printStackTrace();
 	    }
 		// Configuración del texto
-		lblNombre.setText(AppChat.getInstance().getNombreContacto(contacto));
+		lblNombre.setText(contacto.getNombreContacto());
 		
 		ContactoIndividual c;
 		if (contacto instanceof ContactoIndividual) {
@@ -130,7 +129,9 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 			lblSaludo.setText(c.getSaludo());
 		} else {
 			Grupo g = (Grupo) contacto;
-			List<String> miembros = AppChat.getInstance().getMiembrosGrupo(g);
+			List<String> miembros = g.getMiembros().stream()
+	                .map(ContactoIndividual::getNombre) // Obtener el nombre de cada contacto
+	                .collect(Collectors.toList()); // Convertir a lista;
 
 			// Elimina todas las apariciones del carácter '$' en cada string
 			List<String> miembrosSinSimbolo = miembros.stream()

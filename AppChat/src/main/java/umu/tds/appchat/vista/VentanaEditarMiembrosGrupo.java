@@ -12,6 +12,7 @@ import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Grupo;
+import umu.tds.appchat.dominio.Usuario;
 
 /**
  * Diálogo para editar los miembros de un grupo existente.
@@ -86,8 +87,9 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         // Listas
         contactListModel = new DefaultListModel<>();
         groupListModel = new DefaultListModel<>();
-
-        List<Contacto> listaContactos = AppChat.getInstance().getContactosUsuarioActual();
+        
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        List<Contacto> listaContactos = usuarioActual.getContactos();
         listaContactos.stream()
         	.filter(c -> c instanceof ContactoIndividual)
         	.map(c -> (ContactoIndividual) c)

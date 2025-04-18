@@ -8,6 +8,7 @@ import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.TipoMensaje;
+import umu.tds.appchat.dominio.Usuario;
 
 import java.io.FileOutputStream;
 import java.time.format.DateTimeFormatter;
@@ -51,12 +52,13 @@ public class ExportPDF {
                 System.err.println("No se pudo cargar el logo: " + e.getMessage());
             }
 
-
+            Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+            
             // Título del documento
             Font estiloTitulo = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD);
             Paragraph encabezado;
             if (contacto instanceof ContactoIndividual) {
-                encabezado = new Paragraph("Conversación entre " + AppChat.getInstance().getNombreContacto(contacto) + " y " + AppChat.getInstance().getNombreUsuarioActual(), estiloTitulo);
+                encabezado = new Paragraph("Conversación entre " + contacto.getNombreContacto() + " y " + usuarioActual.getNombre(), estiloTitulo);
             } else {
                 encabezado = new Paragraph("Conversación del grupo \"" + contacto.getNombre() + "\"", estiloTitulo);
             }
@@ -79,10 +81,10 @@ public class ExportPDF {
                 contenedor.setWidthPercentage(70);
                 if (mensaje.getTipo() == TipoMensaje.ENVIADO) {
                     contenedor.setHorizontalAlignment(Element.ALIGN_RIGHT);
-                    autor = AppChat.getInstance().getNombreUsuarioActual();
+                    autor = usuarioActual.getNombre();
                 } else {
                     contenedor.setHorizontalAlignment(Element.ALIGN_LEFT);
-                    autor = AppChat.getInstance().getNombreContacto(contacto);
+                    autor = contacto.getNombreContacto();
                 }
 
                 // Autor (opcional si quieres mostrarlo en cada mensaje)

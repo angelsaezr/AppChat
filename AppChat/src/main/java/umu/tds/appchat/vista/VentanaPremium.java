@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.TipoDescuento;
+import umu.tds.appchat.dominio.Usuario;
 
 /**
  * Ventana para seleccionar el tipo de descuento para la suscripción Premium.
@@ -83,7 +84,9 @@ public class VentanaPremium extends JDialog {
         panel.add(panelBotones, gbc);
 
         add(panel);
-
+       
+    	Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        
         // Acción de los botones
         btnCancelar.addActionListener(e -> dispose());
         btnAceptar.addActionListener(e -> {
@@ -91,7 +94,7 @@ public class VentanaPremium extends JDialog {
             String tipoDescuento = (String) comboDescuentos.getSelectedItem();
             TipoDescuento tipo = tipoDescuento.equals("Descuento por Fecha") ? TipoDescuento.FECHA : TipoDescuento.MENSAJE;
             AppChat.getInstance().activarPremium(tipo);
-            double descuentoAplicado = AppChat.getInstance().getDescuento();
+            double descuentoAplicado = usuarioActual.calcularDescuento();
             double precioFinal = AppChat.COSTE_PREMIUM * (1 - descuentoAplicado);
             
             // Mostrar el diálogo con el precio final

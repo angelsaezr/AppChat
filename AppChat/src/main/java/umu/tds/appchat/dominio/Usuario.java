@@ -188,7 +188,7 @@ public class Usuario {
      * 
      * @return valor del descuento aplicado o 0.0 si no hay descuento
      */
-    public double calDescuento() {
+    public double calcularDescuento() {
         return descuento
             .map(d -> d.getDescuento(getNumMensajesEnviados())) // Si hay descuento, aplica la función getDescuento
             .orElse(0.0); // Si no hay descuento, devuelve 0.0

@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 import umu.tds.appchat.controlador.AppChat;
+import umu.tds.appchat.dominio.Usuario;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -65,6 +66,8 @@ public class VentanaContactos extends JDialog {
 		tableContactos = new JTable(tableModelContactos);
 		JScrollPane scrollContactos = new JScrollPane(tableContactos);
 		
+		Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+		
 		// Agrega evento de clic a la tabla de contactos individuales
 		tableContactos.addMouseListener(new java.awt.event.MouseAdapter() {
 		    @Override
@@ -72,8 +75,7 @@ public class VentanaContactos extends JDialog {
 		        int row = tableContactos.getSelectedRow();
 		        if (row != -1) {
 		            String nombre = (String) tableModelContactos.getValueAt(row, 0);
-		            
-		            AppChat.getInstance().getContactosUsuarioActual().stream()
+		            usuarioActual.getContactos().stream()
 		                .filter(contacto -> contacto.getNombre().equals(nombre))
 		                .findFirst()
 		                .ifPresent(contacto -> {
@@ -96,7 +98,7 @@ public class VentanaContactos extends JDialog {
 		        if (row != -1) {
 		            String nombre = (String) tableModelGrupos.getValueAt(row, 0);
 		            
-		            AppChat.getInstance().getContactosUsuarioActual().stream()
+		            usuarioActual.getContactos().stream()
 		                .filter(contacto -> contacto.getNombre().equals(nombre))
 		                .findFirst()
 		                .ifPresent(contacto -> {

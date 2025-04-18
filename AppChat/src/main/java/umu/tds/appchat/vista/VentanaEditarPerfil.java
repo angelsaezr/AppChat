@@ -4,6 +4,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import umu.tds.appchat.controlador.AppChat;
+import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.utils.Utils;
 
 import java.awt.*;
@@ -93,7 +94,9 @@ public class VentanaEditarPerfil extends JDialog {
         //lblImagenPerfil.setBackground(Color.LIGHT_GRAY);
         //lblImagenPerfil.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         
-        String fotoUsuario = AppChat.getInstance().getImagenPerfil();
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        
+        String fotoUsuario = usuarioActual.getImagen();
         Image imagenOriginal;
         if (fotoUsuario != "") {
         	try {
@@ -179,7 +182,7 @@ public class VentanaEditarPerfil extends JDialog {
         gbc.gridwidth = 1;
         panelPrincipal.add(lblSaludo, gbc);
 
-        txtSaludo = new JTextField(AppChat.getInstance().getSaludo());
+        txtSaludo = new JTextField(usuarioActual.getSaludo());
         txtSaludo.setPreferredSize(new Dimension(200, 25));
         gbc.gridx = 1;
         panelPrincipal.add(txtSaludo, gbc);

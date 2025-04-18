@@ -7,6 +7,7 @@ import java.util.List;
 import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
+import umu.tds.appchat.dominio.Usuario;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -123,15 +124,17 @@ public class VentanaCrearGrupo extends JDialog {
         groupNameField = new JTextField(33);
         gbc.gridx = 0; gbc.gridy = 1;
         panel.add(groupNameField, gbc);
-
+        
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        
         // Listas
         contactListModel = new DefaultListModel<>();
         groupListModel = new DefaultListModel<>();
-        listaContactos = AppChat.getInstance().getContactosUsuarioActual();
+        listaContactos = usuarioActual.getContactos();
         listaContactos.stream()
         	.filter(c -> c instanceof ContactoIndividual)
         	.filter(c -> AppChat.getInstance().esContactoAgregado(c))
-        	.map(c -> AppChat.getInstance().getNombreContacto(c) + " (" + ((ContactoIndividual) c).getMovil() + ")")
+        	.map(c -> c.getNombreContacto() + " (" + ((ContactoIndividual) c).getMovil() + ")")
         	.forEach(contactListModel::addElement);
 
 

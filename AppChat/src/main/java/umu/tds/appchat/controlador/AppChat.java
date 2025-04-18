@@ -2,7 +2,6 @@ package umu.tds.appchat.controlador;
 
 import java.io.File;
 
-import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -134,33 +133,6 @@ public class AppChat {
     public Usuario getUsuarioActual() {
         return usuarioActual;
     }
-
-    /**
-     * Obtiene la imagen de perfil del usuario actual.
-     *
-     * @return la imagen del perfil del usuario actual
-     */
-    public String getImagenPerfil() {
-        return usuarioActual.getImagen();
-    }
-
-    /**
-     * Obtiene el nombre del usuario actual.
-     *
-     * @return el nombre del usuario actual
-     */
-    public String getNombreUsuarioActual() {
-        return usuarioActual.getNombre();
-    }
-
-    /**
-     * Obtiene el saludo personalizado del usuario actual.
-     *
-     * @return el saludo del usuario actual
-     */
-    public String getSaludo() {
-        return usuarioActual.getSaludo();
-    }
     
     /**
      * Comprobar si el contacto es miembro del grupo.
@@ -172,40 +144,8 @@ public class AppChat {
     public boolean esMiembroGrupo(String contacto, String grupo) {
         return usuarioActual.esMiembroGrupo(contacto, grupo);
     }
-
-    /**
-     * Obtiene los mensajes del contacto especificado.
-     *
-     * @param contacto el contacto del cual se quieren obtener los mensajes
-     * @return lista de mensajes del contacto
-     */
-    public List<Mensaje> getMensajesDelContacto(Contacto contacto) {
-        return usuarioActual.getMensajesDeContacto(contacto);
-    }
-
-    /**
-     * Obtiene la lista de contactos del usuario actual.
-     *
-     * @return lista de contactos del usuario actual
-     */
-    public List<Contacto> getContactosUsuarioActual() {
-        return usuarioActual.getContactos();
-    }
-
-    /**
-     * Obtiene los nombres de los miembros de un grupo.
-     *
-     * @param grupo el grupo del que se quieren obtener los miembros
-     * @return lista con los nombres de los miembros del grupo
-     */
-    public List<String> getMiembrosGrupo(Grupo grupo) {
-        return grupo.getMiembros().stream()
-                .map(ContactoIndividual::getNombre) // Obtener el nombre de cada contacto
-                .collect(Collectors.toList()); // Convertir a lista
-    }
     
     // TODO cargar appchar ponerlo para tutoria
-    // TODO quitar los gets
     // TODO lo de asignar nombre 
 
     /**
@@ -215,8 +155,6 @@ public class AppChat {
      * @return true si se activó correctamente, false si no hay usuario actual
      */
     public boolean activarPremium(TipoDescuento tipo) {
-        if (usuarioActual == null) return false;
-
         usuarioActual.setPremium(true); // TODO  solo 1 metodo, que retorne el valor del descuento
         usuarioActual.setDescuento(tipo);
         
@@ -231,8 +169,6 @@ public class AppChat {
      * @return true si se desactivó correctamente, false si no hay usuario actual
      */
     public boolean anularPremium() {
-        if (usuarioActual == null) return false;
-
         this.usuarioActual.setPremium(false);
         usuarioActual.removeDescuento();
         
@@ -326,8 +262,6 @@ public class AppChat {
      * @return true si el mensaje fue enviado correctamente, false en caso contrario
      */
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
-        if (usuarioActual == null) return false;
-
         // TODO patron creador, cambiar
         // Crea y registrar mensaje
         Mensaje mensaje = new Mensaje(texto, emoticono, TipoMensaje.ENVIADO, LocalDateTime.now());
@@ -423,10 +357,10 @@ public class AppChat {
     	// TODO normalizar en privado o aparte, clase utils
         String textoNormalizado = Utils.normalizarTexto(texto);
 
-        return getContactosUsuarioActual().stream()
+        return usuarioActual.getContactos().stream()
             .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
             .flatMap(c -> {
-                List<Mensaje> mensajes = getMensajesDelContacto(c); // Obtiene los mensajes del contacto
+                List<Mensaje> mensajes = c.getMensajes(); // Obtiene los mensajes del contacto
                 return mensajes.stream()
                     .filter(m -> textoNormalizado.isBlank() || 
                     		Utils.normalizarTexto(m.getTexto())
@@ -533,18 +467,6 @@ public class AppChat {
     }
 
     /**
-     * Obtiene el nombre visible del contacto. Si no tiene nombre, devuelve su número de móvil.
-     *
-     * @param c el contacto
-     * @return nombre del contacto o su móvil si el nombre está vacío
-     */
-    public String getNombreContacto(Contacto c) {
-        return c.getNombre().startsWith("$") && c instanceof ContactoIndividual 
-            ? ((ContactoIndividual) c).getMovil() 
-            : c.getNombre();
-    }
-
-    /**
      * Verifica si el contacto ha sido agregado por el usuario.
      *
      * @param contacto el contacto a verificar
@@ -554,15 +476,6 @@ public class AppChat {
         if (contacto.getNombre() == "")
             return false;
         return true;
-    }
-
-    /**
-     * Obtiene el valor del descuento aplicado al usuario actual.
-     *
-     * @return descuento aplicado
-     */
-    public double getDescuento() {
-        return usuarioActual.calDescuento();
     }
 
     /**

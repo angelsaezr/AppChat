@@ -8,6 +8,7 @@ import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.Mensaje;
 import umu.tds.appchat.dominio.TipoMensaje;
+import umu.tds.appchat.dominio.Usuario;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -151,19 +152,21 @@ public class VentanaBuscarMensaje extends JDialog {
             JOptionPane.showMessageDialog(this, "No se encontraron mensajes con los criterios proporcionados.", "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-
+        
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        
         List<JPanel> resultados = mensajes.stream()
             .map(m -> {
-                Contacto contacto = AppChat.getInstance().getContactosUsuarioActual().stream()
-                    .filter(c -> AppChat.getInstance().getMensajesDelContacto(c).contains(m))
+                Contacto contacto = usuarioActual.getContactos().stream()
+                    .filter(c -> c.getMensajes().contains(m))
                     .findFirst().orElse(null);
 
                 String emisor = (m.getTipo() == TipoMensaje.ENVIADO) 
-                    ? AppChat.getInstance().getNombreUsuarioActual()
-                    : AppChat.getInstance().getNombreContacto(contacto);
+                    ? usuarioActual.getNombre()
+                    : contacto.getNombreContacto();
                 String receptor = (m.getTipo() == TipoMensaje.ENVIADO) 
-                    ? AppChat.getInstance().getNombreContacto(contacto) 
-                    : AppChat.getInstance().getNombreUsuarioActual();
+                    ? contacto.getNombreContacto() 
+                    : usuarioActual.getNombre();
                 
                 return crearPanelMensaje(emisor, receptor, m.getTexto(), contacto);
             })

@@ -15,6 +15,7 @@ import umu.tds.appchat.controlador.AppChat;
 import umu.tds.appchat.dominio.Contacto;
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.Mensaje;
+import umu.tds.appchat.dominio.Usuario;
 import umu.tds.appchat.utils.ExportPDF;
 
 /**
@@ -60,7 +61,8 @@ public class VentanaExportarPDF extends JDialog {
         JPanel panelSeleccion = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
         panelSeleccion.add(new JLabel("Seleccionar un contacto para exportar mensajes:"));
         
-        List<Contacto> contactos = AppChat.getInstance().getContactosUsuarioActual();
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        List<Contacto> contactos = usuarioActual.getContactos();
         List<Contacto> contactosAgregados = new ArrayList<>();
 
         contactos.stream()
@@ -76,7 +78,7 @@ public class VentanaExportarPDF extends JDialog {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof Contacto) {
                     Contacto c = (Contacto) value;
-                    String texto = AppChat.getInstance().getNombreContacto(c);
+                    String texto = c.getNombreContacto();
                     if (c instanceof ContactoIndividual) {
                         texto += " (" + ((ContactoIndividual) c).getMovil() + ")";
                     }
@@ -135,7 +137,7 @@ public class VentanaExportarPDF extends JDialog {
                     }
 
                     try {
-                        List<Mensaje> mensajes = AppChat.getInstance().getMensajesDelContacto(contacto);
+                        List<Mensaje> mensajes = contacto.getMensajes();
                         ExportPDF.crearPDF(contacto, mensajes, ruta);
                         
                         JOptionPane.showMessageDialog(

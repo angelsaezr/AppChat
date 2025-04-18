@@ -105,4 +105,15 @@ public abstract class Contacto {
      * @return ruta o identificador de la imagen del contacto
      */
     public abstract String getImagen();
+
+	/**
+	 * Obtiene el nombre visible del contacto. Si no tiene nombre, devuelve su número de móvil.
+	 *
+	 * @return nombre del contacto o su móvil si el nombre está vacío
+	 */
+	public String getNombreContacto() {
+	    return getNombre().startsWith("$") && this instanceof ContactoIndividual 
+	        ? ((ContactoIndividual) this).getMovil() 
+	        : getNombre();
+	}
 }
