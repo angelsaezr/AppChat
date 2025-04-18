@@ -26,8 +26,10 @@ import java.io.File;
  * @author Ángel
  * @author Francisco Javier
  */
+
 @SuppressWarnings("serial")
 public class VentanaCrearGrupo extends JDialog {
+	private String IMAGEN_POR_DEFECTO = "src/main/resources/grupo2.jpg";
     /**
      * Campo de texto donde se introduce el nombre del nuevo grupo.
      */
@@ -226,13 +228,33 @@ public class VentanaCrearGrupo extends JDialog {
         	if(groupNameField.getText().isBlank() || groupListModel.isEmpty())
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         	else {
-        		List<String> miembros = new LinkedList<>();
-                for (int i = 0; i < groupListModel.size(); i++) {
-                	String contactoInfo2 = groupListModel.get(i);
-                	String nombre = contactoInfo2.substring(0, contactoInfo2.indexOf(" ("));
-                	miembros.add(nombre); // Agregar cada elemento a la lista
+        		List<ContactoIndividual> miembros = new LinkedList<>();
+                
+        		for (int i = 0; i < groupListModel.getSize(); i++) {
+                    String entrada = groupListModel.get(i);
+                    // Extrae el número de teléfono entre paréntesis
+                    int inicio = entrada.indexOf('(');
+                    int fin = entrada.indexOf(')');
+                    if (inicio != -1 && fin != -1 && inicio < fin) {
+                        String movil = entrada.substring(inicio + 1, fin);
+                        for (Contacto c : listaContactos) {
+                            if (c instanceof ContactoIndividual) {
+                                ContactoIndividual ci = (ContactoIndividual) c;
+                                if (ci.getMovil().equals(movil)) {
+                                    miembros.add(ci);
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
-        		if(AppChat.getInstance().agregarGrupo(groupNameField.getText(), miembros, imagenSeleccionada) == null)
+        		
+                String rutaImagen = "";
+                if (imagenSeleccionada != null)
+                    rutaImagen = imagenSeleccionada.getAbsolutePath();
+                else
+                    rutaImagen = IMAGEN_POR_DEFECTO;
+        		if(AppChat.getInstance().agregarGrupo(groupNameField.getText(), miembros, rutaImagen) == null)
         			JOptionPane.showMessageDialog(this, "Error", "Error", JOptionPane.ERROR_MESSAGE);
         		else {
         			JOptionPane.showMessageDialog(this, "Grupo creado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);

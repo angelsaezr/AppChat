@@ -319,60 +319,37 @@ public class Usuario {
      * Añade un nuevo contacto al usuario si no está repetido.
      * Verifica que no haya conflictos de móvil en contactos individuales.
      *
-     * @param contacto el contacto a añadir
-     * @return true si fue añadido correctamente, false en caso de duplicados o errores
+     * @param nombre el nombre con el que se agrega el contacto
+     * @param usuarioContacto el usuario que se está agregando como contacto
+     * @return nuevoContacto si fue añadido correctamente, null en caso de duplicados o errores
      */
-    public boolean addContacto(Contacto contacto) {
-        if (contacto == null || contactos.contains(contacto)) return false;
+    public ContactoIndividual addContactoIndividual(String nombre, Usuario usuarioContacto) {
+    	ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
+        boolean movilDuplicado = contactos.stream()
+        	.filter(c -> c instanceof ContactoIndividual)
+        	.map(c -> (ContactoIndividual) c)
+        	.anyMatch(cI -> cI.getMovil().equals(nuevoContacto.getMovil()));
 
-        // Solo comprobar móviles duplicados si el contacto es individual
-        if (contacto instanceof ContactoIndividual) {
-            ContactoIndividual nuevoCI = (ContactoIndividual) contacto;
+       	if (movilDuplicado || usuarioContacto.getMovil().equals(this.movil)) return null;
 
-            boolean movilDuplicado = contactos.stream()
-                .filter(c -> c instanceof ContactoIndividual)
-                .map(c -> (ContactoIndividual) c)
-                .anyMatch(cI -> cI.getMovil().equals(nuevoCI.getMovil()));
+       	contactos.add(nuevoContacto);
 
-            if (movilDuplicado) {
-                return false;
-            }
-        }
+        return nuevoContacto;
+    }
+    
+    /**
+     * Añade un nuevo grupo al usuario.
+     *
+     * @param nombreGrupo el nombre con el que se agrega el grupo
+     * @param miembros lista de miembros del grupo
+     * @return nuevoGrupo grupo añadido
+     */
+    public Grupo addGrupo(String nombreGrupo, List<ContactoIndividual> miembros, String rutaImagen) {
+    	Grupo nuevoGrupo = new Grupo(nombreGrupo, miembros, rutaImagen);
 
-        boolean esMismoMovil;
+       	contactos.add(nuevoGrupo);
 
-        if (contacto instanceof ContactoIndividual) {
-            ContactoIndividual c = (ContactoIndividual) contacto;
-            esMismoMovil = c.getUsuario().getMovil().equals(this.movil);
-        } else if (contacto instanceof Grupo) {
-            Grupo g = (Grupo) contacto;
-            esMismoMovil = g.getMiembros().stream()
-                    .map(ContactoIndividual::getUsuario)
-                    .map(Usuario::getMovil)
-                    .anyMatch(movil -> movil.equals(this.movil));
-        } else {
-            esMismoMovil = false;
-        }
-
-        // Si no es el mismo móvil y es un contacto individual, actualiza si ya existe
-        if (!esMismoMovil && contacto instanceof ContactoIndividual) {
-            ContactoIndividual contactoIndividual = (ContactoIndividual) contacto;
-
-            // Buscar y actualizar el contacto si ya existe
-            boolean contactoActualizado = contactos.stream()
-                .filter(c -> c instanceof ContactoIndividual) // Solo los ContactoIndividual
-                .map(c -> (ContactoIndividual) c)
-                .filter(cI -> cI.getUsuario().getMovil().equals(contactoIndividual.getMovil())) // Comparamos los móviles
-                .peek(cI -> cI.setNombre(contacto.getNombre())) // Actualizamos el nombre
-                .findFirst()
-                .isPresent();
-
-            if (contactoActualizado) {
-                return true;
-            }
-        }
-
-        return !esMismoMovil && contactos.add(contacto);
+        return nuevoGrupo;
     }
 
     /**

@@ -6,7 +6,6 @@ import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -291,20 +290,15 @@ public class AppChat {
      * @param movil número de móvil del contacto
      * @return el contacto individual creado, o null si no fue posible agregarlo
      */
-    public ContactoIndividual agregarContacto(String nombre, String movil) {
-        if (usuarioActual == null) return null;
-
+    public ContactoIndividual agregarContactoIndividual(String nombre, String movil) {
         Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(movil);
         if (usuarioContacto == null) return null;
-
-        // TODO usuario debe crear contacto
-        ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
-        if (usuarioActual.addContacto(nuevoContacto)) {
+        ContactoIndividual nuevoContacto = usuarioActual.addContactoIndividual(nombre, usuarioContacto);
+        if (nuevoContacto != null) {
             adaptadorContactoIndividual.registrarContactoIndividual(nuevoContacto);
             adaptadorUsuario.modificarUsuario(usuarioActual);
-            return nuevoContacto;
         }
-        return null;
+        return nuevoContacto;
     }
 
     /**
@@ -315,37 +309,12 @@ public class AppChat {
      * @param imagenGrupo archivo de imagen del grupo (puede ser null)
      * @return el grupo creado, o null si no fue posible crear el grupo
      */
-    public Grupo agregarGrupo(String nombreGrupo, List<String> miembros, File imagenGrupo) {
-        if (usuarioActual == null) return null;
-
-        String rutaImagen = "";
-        if (imagenGrupo != null)
-            rutaImagen = imagenGrupo.getAbsolutePath();
-        else
-            rutaImagen = "src/main/resources/grupo2.jpg";
-
-        // TODO 
-        List<ContactoIndividual> contactos = new LinkedList<ContactoIndividual>();
-        try {
-            contactos = getContactosUsuarioActual().stream()
-                .filter(c -> c instanceof ContactoIndividual)
-                .map(c -> (ContactoIndividual) c)
-                .filter(cI -> miembros.contains(cI.getNombre()))
-                .peek(cI -> {
-                    Usuario usuarioContacto = repositorioUsuarios.buscarUsuarioPorMovil(cI.getMovil());
-                    if (usuarioContacto == null || cI.getMovil().equals(usuarioActual.getMovil())) {
-                        throw new IllegalStateException("Contacto inválido");
-                    }
-                })
-                .collect(Collectors.toList());
-        } catch (IllegalStateException e) {
-            return null;
-        }
-
-        Grupo nuevoGrupo = new Grupo(nombreGrupo, contactos, rutaImagen);
-        adaptadorGrupo.registrarGrupo(nuevoGrupo);
-        usuarioActual.addContacto(nuevoGrupo);
-        adaptadorUsuario.modificarUsuario(usuarioActual);
+    public Grupo agregarGrupo(String nombreGrupo, List<ContactoIndividual> miembros, String rutaImagen) {
+    	Grupo nuevoGrupo = usuarioActual.addGrupo(nombreGrupo, miembros, rutaImagen);
+    	if (nuevoGrupo != null) {
+    		adaptadorGrupo.registrarGrupo(nuevoGrupo);
+            adaptadorUsuario.modificarUsuario(usuarioActual);
+    	}
         return nuevoGrupo;
     }
 
@@ -392,8 +361,7 @@ public class AppChat {
         ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
 
         if (contactoSender == null) {
-            contactoSender = new ContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
-            usuarioReceptor.addContacto(contactoSender);
+        	contactoSender = usuarioReceptor.addContactoIndividual("$"+usuarioActual.getMovil(), usuarioActual);
             adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
             adaptadorUsuario.modificarUsuario(usuarioReceptor);
         }
@@ -422,8 +390,7 @@ public class AppChat {
         .forEach(usuarioReceptor -> {
             ContactoIndividual contactoSender = usuarioReceptor.getContactoIndividual(usuarioActual.getMovil());
             if (contactoSender == null) {
-                contactoSender = new ContactoIndividual("$" + usuarioActual.getMovil(), usuarioActual);
-                usuarioReceptor.addContacto(contactoSender);
+            	contactoSender = usuarioReceptor.addContactoIndividual("$" + usuarioActual.getMovil(), usuarioActual);
                 adaptadorContactoIndividual.registrarContactoIndividual(contactoSender);
                 adaptadorUsuario.modificarUsuario(usuarioReceptor);
             }

@@ -109,7 +109,7 @@ public class VentanaCrearContacto extends JDialog {
         	if(nameField.getText().isBlank() || phoneField.getText().isBlank())
         		JOptionPane.showMessageDialog(this, "Es obligatorio rellenar todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
         	else {
-        		if(AppChat.getInstance().agregarContacto(nameField.getText(), phoneField.getText()) != null) {
+        		if(AppChat.getInstance().agregarContactoIndividual(nameField.getText(), phoneField.getText()) != null) {
         			JOptionPane.showMessageDialog(this, "Contacto agregado correctamente", "Información", JOptionPane.INFORMATION_MESSAGE);
     				ventanaMain.actualizarListaContactos();
     				dispose();

@@ -132,9 +132,15 @@ public class ContactoListCellRenderer extends JPanel implements ListCellRenderer
 			Grupo g = (Grupo) contacto;
 			List<String> miembros = AppChat.getInstance().getMiembrosGrupo(g);
 
-			// Usamos `joining(", ")` para unir los nombres
-			String miembrosTexto = miembros.stream()
+			// Elimina todas las apariciones del carácter '$' en cada string
+			List<String> miembrosSinSimbolo = miembros.stream()
+			    .map(nombre -> nombre.replace("$", ""))
+			    .collect(Collectors.toList());
+
+			// Unir los nombres sin '$'
+			String miembrosTexto = miembrosSinSimbolo.stream()
 			    .collect(Collectors.joining(", "));
+
 
 			lblTelefono.setText("Miembros: " + miembrosTexto);
 			lblSaludo.setText("");
