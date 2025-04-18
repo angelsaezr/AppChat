@@ -248,8 +248,6 @@ public class AppChat {
      * @return true si el mensaje fue enviado correctamente, false en caso contrario
      */
     public boolean enviarMensajeContacto(Contacto receptor, String texto, int emoticono) {
-        // TODO patron creador, cambiar
-        // Crea y registrar mensaje
     	Mensaje mensajeEnviado;
     	if (receptor instanceof ContactoIndividual) {
     		ContactoIndividual contactoReceptor = (ContactoIndividual) receptor;
