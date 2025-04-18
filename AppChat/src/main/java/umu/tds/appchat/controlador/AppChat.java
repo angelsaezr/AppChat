@@ -354,11 +354,10 @@ public class AppChat {
      */
     public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
         // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
-    	// TODO normalizar en privado o aparte, clase utils
         String textoNormalizado = Utils.normalizarTexto(texto);
 
         return usuarioActual.getContactos().stream()
-            .filter(c -> esContactoRelevante(c, movil, contacto)) // Filtra contactos relevantes
+            .filter(c -> contactoCumpleFiltros(c, movil, contacto)) // Filtra contactos relevantes
             .flatMap(c -> {
                 List<Mensaje> mensajes = c.getMensajes(); // Obtiene los mensajes del contacto
                 return mensajes.stream()
@@ -379,8 +378,7 @@ public class AppChat {
      * @param nombre nombre para filtrar
      * @return true si el contacto cumple con los criterios de búsqueda, false en caso contrario
      */
-    private boolean esContactoRelevante(Contacto c, String movil, String nombre) {
-    	// TODO cambiar nombre metodo (contacto cumple filtros)
+    private boolean contactoCumpleFiltros(Contacto c, String movil, String nombre) {
     	// TODO en dominio
     	if (!movil.isBlank()) {
             if (c instanceof ContactoIndividual) {
