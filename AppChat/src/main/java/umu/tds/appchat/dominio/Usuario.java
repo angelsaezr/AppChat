@@ -364,8 +364,6 @@ public class Usuario {
      * @return true si el contacto fue eliminado, false si no se encontró o era null
      */
     public boolean removeContacto(Contacto contacto) {
-        if (contacto == null)
-            return false;
         return contactos.remove(contacto);
     }
 
