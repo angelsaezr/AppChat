@@ -317,7 +317,7 @@ public class AppChat {
         String textoNormalizado = Utils.normalizarTexto(texto);
 
         return usuarioActual.getContactos().stream()
-            .filter(c -> contactoCumpleFiltros(c, movil, contacto)) // Filtra contactos relevantes
+            .filter(c -> c.contactoCumpleFiltros(movil, contacto)) // Filtra contactos relevantes
             .flatMap(c -> {
                 List<Mensaje> mensajes = c.getMensajes(); // Obtiene los mensajes del contacto
                 return mensajes.stream()
@@ -328,42 +328,6 @@ public class AppChat {
                     .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed()); // Ordena de más reciente a antiguo
             })
             .collect(Collectors.toList()); // Recoge los resultados en una lista
-    }
-
-    /**
-     * Determina si un contacto es relevante según el móvil o el nombre proporcionado.
-     *
-     * @param c el contacto a evaluar
-     * @param movil número de móvil para filtrar
-     * @param nombre nombre para filtrar
-     * @return true si el contacto cumple con los criterios de búsqueda, false en caso contrario
-     */
-    private boolean contactoCumpleFiltros(Contacto c, String movil, String nombre) {
-    	// TODO en dominio
-    	if (!movil.isBlank()) {
-            if (c instanceof ContactoIndividual) {
-                return ((ContactoIndividual) c).getMovil().equals(movil);
-            } else if (c instanceof Grupo) {
-                return ((Grupo) c).getMiembros().stream()
-                    .anyMatch(miembro -> miembro.getMovil().equals(movil));
-            }
-        }
-        if (!nombre.isBlank()) {
-            String nombreNormalizado = Utils.normalizarTexto(nombre);
-
-            String nombreContactoNormalizado = Utils.normalizarTexto(c.getNombre());
-
-            if (nombreContactoNormalizado.contains(nombreNormalizado)) return true;
-
-            if (c instanceof Grupo) {
-                return ((Grupo) c).getMiembros().stream().anyMatch(miembro -> {
-                    String nombreMiembroNormalizado = Utils.normalizarTexto(miembro.getNombre());
-                    return nombreMiembroNormalizado.contains(nombreNormalizado);
-                });
-            }
-            return false;
-        }
-        return true; // Si no hay filtros, se considera relevante
     }
 
     /**

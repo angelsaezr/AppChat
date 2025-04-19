@@ -3,6 +3,8 @@ package umu.tds.appchat.dominio;
 import java.util.LinkedList;
 import java.util.List;
 
+import umu.tds.appchat.utils.Utils;
+
 /**
  * Clase contacto. Un contacto puede ser individual o un grupo.
  * 
@@ -115,5 +117,39 @@ public abstract class Contacto {
 	    return getNombre().startsWith("$") && this instanceof ContactoIndividual 
 	        ? ((ContactoIndividual) this).getMovil() 
 	        : getNombre();
+	}
+
+	/**
+	 * Determina si un contacto cumple los filtros de móvil y nombre.
+	 *
+	 * @param movil número de móvil para filtrar
+	 * @param nombre nombre para filtrar
+	 * @return true si el contacto cumple con los criterios de búsqueda, false en caso contrario
+	 */
+	public boolean contactoCumpleFiltros(String movil, String nombre) {
+		if (!movil.isBlank()) {
+	        if (this instanceof ContactoIndividual) {
+	            return ((ContactoIndividual) this).getMovil().equals(movil);
+	        } else if (this instanceof Grupo) {
+	            return ((Grupo) this).getMiembros().stream()
+	                .anyMatch(miembro -> miembro.getMovil().equals(movil));
+	        }
+	    }
+	    if (!nombre.isBlank()) {
+	        String nombreNormalizado = Utils.normalizarTexto(nombre);
+	
+	        String nombreContactoNormalizado = Utils.normalizarTexto(getNombre());
+	
+	        if (nombreContactoNormalizado.contains(nombreNormalizado)) return true;
+	
+	        if (this instanceof Grupo) {
+	            return ((Grupo) this).getMiembros().stream().anyMatch(miembro -> {
+	                String nombreMiembroNormalizado = Utils.normalizarTexto(miembro.getNombre());
+	                return nombreMiembroNormalizado.contains(nombreNormalizado);
+	            });
+	        }
+	        return false;
+	    }
+	    return true; // Si no hay filtros, se considera que los cumple
 	}
 }
