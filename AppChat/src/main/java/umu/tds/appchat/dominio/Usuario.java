@@ -382,12 +382,16 @@ public class Usuario {
      * @return el mensaje añadido al chat
      */
     public Mensaje enviarMensajeAContactoIndividual(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
-    	Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
-    	ContactoIndividual receptorEnLista = (ContactoIndividual)contactos.stream()
-    			.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
-    			.findFirst()
-    			.get();
-    	receptorEnLista.addMensaje(mensaje);
+        Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
+
+        ContactoIndividual receptorEnLista = contactos.stream()
+            .filter(c -> c instanceof ContactoIndividual)
+            .map(c -> (ContactoIndividual) c)
+            .filter(c -> c.getMovil().equals(receptor.getMovil()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Contacto individual no encontrado: " + receptor.getMovil()));
+
+        receptorEnLista.addMensaje(mensaje);
         return mensaje;
     }
     
@@ -401,12 +405,16 @@ public class Usuario {
      * @return el mensaje añadido al chat del grupo
      */
     public Mensaje enviarMensajeAGrupo(Grupo grupo, String texto, int emoticono, TipoMensaje tipo) {
-    	Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
-    	Grupo grupoEnLista = (Grupo)contactos.stream()
-    			.filter(contacto -> contacto.getNombre().equals(grupo.getNombre()))
-    			.findFirst()
-    			.get();
-    	grupoEnLista.addMensaje(mensaje);
+        Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
+
+        Grupo grupoEnLista = contactos.stream()
+            .filter(c -> c instanceof Grupo)
+            .map(c -> (Grupo) c)
+            .filter(c -> c.getNombre().equals(grupo.getNombre()))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Grupo no encontrado: " + grupo.getNombre()));
+
+        grupoEnLista.addMensaje(mensaje);
         return mensaje;
     }
     
