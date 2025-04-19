@@ -138,11 +138,11 @@ public class AppChat {
      * @param tipo el tipo de descuento a aplicar
      * @return true si se activó correctamente, false si no hay usuario actual
      */
-    public boolean activarPremium(TipoDescuento tipo) {
+    public double activarPremium(TipoDescuento tipo) {
         usuarioActual.activarPremium(tipo);
         adaptadorDescuento.registrarDescuento(DescuentoFactoria.crearDescuento(tipo));
         adaptadorUsuario.modificarUsuario(usuarioActual);
-        return true;
+        return usuarioActual.calcularDescuento();
     }
 
     /**
