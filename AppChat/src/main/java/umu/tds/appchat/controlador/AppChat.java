@@ -129,8 +129,6 @@ public class AppChat {
     public Usuario getUsuarioActual() {
         return usuarioActual;
     }
-    
-    // TODO cargar appchar ponerlo para tutoria
 
     /**
      * Activa el modo premium para el usuario actual con un tipo de descuento especificado.
