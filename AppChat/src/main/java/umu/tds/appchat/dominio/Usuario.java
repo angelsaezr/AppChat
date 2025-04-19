@@ -2,9 +2,13 @@ package umu.tds.appchat.dominio;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import umu.tds.appchat.utils.Utils;
 
 /**
  * Clase Usuario. Cada usuario tiene su lista de contactos.
@@ -451,4 +455,30 @@ public class Usuario {
             return false;
         }
     }
+
+	/**
+	 * Busca mensajes que contengan el texto especificado y pertenezcan a un contacto y móvil determinados.
+	 *
+	 * @param texto texto a buscar dentro de los mensajes
+	 * @param movil número de móvil asociado al contacto
+	 * @param contacto nombre del contacto
+	 * @return lista de mensajes que coinciden con los criterios de búsqueda
+	 */
+	public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
+	    // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
+	    String textoNormalizado = Utils.normalizarTexto(texto);
+	
+	    return getContactos().stream()
+	        .filter(c -> c.contactoCumpleFiltros(movil, contacto)) // Filtra contactos que cumplen los filtros
+	        .flatMap(c -> {
+	            List<Mensaje> mensajes = c.getMensajes(); // Obtiene los mensajes del contacto
+	            return mensajes.stream()
+	                .filter(m -> textoNormalizado.isBlank() || 
+	                		Utils.normalizarTexto(m.getTexto())
+	                        .contains(textoNormalizado))		// Filtra los mensajes por el texto a buscar
+	                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos (emoticonos)
+	                .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed()); // Ordena de más reciente a antiguo
+	        })
+	        .collect(Collectors.toList()); // Recoge los resultados en una lista
+	}
 }
