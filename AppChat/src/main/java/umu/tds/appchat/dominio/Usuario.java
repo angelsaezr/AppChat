@@ -475,7 +475,7 @@ public class Usuario {
             return false;
         }
     }
-
+ 
 	/**
 	 * Busca mensajes que contengan el texto especificado y pertenezcan a un contacto y móvil determinados.
 	 *
