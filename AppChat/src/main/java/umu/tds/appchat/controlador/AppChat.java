@@ -399,15 +399,6 @@ public class AppChat {
     }
 
     /**
-     * Verifica si el usuario actual es premium.
-     *
-     * @return true si el usuario es premium, false en caso contrario
-     */
-    public boolean isPremium() {
-        return usuarioActual.isPremium();
-    }
-
-    /**
      * Elimina un grupo de los contactos del usuario actual.
      *
      * @param grupo el grupo a eliminar

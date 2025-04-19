@@ -295,7 +295,7 @@ public class VentanaMain extends JFrame {
             }
         });
         
-        if(AppChat.getInstance().isPremium()) setPremium();
+        if(usuarioActual.isPremium()) setPremium();
         else removePremium();
         
         panelIzquierda.add(botonBuscar);
