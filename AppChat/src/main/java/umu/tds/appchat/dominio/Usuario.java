@@ -384,7 +384,6 @@ public class Usuario {
     public Mensaje enviarMensajeAContactoIndividual(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
         Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
 
-        
         ContactoIndividual receptorEnLista = contactos.stream()
             .filter(c -> c instanceof ContactoIndividual)
             .map(c -> (ContactoIndividual) c)
