@@ -111,11 +111,7 @@ public class RepositorioUsuarios {
      * @return el usuario encontrado, o null si no existe
      */
     public Usuario buscarUsuarioPorMovil(String movil) {
-        return usuarios.entrySet().stream()
-                .filter(entry -> entry.getKey().equals(movil))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse(null);
+        return usuarios.get(movil);
     }
 
     /**
@@ -125,6 +121,6 @@ public class RepositorioUsuarios {
      * @return true si el usuario existe, false en caso contrario
      */
     public boolean existeUsuario(String movil) {
-        return usuarios.keySet().stream().anyMatch(key -> key.equals(movil));
+        return usuarios.containsKey(movil);
     }
 }
