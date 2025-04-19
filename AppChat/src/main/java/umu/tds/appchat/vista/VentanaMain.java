@@ -257,7 +257,12 @@ public class VentanaMain extends JFrame {
         });
 
         botonCrearContacto = crearBotonSuperior("➕ Crear Contacto", new Color(0, 128, 128), 270, 15, 130, 30,
-        		() ->  new VentanaCrearContacto(VentanaMain.this).setVisible(true));
+        		() -> {
+        			if (contactoSeleccionado instanceof ContactoIndividual && contactoSeleccionado.getNombre().startsWith("$"))
+        				new VentanaAsignarNombre(VentanaMain.this, contactoSeleccionado).setVisible(true);
+        			else
+        				new VentanaCrearContacto(VentanaMain.this).setVisible(true);
+        		});
         
         botonCrearGrupo = crearBotonSuperior("📁 Crear Grupo", new Color(0, 128, 128), 405, 15, 115, 30,
         		() -> new VentanaCrearGrupo(VentanaMain.this).setVisible(true));	
@@ -623,25 +628,7 @@ public class VentanaMain extends JFrame {
             	
             	   panelEditarContacto.add(botonEliminarGrupo);
             	   
-            } else if (contactoSeleccionado instanceof ContactoIndividual && contactoSeleccionado.getNombre().startsWith("$")) {
-            	botonEditarContacto = new JButton("Asignar nombre");
-                botonEditarContacto.setPreferredSize(new Dimension(115, 40));
-                botonEditarContacto.setBackground(new Color(0, 128, 128));
-                botonEditarContacto.setForeground(Color.WHITE);
-                botonEditarContacto.setFocusPainted(false);
-                botonEditarContacto.setBorderPainted(false);
-                botonEditarContacto.addActionListener(e -> {
-                    new VentanaAsignarNombre(this, contactoSeleccionado).setVisible(true);
-                });
-                
-                panelEditarContacto = new JPanel(new FlowLayout());
-                panelEditarContacto.setBackground(Color.WHITE);
-                panelEditarContacto.add(botonEditarContacto);
-                
-            	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
-            	panelContactoSeleccionado.add(panelEditarContacto, BorderLayout.EAST);
             }
-            
             
             panelChat.add(panelContactoSeleccionado, BorderLayout.NORTH);
             panelChat.add(scrollChat, BorderLayout.CENTER);

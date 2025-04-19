@@ -135,7 +135,6 @@ public class AppChat {
     }
     
     // TODO cargar appchar ponerlo para tutoria
-    // TODO lo de asignar nombre 
 
     /**
      * Activa el modo premium para el usuario actual con un tipo de descuento especificado.
