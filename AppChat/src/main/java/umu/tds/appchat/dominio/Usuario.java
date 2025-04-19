@@ -382,7 +382,7 @@ public class Usuario {
      * @return el mensaje añadido al chat
      */
     public Mensaje enviarMensajeAContactoIndividual(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
-    	Mensaje mensaje = new Mensaje(texto, emoticono, tipo, LocalDateTime.now());
+    	Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
     	ContactoIndividual receptorEnLista = (ContactoIndividual)contactos.stream()
     			.filter(contacto -> contacto.getNombre().equals(receptor.getNombre()))
     			.findFirst()
@@ -401,13 +401,25 @@ public class Usuario {
      * @return el mensaje añadido al chat del grupo
      */
     public Mensaje enviarMensajeAGrupo(Grupo grupo, String texto, int emoticono, TipoMensaje tipo) {
-    	Mensaje mensaje = new Mensaje(texto, emoticono, tipo, LocalDateTime.now());
+    	Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
     	Grupo grupoEnLista = (Grupo)contactos.stream()
     			.filter(contacto -> contacto.getNombre().equals(grupo.getNombre()))
     			.findFirst()
     			.get();
     	grupoEnLista.addMensaje(mensaje);
         return mensaje;
+    }
+    
+    /**
+     * Crea un mensaje.
+     * 
+     * @param texto contenido del mensaje
+     * @param emoticono código del emoticono adjunto
+     * @param tipo enviado o recibido
+     * @return el mensaje creado
+     */
+    private Mensaje crearMensaje(String texto, int emoticono, TipoMensaje tipo) {
+        return new Mensaje(texto, emoticono, tipo, LocalDateTime.now());
     }
 
     /**
