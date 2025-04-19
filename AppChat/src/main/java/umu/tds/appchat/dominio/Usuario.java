@@ -458,23 +458,6 @@ public class Usuario {
                 .filter(c -> c.getNombre().equals(nombreGrupo))
                 .findFirst();
     }
-
-    /**
-     * Verifica si un contacto específico es miembro de un grupo dado.
-     *
-     * @param contacto nombre del contacto
-     * @param grupo nombre del grupo
-     * @return true si el contacto pertenece al grupo, false en caso contrario
-     */
-    public boolean esMiembroGrupo(String contacto, String grupo) {
-        Optional<Grupo> grupoOptional = obtenerGrupo(grupo);
-
-        if (grupoOptional.isPresent()) {
-            return grupoOptional.get().getMiembros().stream().anyMatch(c -> c.getNombre().equals(contacto));
-        } else {
-            return false;
-        }
-    }
  
 	/**
 	 * Busca mensajes que contengan el texto especificado y pertenezcan a un contacto y móvil determinados.
