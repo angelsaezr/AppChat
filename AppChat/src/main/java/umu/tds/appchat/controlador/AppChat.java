@@ -145,7 +145,6 @@ public class AppChat {
      */
     public boolean activarPremium(TipoDescuento tipo) {
         usuarioActual.activarPremium(tipo);
-        
         adaptadorDescuento.registrarDescuento(DescuentoFactoria.crearDescuento(tipo));
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return true;
@@ -157,8 +156,8 @@ public class AppChat {
      * @return true si se desactivó correctamente, false si no hay usuario actual
      */
     public boolean anularPremium() {
+    	Descuento d = this.usuarioActual.getDescuento().get();
         this.usuarioActual.anularPremium();
-        Descuento d = this.usuarioActual.getDescuento().get();
         adaptadorDescuento.borrarDescuento(d);
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return true;
