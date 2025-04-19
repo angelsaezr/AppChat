@@ -467,21 +467,22 @@ public class Usuario {
 	 * @param contacto nombre del contacto
 	 * @return lista de mensajes que coinciden con los criterios de búsqueda
 	 */
-	public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
-	    // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
-	    String textoNormalizado = Utils.normalizarTexto(texto);
-	
-	    return getContactos().stream()
-	        .filter(c -> c.contactoCumpleFiltros(movil, contacto)) // Filtra contactos que cumplen los filtros
-	        .flatMap(c -> {
-	            List<Mensaje> mensajes = c.getMensajes(); // Obtiene los mensajes del contacto
-	            return mensajes.stream()
-	                .filter(m -> textoNormalizado.isBlank() || 
-	                		Utils.normalizarTexto(m.getTexto())
-	                        .contains(textoNormalizado))		// Filtra los mensajes por el texto a buscar
-	                .filter(m -> !m.getTexto().isBlank()) // Evita mensajes vacíos (emoticonos)
-	                .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed()); // Ordena de más reciente a antiguo
-	        })
-	        .collect(Collectors.toList()); // Recoge los resultados en una lista
-	}
+    public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
+        // Normaliza el texto de búsqueda para eliminar tildes y convertir a minúsculas
+        String textoNormalizado = Utils.normalizarTexto(texto);
+
+        return contactos.stream()
+            // Filtra los contactos que cumplen con los filtros de número móvil y nombre
+            .filter(c -> c.contactoCumpleFiltros(movil, contacto))
+            // Obtiene los mensajes de cada contacto
+            .flatMap(c -> c.getMensajes().stream())
+            // Filtra mensajes no vacíos (por ejemplo, mensajes con solo emoticonos)
+            .filter(m -> !m.getTexto().isBlank())
+            // Si se especifica texto de búsqueda, filtra los mensajes que lo contengan (normalizado)
+            .filter(m -> textoNormalizado.isBlank() || Utils.normalizarTexto(m.getTexto()).contains(textoNormalizado))
+            // Ordena los mensajes por fecha de envío, del más reciente al más antiguo
+            .sorted(Comparator.comparing(Mensaje::getFechaHoraEnvio).reversed())
+            // Recoge los mensajes en una lista
+            .collect(Collectors.toList());
+    }
 }
