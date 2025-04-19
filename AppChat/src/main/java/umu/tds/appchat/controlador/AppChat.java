@@ -387,18 +387,6 @@ public class AppChat {
     }
 
     /**
-     * Verifica si el contacto ha sido agregado por el usuario.
-     *
-     * @param contacto el contacto a verificar
-     * @return true si el contacto tiene nombre asignado, false si no
-     */
-    public boolean esContactoAgregado(Contacto contacto) {
-        if (contacto.getNombre() == "")
-            return false;
-        return true;
-    }
-
-    /**
      * Elimina un grupo de los contactos del usuario actual.
      *
      * @param grupo el grupo a eliminar

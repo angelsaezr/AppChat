@@ -133,7 +133,7 @@ public class VentanaCrearGrupo extends JDialog {
         listaContactos = usuarioActual.getContactos();
         listaContactos.stream()
         	.filter(c -> c instanceof ContactoIndividual)
-        	.filter(c -> AppChat.getInstance().esContactoAgregado(c))
+        	.filter(c -> !c.getNombre().startsWith("$"))
         	.map(c -> c.getNombreContacto() + " (" + ((ContactoIndividual) c).getMovil() + ")")
         	.forEach(contactListModel::addElement);
 

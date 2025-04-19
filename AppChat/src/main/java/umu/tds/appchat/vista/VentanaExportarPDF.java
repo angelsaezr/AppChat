@@ -66,8 +66,8 @@ public class VentanaExportarPDF extends JDialog {
         List<Contacto> contactosAgregados = new ArrayList<>();
 
         contactos.stream()
-        .filter(c -> !(c instanceof ContactoIndividual) || AppChat.getInstance().esContactoAgregado(c))
-        .forEach(contactosAgregados::add);
+        	.filter(c -> !(c instanceof ContactoIndividual) || !c.getNombre().startsWith("$"))
+        	.forEach(contactosAgregados::add);
 
         comboContactos = new JComboBox<Contacto>(contactosAgregados.toArray(new Contacto[0]));
         comboContactos.setPreferredSize(new Dimension(250, 30));

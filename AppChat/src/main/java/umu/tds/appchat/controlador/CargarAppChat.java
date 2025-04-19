@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import umu.tds.appchat.dominio.ContactoIndividual;
 import umu.tds.appchat.dominio.RepositorioUsuarios;
-import umu.tds.appchat.dominio.TipoDescuento;
 import umu.tds.appchat.vista.VentanaLogin;
 
 /**
@@ -48,7 +47,7 @@ public class CargarAppChat {
 		//ContactoIndividual c3 = AppChat.getInstance().agregarContactoIndividual("javi", "1");
 		ContactoIndividual c3 = RepositorioUsuarios.INSTANCE.buscarUsuarioPorMovil("2").getContactoIndividual("1");
 		ContactoIndividual c4 = AppChat.getInstance().agregarContactoIndividual("diego", "4");
-		ContactoIndividual c5 = AppChat.getInstance().agregarContactoIndividual("elena", "5");
+		/*ContactoIndividual c5 = */AppChat.getInstance().agregarContactoIndividual("elena", "5");
 		
 		AppChat.getInstance().enviarMensajeContacto(c3, "Vienes este finde?", -1);
 		AppChat.getInstance().enviarMensajeContacto(c3, "", 3);

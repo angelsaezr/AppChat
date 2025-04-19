@@ -97,7 +97,7 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
         		String contactoInfo = c.getNombre() + " (" + c.getMovil() + ")";
         		if (grupo.getMiembros().contains(c)) {
         			groupListModel.addElement(contactoInfo);
-        		} else if (AppChat.getInstance().esContactoAgregado(c)) {
+        		} else if (!c.getNombre().startsWith("$")) {
         			contactListModel.addElement(contactoInfo);
         		}
         	});
