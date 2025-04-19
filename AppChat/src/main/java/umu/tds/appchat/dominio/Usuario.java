@@ -459,10 +459,10 @@ public class Usuario {
      * @return true si el contacto pertenece al grupo, false en caso contrario
      */
     public boolean esMiembroGrupo(String contacto, String grupo) {
-        Optional<Grupo> grupo1 = obtenerGrupo(grupo);
+        Optional<Grupo> grupoOptional = obtenerGrupo(grupo);
 
-        if (grupo1.isPresent()) {
-            return grupo1.get().getMiembros().stream().anyMatch(c -> c.getNombre().equals(contacto));
+        if (grupoOptional.isPresent()) {
+            return grupoOptional.get().getMiembros().stream().anyMatch(c -> c.getNombre().equals(contacto));
         } else {
             return false;
         }
