@@ -323,6 +323,26 @@ public class Usuario {
     }
 
     // Métodos para gestionar contactos
+    
+    /**
+     * Busca un contacto individual en la lista de contactos cuyo número móvil coincida con el proporcionado.
+     *
+     * <p>Este método recorre la colección de contactos, filtra aquellos que sean instancias de
+     * {@link ContactoIndividual}, y luego compara su número móvil con el número especificado.
+     * Si encuentra una coincidencia, devuelve un {@link Optional} que contiene el contacto;
+     * en caso contrario, devuelve un {@link Optional#empty()}.</p>
+     *
+     * @param movil el número móvil a buscar entre los contactos individuales
+     * @return un {@link Optional} que contiene el {@link ContactoIndividual} correspondiente, si se encuentra;
+     *         de lo contrario, un {@link Optional#empty()}
+     */
+    private Optional<ContactoIndividual> buscarContactoIndividualPorMovil(String movil) {
+        return contactos.stream()
+                .filter(c -> c instanceof ContactoIndividual)
+                .map(c -> (ContactoIndividual) c)
+                .filter(c -> c.getMovil().equals(movil))
+                .findFirst();
+    }
 
     /**
      * Añade un nuevo contacto al usuario si no está repetido.
@@ -333,16 +353,13 @@ public class Usuario {
      * @return nuevoContacto si fue añadido correctamente, null en caso de duplicados o errores
      */
     public ContactoIndividual addContactoIndividual(String nombre, Usuario usuarioContacto) {
-    	ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
-        boolean movilDuplicado = contactos.stream()
-        	.filter(c -> c instanceof ContactoIndividual)
-        	.map(c -> (ContactoIndividual) c)
-        	.anyMatch(cI -> cI.getMovil().equals(nuevoContacto.getMovil()));
+        String movilNuevo = usuarioContacto.getMovil();
 
-       	if (movilDuplicado || usuarioContacto.getMovil().equals(this.movil)) return null;
+        if (movilNuevo.equals(this.movil) || buscarContactoIndividualPorMovil(movilNuevo).isPresent())
+            return null;
 
-       	contactos.add(nuevoContacto);
-
+        ContactoIndividual nuevoContacto = new ContactoIndividual(nombre, usuarioContacto);
+        contactos.add(nuevoContacto);
         return nuevoContacto;
     }
     
@@ -383,12 +400,7 @@ public class Usuario {
      */
     public Mensaje enviarMensajeAContactoIndividual(ContactoIndividual receptor, String texto, int emoticono, TipoMensaje tipo) {
         Mensaje mensaje = crearMensaje(texto, emoticono, tipo);
-
-        ContactoIndividual receptorEnLista = contactos.stream()
-            .filter(c -> c instanceof ContactoIndividual)
-            .map(c -> (ContactoIndividual) c)
-            .filter(c -> c.getMovil().equals(receptor.getMovil()))
-            .findFirst()
+        ContactoIndividual receptorEnLista = buscarContactoIndividualPorMovil(receptor.getMovil())
             .orElseThrow(() -> new IllegalStateException("Contacto individual no encontrado: " + receptor.getMovil()));
 
         receptorEnLista.addMensaje(mensaje);
@@ -437,12 +449,7 @@ public class Usuario {
      * @return contacto individual correspondiente, o null si no se encuentra
      */
     public ContactoIndividual getContactoIndividual(String movil) {
-        return contactos.stream()
-                .filter(contacto -> contacto instanceof ContactoIndividual)
-                .map(contacto -> (ContactoIndividual) contacto)
-                .filter(contactoIndividual -> contactoIndividual.getUsuario().getMovil().equals(movil))
-                .findFirst()
-                .orElse(null);
+        return buscarContactoIndividualPorMovil(movil).orElse(null);
     }
 
     /**
