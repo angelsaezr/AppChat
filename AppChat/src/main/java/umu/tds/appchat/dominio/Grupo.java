@@ -101,17 +101,16 @@ public class Grupo extends Contacto {
         }
         return false;
     }
-
+    
     /**
-     * Elimina todos los miembros del grupo.
+     * Actualiza la lista de miembros del grupo.
      *
-     * @return true si se eliminaron, false si la lista ya estaba vacía
+     * @param nuevosMiembros lista de nuevos miembros
+     * @return true si se actualizaron correctamente los miembros del grupo, false si hubo algún error
      */
-    public boolean removeAllMiembros() {
-        if (this.miembros != null && !this.miembros.isEmpty()) {
-            this.miembros.clear();
-            return true;
-        }
-        return false;
+    public boolean actualizarMiembrosGrupo(List<ContactoIndividual> nuevosMiembros) {
+        this.miembros.clear();
+        nuevosMiembros.forEach(this.miembros::add);
+        return true;
     }
 }

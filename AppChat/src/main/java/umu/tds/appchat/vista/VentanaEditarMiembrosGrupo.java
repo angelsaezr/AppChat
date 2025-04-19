@@ -167,14 +167,25 @@ public class VentanaEditarMiembrosGrupo extends JDialog {
             	if(groupListModel.isEmpty()) {
                 	JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "El grupo no puede quedar vacío, ¿quizás quieres eliminarlo?", "Error", JOptionPane.ERROR_MESSAGE);
                 } 
-                List<String> nuevosMiembros = new LinkedList<>();
+                
+            	List<ContactoIndividual> nuevosMiembros = new LinkedList<>();
                 for (int i = 0; i < groupListModel.size(); i++) {
                     String contactoInfo = groupListModel.get(i);
                     String movil = contactoInfo.substring(contactoInfo.indexOf("(") + 1, contactoInfo.indexOf(")"));
-                    nuevosMiembros.add(movil);
+                    // Buscar en los miembros originales del grupo por móvil
+                    for (Contacto c : AppChat.getInstance().getUsuarioActual().getContactos()) {
+                    	if (c instanceof ContactoIndividual) {
+                    		ContactoIndividual cI = (ContactoIndividual) c;
+                    		if (cI.getMovil().equals(movil)) {
+                                nuevosMiembros.add(cI);
+                            }
+                    	}
+                    }
                 }
+            	
                 if (AppChat.getInstance().actualizarMiembrosGrupo(grupo, nuevosMiembros)) {
                     JOptionPane.showMessageDialog(VentanaEditarMiembrosGrupo.this, "Grupo actualizado correctamente.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    ventanaMain.actualizarListaContactos();
                     ventanaMain.setContactoSeleccionado(grupo);
                     dispose();
                 } else {

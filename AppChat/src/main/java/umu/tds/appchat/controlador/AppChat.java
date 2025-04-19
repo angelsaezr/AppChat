@@ -5,7 +5,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import umu.tds.appchat.dominio.Usuario;
@@ -427,27 +426,13 @@ public class AppChat {
      * Actualiza la lista de miembros de un grupo con nuevos contactos seleccionados.
      *
      * @param grupo el grupo a actualizar
-     * @param nuevosMiembros lista de números de móvil correspondientes a los nuevos miembros
+     * @param nuevosMiembros lista de nuevos miembros
      * @return true si se actualizaron correctamente los miembros del grupo, false si hubo algún error
      */
-    public boolean actualizarMiembrosGrupo(Grupo grupo, List<String> nuevosMiembros) {
-        if (usuarioActual == null || grupo == null || nuevosMiembros == null)
-            return false;
-
-        if (nuevosMiembros.isEmpty()) return false; // El grupo no puede quedar vacío
-
-        List<ContactoIndividual> nuevosMiembrosLista = nuevosMiembros.stream()
-            .map(usuarioActual::getContactoIndividual)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-        grupo.removeAllMiembros();
-
-        nuevosMiembrosLista.forEach(grupo::addMiembro);
-
+    public boolean actualizarMiembrosGrupo(Grupo grupo, List<ContactoIndividual> nuevosMiembros) {
+        grupo.actualizarMiembrosGrupo(nuevosMiembros);
         adaptadorGrupo.modificarGrupo(grupo);
         adaptadorUsuario.modificarUsuario(usuarioActual);
-
         return true;
     }
 
