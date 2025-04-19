@@ -151,9 +151,9 @@ public class AppChat {
      * @return true si se desactivó correctamente, false si no hay usuario actual
      */
     public boolean anularPremium() {
-    	Descuento d = this.usuarioActual.getDescuento().get();
+    	Descuento descuento = this.usuarioActual.getDescuento().get();
         this.usuarioActual.anularPremium();
-        adaptadorDescuento.borrarDescuento(d);
+        adaptadorDescuento.borrarDescuento(descuento);
         adaptadorUsuario.modificarUsuario(usuarioActual);
         return true;
     }
@@ -298,18 +298,6 @@ public class AppChat {
         adaptadorMensaje.registrarMensaje(mensajeRecibido);
         adaptadorContactoIndividual.modificarContactoIndividual(contactoSender);
     }
-
-    /**
-	 * Busca mensajes que contengan el texto especificado y pertenezcan a un contacto y móvil determinados.
-	 *
-	 * @param texto texto a buscar dentro de los mensajes
-	 * @param movil número de móvil asociado al contacto
-	 * @param contacto nombre del contacto
-	 * @return lista de mensajes que coinciden con los criterios de búsqueda
-	 */
-	public List<Mensaje> buscarMensajes(String texto, String movil, String contacto) {
-		return usuarioActual.buscarMensajes(texto, movil, contacto);
-	}
 
     /**
      * Asigna un nuevo nombre a un contacto individual.

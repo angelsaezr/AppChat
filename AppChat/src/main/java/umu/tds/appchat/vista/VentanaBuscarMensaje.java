@@ -137,12 +137,14 @@ public class VentanaBuscarMensaje extends JDialog {
     	
         panelResultados.removeAll();
         
+        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
+        
         if (textFieldTexto.getText().isBlank() && textFieldTelefono.getText().isBlank() && textFieldContacto.getText().isBlank()) {
     	    JOptionPane.showMessageDialog(this, "Debe introducir al menos un criterio de búsqueda.", "Error", JOptionPane.ERROR_MESSAGE);
     	    return;
     	}
 
-        List<Mensaje> mensajes = AppChat.getInstance().buscarMensajes(
+        List<Mensaje> mensajes = usuarioActual.buscarMensajes(
             textFieldTexto.getText(), 
             textFieldTelefono.getText(), 
             textFieldContacto.getText()
@@ -152,8 +154,6 @@ public class VentanaBuscarMensaje extends JDialog {
             JOptionPane.showMessageDialog(this, "No se encontraron mensajes con los criterios proporcionados.", "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
-        Usuario usuarioActual = AppChat.getInstance().getUsuarioActual();
         
         List<JPanel> resultados = mensajes.stream()
             .map(m -> {
