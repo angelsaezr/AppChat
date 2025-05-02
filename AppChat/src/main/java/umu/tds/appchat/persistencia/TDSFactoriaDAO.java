@@ -2,7 +2,7 @@ package umu.tds.appchat.persistencia;
 
 /**
  * Implementación concreta de la {@link FactoriaDAO} que utiliza adaptadores
- * basados en la tecnología TDS (Tiny Data Store) para la persistencia.
+ * basados en la tecnología TDS para la persistencia.
  * 
  * Proporciona instancias únicas de cada adaptador DAO mediante el patrón Singleton.
  * 
