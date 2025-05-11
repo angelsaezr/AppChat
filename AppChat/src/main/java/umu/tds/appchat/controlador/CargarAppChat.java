@@ -25,11 +25,11 @@ public class CargarAppChat {
 	 * @param args argumentos de línea de comandos (no se utilizan)
 	 */
 	public static void main(String[] args) {
-		AppChat.getInstance().registrarUsuario("aa", "1", "1", LocalDate.now(), "src/main/resources/profile1.jpg", "hola", "javi@a.com");
-		AppChat.getInstance().registrarUsuario("bb", "2", "2", LocalDate.now(), "src/main/resources/profile1.jpg", "hola", "angel@a.com");
-		AppChat.getInstance().registrarUsuario("cc", "3", "3", LocalDate.now(), "src/main/resources/profile1.jpg", "hola", "pepe@a.com");
-		AppChat.getInstance().registrarUsuario("dd", "4", "4", LocalDate.now(), "src/main/resources/profile1.jpg", "hola", "diego@a.com");
-		AppChat.getInstance().registrarUsuario("ee", "5", "5", LocalDate.now(), "src/main/resources/profile1.jpg", "hola", "elena@a.com");
+		AppChat.getInstance().registrarUsuario("javi", "1", "1", LocalDate.now(), "src/main/resources/imagen.png", "hola", "javi@a.com");
+		AppChat.getInstance().registrarUsuario("angel", "2", "2", LocalDate.now(), "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Sasso_lungo_da_passo_pordoi.jpg/330px-Sasso_lungo_da_passo_pordoi.jpg", "hola", "angel@a.com");
+		AppChat.getInstance().registrarUsuario("pepe", "3", "3", LocalDate.now(), "src/main/resources/profile1.jpg", "hola", "pepe@a.com");
+		AppChat.getInstance().registrarUsuario("diego", "4", "4", LocalDate.now(), "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Herbstlandschaft_%28am_Rebhang%29.jpg/330px-Herbstlandschaft_%28am_Rebhang%29.jpg", "hola", "diego@a.com");
+		AppChat.getInstance().registrarUsuario("elena", "5", "5", LocalDate.now(), "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Winterlandschaft_%28Schwarzwald%29.JPG/330px-Winterlandschaft_%28Schwarzwald%29.JPG", "hola", "elena@a.com");
 		
 		AppChat.getInstance().login("1", "1");
 		
