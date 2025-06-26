@@ -13,7 +13,7 @@ El proyecto sigue una arquitectura en capas basada en MVC, utilizando patrones c
 
 ## 📦 Funcionalidades
 
-###✔️ Usuarios
+### ✔️ Usuarios
 - Registro con nombre, fecha de nacimiento, email, imagen, número de teléfono y contraseña.
 - Login mediante número de teléfono y contraseña.
 - Gestión de perfil, incluyendo saludo e imagen.
