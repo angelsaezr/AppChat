@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"umu.tds.appchat.controlador"},{"l":"umu.tds.appchat.dominio"},{"l":"umu.tds.appchat.persistencia"},{"l":"umu.tds.appchat.utils"},{"l":"umu.tds.appchat.vista"}];updateSearchResults();
