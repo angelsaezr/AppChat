@@ -4,6 +4,8 @@
 
 El proyecto sigue una arquitectura en capas basada en MVC, utilizando patrones como DAO, Singleton y Adaptador para la gestión de la persistencia y la lógica de negocio.
 
+📚 **[Ver documentación Javadoc](https://angelsaezr.github.io/AppChat/)**
+
 ## 🧩 Estructura del Proyecto
 
 - **Dominio (`umu.tds.appchat.dominio`)**: Define las entidades del sistema como `Usuario`, `Mensaje`, `Grupo`, `ContactoIndividual` y `Contacto`.
@@ -35,6 +37,9 @@ El proyecto sigue una arquitectura en capas basada en MVC, utilizando patrones c
 
 ### ✔️ Vista
 - Interfaces diseñadas en Swing: login, registro, chat principal, gestión de contactos, perfil, premium, exportación PDF, etc.
+
+![image](https://github.com/user-attachments/assets/a28f8d74-0bd5-4b38-a398-e03fa6e3bd7c)
+![image](https://github.com/user-attachments/assets/7a2d51d0-a5ef-4289-a6fb-636187cbd792)
 
 ### ✔️ Otros
 - Uso de librerías externas como `JCalendar` (via Maven).
